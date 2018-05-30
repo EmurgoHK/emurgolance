@@ -1,4 +1,62 @@
-<template name="App_home">
-  {{> hello}}
-  {{> info}}
+<template name="home">
+  <div class="documents-index">
+  	{{> loginButtons}}
+    <div class="card">
+      <div class="card-body">
+        <h1>Timesheet</h1>
+        <input type="text" id="js-issue" class="form-control" style="display: inline;width: 400px;" placeholder="GitHub issue link">
+        <a class="btn btn-primary" id="js-start" href="#" role="button">Start work</a>
+
+        {{#if Template.subscriptionsReady}}
+          {{#if timesheets.count}}
+            <table class="table table-hover mt-3">
+              <thead>
+                <tr>
+                  <th>Issue</th>
+                  <th>Start time</th>
+                  <th>End time</th>
+                  <th>Total working time</th>
+                  <th class="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {{#each timesheets}}
+                  <tr class="documents-index-item">
+				    <td scope="row">{{issue}}</td>
+				    <td>{{formatDate start}}</td>
+				    <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
+				    <td>{{totalTime}}</td>
+				    <td class="text-right">
+				    	{{#if active}}
+				      	<a class="btn btn-sm btn-success" id="js-pause" href="#" role="button">
+				      		Pause
+				      	</a>
+				      	{{else}}
+				  			{{#if paused}}
+				  			<a class="btn btn-sm btn-success" id="js-continue" href="#" role="button">
+					      		Continue
+					      	</a>
+				  			{{/if}}
+				  		{{/if}}
+					  {{#if active}}
+						<a class="btn btn-sm btn-secondary" href="#" id="js-finish" role="button">Finish</a>
+					  {{/if}}
+				    </td>
+				  </tr>
+                {{/each}}
+              </tbody>
+            </table>
+            Total amount of work: <b>{{totalFinishedTime}}</b>
+          {{else}}
+            <div class="mt-3">
+              {{> emptyResult text="No timesheet entries" description="Start working to add some..." icon=""}}
+            </div>
+          {{/if}}
+        {{else}}
+          {{> loader}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
 </template>

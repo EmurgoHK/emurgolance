@@ -1,4 +1,5 @@
 // Register your apis here
 
-import '../../api/links/methods.js';
-import '../../api/links/server/publications.js';
+import '/imports/api/timesheet/server/publications'
+import '/imports/api/timesheet/methods'
+import '/imports/api/timesheet/timesheet'
