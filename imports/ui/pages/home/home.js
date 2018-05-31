@@ -2,6 +2,7 @@ import './home.html'
 
 import { startWork, pauseWork, continueWork, finishWork } from '/imports/api/timesheet/methods'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
+import { notify } from '/imports/modules/notifier.js'
 
 import moment from 'moment'
 
@@ -63,8 +64,7 @@ Template.home.events({
 			issue: $('#js-issue').val()
 		}, (err, data) => {
 			if (err) {
-				console.log(err)
-				// handle errors
+				notify(err.reason || err.message, 'error')
 			}
 		})
 	},
@@ -75,8 +75,7 @@ Template.home.events({
 			workId: this._id
 		}, (err, data) => {
 			if (err) {
-				console.log(err)
-				// handle errors
+				notify(err.reason || err.message, 'error')
 			}
 		})
 	},
@@ -87,8 +86,7 @@ Template.home.events({
 			workId: this._id
 		}, (err, data) => {
 			if (err) {
-				console.log(err)
-				// handle errors
+				notify(err.reason || err.message, 'error')
 			}
 		})
 	},
@@ -99,8 +97,7 @@ Template.home.events({
 			workId: this._id
 		}, (err, data) => {
 			if (err) {
-				console.log(err)
-				// handle errors
+				notify(err.reason || err.message, 'error')
 			}
 		})
 	}
