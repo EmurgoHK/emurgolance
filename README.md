@@ -1,5 +1,5 @@
-# Emurpas
-Emurgo Project Appraisal System
+# Emurgolance
+Emurgo freelancer tracking system.
 
 ## The problem
 Emurgo doesn't currently have a way to track the hours that freelancers spend working on our projects, or a way to track freelancer details and payment methods etc.
