@@ -2,10 +2,10 @@
 Emurgo Project Appraisal System
 
 ## The problem
-Emurgo doesn't currently have a way to concisely track applications for the accelerator programme or investment funding. This makes it difficult to understand the overall picture or streamline any part of the process (what isn't measured is difficult to improve).
+Emurgo doesn't currently have a way to track the hours that freelancers spend working on our projects, or a way to track freelancer details and payment methods etc.
 
 ## The solution
-The simplest possible solution to this problem is to create the most basic possible system to handle application forms. Emurpas is not intended to ever be complete because that implies being able to accurate predict what will be needed in future, so instead we use the C4 to iteratively build out the rest of the system based on the Serbian Model (logging problems and then sending minimal patches providing the simplest possible solution). This means Emurpas will be a living system that is able to frictionlessly keep up with changes in the blockchain landscape.
+The simplest possible solution to this problem is to create the most basic possible system to allow freelancers to submit their hours and other relevant details. Emurgolance is not intended to ever be complete because that implies being able to accurate predict what will be needed in future, so instead we use the C4 to iteratively build out the rest of the system based on the Serbian Model (logging problems and then sending minimal patches providing the simplest possible solution). This means Emurgolance will be a living system that is able to frictionlessly keep up with changes in the blockchain landscape.
 
 <details>
   <summary>How to run Emurpas locally</summary>
