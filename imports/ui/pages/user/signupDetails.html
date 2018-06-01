@@ -1,0 +1,25 @@
+<template name="signupDetails">
+  <div class="card col-5" style="margin: 30px auto 0 auto">
+    <div class="card-body">
+      <h2>Please provide additional details</h2>
+      <form id="signup">
+        Name:
+        <div class="input-group" style="padding-top:8px;">
+            <input type="text" id="js-name" class="form-control" placeholder="Name" value="{{currentUser.profile.name}}" required >
+        </div>
+        <br />
+        Payment method:
+        <div class="input-group" style="padding-top:8px;">
+            <input type="radio" name="js-payment" class="form-control" value="paypal"> Paypal
+            <input type="radio" name="js-payment" class="form-control" value="swift"> SWIFT bank transfer
+            <input type="radio" name="js-payment" class="form-control" value="bitcoin"> Bitcoin
+            <input type="radio" name="js-payment" class="form-control" value="cardano"> Cardano
+        </div>
+        <br />
+        <div style="padding-top:8px;">
+          <button type="submit" class="btn btn-primary" style="padding-top:8px;float:right">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</template>
