@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor'
+import { HTTP } from 'meteor/http'
+import { Promise } from 'meteor/promise';
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import SimpleSchema from 'simpl-schema'
 
@@ -11,42 +13,65 @@ const workManipulationSchema = new SimpleSchema({
     }
 })
 
+const validateGithubIssue = (issue) => {
+	var isValidIssue = false
+
+	return new Promise((resolve, reject) => {
+		HTTP.get(`https://api.github.com/repos/${issue}`,  {headers: {
+			"User-Agent": "gazhayes-blockrazor"
+		}}, (err, data) => {
+			if (!err) { isValidIssue = true } 
+			resolve(isValidIssue)
+		})
+	})
+}
+
 export const startWork = new ValidatedMethod({
-    name: 'startWork',
-    validate:
-        new SimpleSchema({
-            issue: {
-            	type: SimpleSchema.RegEx.Domain,
-            	optional: false
-            }
-        }).validator({
-        	clean: true
-        }),
-    run({ issue }) {
-    	if (!Meteor.userId()) {
-    		throw new Meteor.Error('Error.', 'You have to be logged in.')
-    	}
+	name: 'startWork',
+	validate:
+		new SimpleSchema({
+			issue: {
+				type: SimpleSchema.RegEx.Url,
+				optional: false
+			}
+		}).validator({
+			clean: true
+		}),
+	async run({ issue }) {
+		if (!Meteor.userId()) {
+			throw new Meteor.Error('Error.', 'You have to be logged in.')
+		}
+		
+		if (Meteor.isServer) {
+			let issueTitle = issue.replace(/((http|https):\/\/)?github.com\//, '').replace(/\/+$/, '')
+			let isIssueValid = await validateGithubIssue(issueTitle)
 
-    	let startTime = new Date().getTime()
-
-    	let prevWork = Timesheet.findOne({
-    		owner: Meteor.userId(),
-    		active: true
-    	})
-
-    	if (prevWork) {
-    		throw new Meteor.Error('Error.', 'You can only start one task at a time.')
-    	}
-
-	    return Timesheet.insert({
-	    	owner: Meteor.userId(),
-	    	start: startTime, // original start time
-	    	startTime: startTime, // changes each time the time is paused
-	    	active: true,
-	    	issue: issue
-	    })
-    }
+			if (isIssueValid) {
+				let startTime = new Date().getTime()
+				
+				let prevWork = Timesheet.findOne({
+					owner: Meteor.userId(),
+					active: true
+				})
+				
+				if (prevWork) {
+					throw new Meteor.Error('Error.', 'You can only start one task at a time.')
+				}
+				
+				return Timesheet.insert({
+					owner: Meteor.userId(),
+					start: startTime, // original start time
+					startTime: startTime, // changes each time the time is paused
+					active: true,
+					issue: issue 
+				})
+			} else {
+				throw new Meteor.Error('Error.', 'Invalid Github issue.')
+			}
+		}		
+	}
 })
+
 
 export const pauseWork = new ValidatedMethod({
     name: 'pauseWork',
