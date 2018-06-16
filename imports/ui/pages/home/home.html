@@ -1,6 +1,7 @@
 <template name="home">
   <div class="documents-index">
   	{{> loginButtons}}
+  	<a href="/settings">Settings</a> {{#if isModerator}}<a href="/moderator/users">Manage users</a>{{/if}}
     <div class="card">
       <div class="card-body">
         <h1>Timesheet</h1>
@@ -46,7 +47,8 @@
                 {{/each}}
               </tbody>
             </table>
-            Total amount of work: <b>{{totalFinishedTime}}</b>
+            Total amount of work: <b>{{total.formattedTime}}</b><br />
+            Total earnings: {{#if currentUser.profile.hourlyRateApproved}}<span style="color: green">{{fixed total.earnings}}$</span>{{else}}<span style="color: orange">{{fixed total.earnings}}$</span>{{/if}} ({{fixed total.decimalTime}} x {{fixed currentUser.profile.hourlyRate}})
           {{else}}
             <div class="mt-3">
               {{> emptyResult text="No timesheet entries" description="Start working to add some..." icon=""}}
