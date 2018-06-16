@@ -13,6 +13,7 @@
               <thead>
                 <tr>
                   <th>Issue</th>
+                  <th>Project</th>
                   <th>Start time</th>
                   <th>End time</th>
                   <th>Total working time</th>
@@ -22,12 +23,13 @@
               <tbody>
                 {{#each timesheets}}
                   <tr class="documents-index-item">
-				    <td scope="row">{{issue}}</td>
-				    <td>{{formatDate start}}</td>
-				    <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
-				    <td>{{totalTime}}</td>
-				    <td class="text-right">
-				    	{{#if active}}
+                    <td scope="row">{{issue}}</td>
+        				    <td scope="row">{{project}}</td>
+        				    <td>{{formatDate start}}</td>
+        				    <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
+        				    <td>{{totalTime}}</td>
+        				    <td class="text-right">
+				    	  {{#if active}}
 				      	<a class="btn btn-sm btn-success" id="js-pause" href="#" role="button">
 				      		Pause
 				      	</a>

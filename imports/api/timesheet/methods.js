@@ -20,7 +20,7 @@ const validateGithubIssue = (issue) => {
 		HTTP.get(`https://api.github.com/repos/${issue}`,  {headers: {
 			"User-Agent": "gazhayes-blockrazor"
 		}}, (err, data) => {
-			if (!err) { isValidIssue = true } 
+			if (!err) { isValidIssue = true }
 			resolve(isValidIssue)
 		})
 	})
@@ -41,34 +41,36 @@ export const startWork = new ValidatedMethod({
 		if (!Meteor.userId()) {
 			throw new Meteor.Error('Error.', 'You have to be logged in.')
 		}
-		
+
 		if (Meteor.isServer) {
 			let issueTitle = issue.replace(/((http|https):\/\/)?github.com\//, '').replace(/\/+$/, '')
 			let isIssueValid = await validateGithubIssue(issueTitle)
 
 			if (isIssueValid) {
 				let startTime = new Date().getTime()
-				
+        let project = issueTitle.split('/')[1]
+
 				let prevWork = Timesheet.findOne({
 					owner: Meteor.userId(),
 					active: true
 				})
-				
+
 				if (prevWork) {
 					throw new Meteor.Error('Error.', 'You can only start one task at a time.')
 				}
-				
+
 				return Timesheet.insert({
 					owner: Meteor.userId(),
 					start: startTime, // original start time
 					startTime: startTime, // changes each time the time is paused
+          project: project, // project related to the issue
 					active: true,
-					issue: issue 
+					issue: issue
 				})
 			} else {
 				throw new Meteor.Error('Error.', 'Invalid Github issue.')
 			}
-		}		
+		}
 	}
 })
 
@@ -95,7 +97,7 @@ export const pauseWork = new ValidatedMethod({
   		if (!work.active) {
   			throw new Meteor.Error('Error.', 'You can\'t pause work that\'s has been completed.')
   		}
-		
+
 		return Timesheet.update({
 			_id: workId
 		}, {
@@ -130,7 +132,7 @@ export const continueWork = new ValidatedMethod({
   		if (!work.paused) {
   			throw new Meteor.Error('Error.', 'You can\'t continue work that\'s hasn\'t been paused.')
   		}
-		
+
 		return Timesheet.update({
 			_id: workId
 		}, {
@@ -167,7 +169,7 @@ export const finishWork = new ValidatedMethod({
   		}
 
   		let endTime = new Date().getTime()
-		
+
 		return Timesheet.update({
 			_id: workId
 		}, {
