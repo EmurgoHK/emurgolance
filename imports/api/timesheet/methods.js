@@ -15,12 +15,14 @@ const workManipulationSchema = new SimpleSchema({
 
 const validateGithubIssue = (issue) => {
 	var isValidIssue = false
-
 	return new Promise((resolve, reject) => {
-		HTTP.get(`https://api.github.com/repos/${issue}`,  {headers: {
-			"User-Agent": "gazhayes-blockrazor"
-		}}, (err, data) => {
-			if (!err) { isValidIssue = true }
+		HTTP.get(`https://api.github.com/repos/${issue}`, { headers: {
+      "User-Agent": "gazhayes-blockrazor"
+    }}, (err, data) => {
+			if (!err && data.data.html_url.includes(issue)) // checks the url for the issue. This is needed to distinguish between a PR & issue
+      {
+        isValidIssue = true
+      }
 			resolve(isValidIssue)
 		})
 	})
@@ -38,39 +40,45 @@ export const startWork = new ValidatedMethod({
 			clean: true
 		}),
 	async run({ issue }) {
-		if (!Meteor.userId()) {
-			throw new Meteor.Error('Error.', 'You have to be logged in.')
-		}
+  		if (!Meteor.userId()) {
+  			throw new Meteor.Error('Error.', 'You have to be logged in.')
+  		}
 
-		if (Meteor.isServer) {
 			let issueTitle = issue.replace(/((http|https):\/\/)?github.com\//, '').replace(/\/+$/, '')
-			let isIssueValid = await validateGithubIssue(issueTitle)
 
-			if (isIssueValid) {
-				let startTime = new Date().getTime()
-        let project = issueTitle.split('/')[1]
+      // The link must contain issues in the URL
+      if (!issueTitle.includes('/issues/')) {
+        throw new Meteor.Error('Error.', 'Please enter a valid github url for an issue')
+      }
 
-				let prevWork = Timesheet.findOne({
-					owner: Meteor.userId(),
-					active: true
-				})
+      if (Meteor.isServer) {
+        let isIssueValid = await validateGithubIssue(issueTitle)
 
-				if (prevWork) {
-					throw new Meteor.Error('Error.', 'You can only start one task at a time.')
-				}
+  			if (isIssueValid) {
+  				let startTime = new Date().getTime()
+          let project = issueTitle.split('/')[1]
 
-				return Timesheet.insert({
-					owner: Meteor.userId(),
-					start: startTime, // original start time
-					startTime: startTime, // changes each time the time is paused
-          project: project, // project related to the issue
-					active: true,
-					issue: issue
-				})
-			} else {
-				throw new Meteor.Error('Error.', 'Invalid Github issue.')
-			}
-		}
+  				let prevWork = Timesheet.findOne({
+  					owner: Meteor.userId(),
+  					active: true
+  				})
+
+  				if (prevWork) {
+  					throw new Meteor.Error('Error.', 'You can only start one task at a time.')
+  				}
+
+  				return Timesheet.insert({
+  					owner: Meteor.userId(),
+  					start: startTime, // original start time
+  					startTime: startTime, // changes each time the time is paused
+            project: project, // project related to the issue
+  					active: true,
+  					issue: issue
+  				})
+  			} else {
+  				throw new Meteor.Error('Error.', 'Invalid Github issue.')
+  			}
+      }
 	}
 })
 
