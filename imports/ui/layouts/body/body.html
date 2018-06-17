@@ -1,3 +1,14 @@
 <template name="mainLayout">
-  {{> Template.dynamic template=main}}
+  {{> Template.dynamic template=header}}
+  <div class="app-body">
+    {{> Template.dynamic template=sidebar}}
+    
+    <div class="main">
+        {{> Template.dynamic template=main}}
+    </div>
+  </div>
 </template>
+
+<body class="app header-fixed sidebar-fixed aside-menu-fixed sidebar-lg-show pace-done pace-done">
+
+  </body>

@@ -17,7 +17,9 @@ FlowRouter.route('/', {
 	name: 'home',
   	action: () => {
     	BlazeLayout.render('mainLayout', {
-    		main: 'home'
+			header: 'header',
+			main: 'home',
+			sidebar: 'sidebar'
     	})
   	}
 })
@@ -26,7 +28,9 @@ FlowRouter.route('/settings', {
 	name: 'settings',
   	action: () => {
     	BlazeLayout.render('mainLayout', {
-    		main: 'settings'
+			header: 'header',
+			main: 'settings',
+			sidebar: 'sidebar'
     	})
   	}
 })
