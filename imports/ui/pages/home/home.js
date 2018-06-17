@@ -30,15 +30,34 @@ Template.home.helpers({
 			start: -1
 		}
 	}),
-	totalFinishedTime: () => {
+	total: () => {
 		let total = Timesheet.find({
 			owner: Meteor.userId(),
 			active: false
 		}).fetch()
 
-		let duration = moment.duration(total.reduce((i1, i2) => i1 + i2.totalTime, 0))
+		let active = Timesheet.findOne({
+			owner: Meteor.userId(),
+			active: true
+		})
 
-		return formatDuration(duration)
+		let user = Meteor.users.findOne({
+			_id: Meteor.userId()
+		}) || {}
+
+		let duration = total.reduce((i1, i2) => i1 + i2.totalTime, 0)
+
+		if (active) {
+			duration += (Template.instance().timer.get() - active.startTime) + (active.totalTime || 0)
+		}
+
+		let dec = duration / (1000 * 60 * 60)
+
+		return {
+			formattedTime: formatDuration(moment.duration(duration)),
+			decimalTime: dec,
+			earnings: dec * ((user.profile) || {}).hourlyRate || 0
+		}
 	},
 	totalTime: function () {
 		let duration
@@ -53,7 +72,9 @@ Template.home.helpers({
 	},
 	formatDate: (date) => {
 		return moment(date).format('DD/MM/YY HH:mm:ss')
-	}
+	},
+	fixed: val => val ? val.toFixed(2) : '0.00',
+
 })
 
 Template.home.events({

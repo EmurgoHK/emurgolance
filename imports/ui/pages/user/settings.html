@@ -1,7 +1,7 @@
-<template name="signupDetails">
+<template name="settings">
   <div class="card col-5" style="margin: 30px auto 0 auto">
     <div class="card-body">
-      <h2>Please provide additional details</h2>
+      <h2>User settings</h2>
       <form id="signup">
         Name:
         <div class="input-group" style="padding-top:8px;">
@@ -15,6 +15,12 @@
             <input type="radio" name="js-payment" class="form-control" value="bitcoin"> Bitcoin
             <input type="radio" name="js-payment" class="form-control" value="cardano"> Cardano
         </div>
+        <br />
+        Hourly rate:
+        <div class="input-group" style="padding-top:8px;">
+            <input type="number" id="js-hr" class="form-control" placeholder="0.00" value="{{currentUser.profile.hourlyRate}}" required >
+        </div>
+        {{#if currentUser.profile.hourlyRate}}{{#if currentUser.profile.hourlyRateApproved}}<span style="color: green">Approved</span>{{else}}<span style="color: orange">Approval pending</span>{{/if}}{{/if}}
         <br />
         <div style="padding-top:8px;">
           <button type="submit" class="btn btn-primary" style="padding-top:8px;float:right">Save</button>
