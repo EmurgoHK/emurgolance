@@ -10,3 +10,5 @@ import '/imports/ui/shared/empty-result/empty-result.js'
 import '/imports/ui/shared/loader/loader.js'
 
 import '/imports/ui/helpers/global'
+
+import "bootstrap"
