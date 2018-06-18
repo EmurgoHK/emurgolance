@@ -11,4 +11,11 @@ html {
 body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
+  
+
+  .main {
+    .container-fluid {
+      padding: 30px 30px 0 30px !important;
+    }
+  }
 }

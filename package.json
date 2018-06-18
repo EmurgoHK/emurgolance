@@ -14,7 +14,7 @@
     "bootstrap": "^4.1.1",
     "chart.js": "^2.7.2",
     "flag-icon-css": "3.0.0",
-    "jquery": "^1.9.1",
+    "jquery": "^3.3.1",
     "meteor-node-stubs": "^0.3.2",
     "moment": "^2.22.1",
     "noty": "^3.2.0-beta",
