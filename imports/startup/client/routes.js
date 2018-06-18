@@ -9,7 +9,7 @@ import '../../ui/pages/moderator/users/userList'
 
 const modRoutes = FlowRouter.group({
 	prefix: '/moderator',
-  	name: 'moderator'
+	name: 'moderator'  
 })
 
 // Set up all routes in the app
@@ -38,7 +38,9 @@ FlowRouter.route('/settings', {
 modRoutes.route('/users', {
     action: () => {
         BlazeLayout.render('mainLayout', {
-          	main: 'userList'
+			header: 'header',
+			  main: 'userList',
+			  sidebar: 'sidebar'
         })
     },
     name: 'userList'

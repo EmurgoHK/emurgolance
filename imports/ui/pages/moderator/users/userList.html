@@ -1,37 +1,45 @@
 <template name="userList">
-  <div class="user-index">
-    <div class="card">
-      <div class="card-body">
-        {{#if isModerator}}
-        <h1>Users</h1>
-
-        {{#if Template.subscriptionsReady}}
-            <table class="table table-hover mt-3">
-              <thead>
-                <tr>
-                  <th>Username</th>
-                  <th>Hourly rate</th>
-                  <th>Approve</th>
-                </tr>
-              </thead>
-              <tbody>
-                {{#each users}}
-                <tr class="user-item">
-                  <td>{{profile.name}}</td>
-                  <td>{{profile.hourlyRate}}</td>
-                  <td><a href="#" class="btn btn-sm btn-primary approve">Approve</a></td>
-                </tr>
-                {{/each}}
-              </tbody>
-            </table>
-        {{else}}
-          {{> loader}}
-        {{/if}}
-        {{else}}
-        <h1>This page is for moderators only.</h1>
-        {{/if}}
+  <div class="user-index container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              Users
+            </div>
+              <div class="card-body">
+                {{#if isModerator}}
+                
+        
+                {{#if Template.subscriptionsReady}}
+                    <table class="table table-responsive-sm table-hover table-outline mb-0">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Username</th>
+                          <th>Hourly rate</th>
+                          <th>Approve</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each users}}
+                        <tr class="user-item">
+                          <td>{{profile.name}}</td>
+                          <td>{{profile.hourlyRate}}</td>
+                          <td><a href="#" class="btn btn-sm btn-primary approve">Approve</a></td>
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                {{else}}
+                  {{> loader}}
+                {{/if}}
+                {{else}}
+                <h1>This page is for moderators only.</h1>
+                {{/if}}
+              </div>
+            </div>
       </div>
     </div>
+    
   </div>
 
 </template>
