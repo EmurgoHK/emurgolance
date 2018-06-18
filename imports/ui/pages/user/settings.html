@@ -1,31 +1,59 @@
 <template name="settings">
-  <div class="card col-5" style="margin: 30px auto 0 auto">
-    <div class="card-body">
-      <h2>User settings</h2>
-      <form id="signup">
-        Name:
-        <div class="input-group" style="padding-top:8px;">
-            <input type="text" id="js-name" class="form-control" placeholder="Name" value="{{currentUser.profile.name}}" required >
+  <div class="container-fluid">
+      <div class="row">
+          <div class="col-sm-12">
+              <div class="card">
+                <div class="card-header">Settings</div>
+                  <div class="card-body">
+                    <form id="signup">
+                      <div class="form-group">
+                          <label for="name">Name:</label>
+                          <input type="text" id="js-name" class="form-control" placeholder="Name" value="{{currentUser.profile.name}}" required >
+                      </div>
+                      
+                      <div class="form-group">
+                          <label for="payment-method">Payment method:</label> <br>
+                          <div class="form-check form-check-inline mr-5">
+                              <input type="radio" name="js-payment" class="form-check-input" value="paypal"> 
+                              <label for="" class="form-check-label">Paypal</label> 
+                          </div>
+
+                          <div class="form-check form-check-inline mr-5">
+                              <input type="radio" name="js-payment" class="form-check-input" value="swift"> 
+                              <label for="" class="form-check-label">SWIFT bank transfer</label> 
+                          </div>
+
+                          <div class="form-check form-check-inline mr-5">
+                              <input type="radio" name="js-payment" class="form-check-input" value="bitcoin"> 
+                              <label for="" class="form-check-label">Bitcoin</label> 
+                          </div>
+
+                          <div class="form-check form-check-inline mr-5">
+                              <input type="radio" name="js-payment" class="form-check-input" value="cardano"> 
+                              <label for="" class="form-check-label">Cardano</label> 
+                          </div>
+                          
+                          
+                          
+                          
+                      </div>
+                     
+                      <div class="form-group">
+                          <label for="rate">Hourly rate:</label>
+                          <input type="number" id="js-hr" class="form-control" placeholder="0.00" value="{{currentUser.profile.hourlyRate}}" required >
+                      </div>
+
+                      {{#if currentUser.profile.hourlyRate}}{{#if currentUser.profile.hourlyRateApproved}}<span style="color: green">Approved</span>{{else}}<span style="color: orange">Approval pending</span>{{/if}}{{/if}}
+                      <br />
+                      <div style="padding-top:8px;">
+                        <button type="submit" class="btn btn-primary" style="padding-top:8px;float:right">Save</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+          </div>
         </div>
-        <br />
-        Payment method:
-        <div class="input-group" style="padding-top:8px;">
-            <input type="radio" name="js-payment" class="form-control" value="paypal"> Paypal
-            <input type="radio" name="js-payment" class="form-control" value="swift"> SWIFT bank transfer
-            <input type="radio" name="js-payment" class="form-control" value="bitcoin"> Bitcoin
-            <input type="radio" name="js-payment" class="form-control" value="cardano"> Cardano
-        </div>
-        <br />
-        Hourly rate:
-        <div class="input-group" style="padding-top:8px;">
-            <input type="number" id="js-hr" class="form-control" placeholder="0.00" value="{{currentUser.profile.hourlyRate}}" required >
-        </div>
-        {{#if currentUser.profile.hourlyRate}}{{#if currentUser.profile.hourlyRateApproved}}<span style="color: green">Approved</span>{{else}}<span style="color: orange">Approval pending</span>{{/if}}{{/if}}
-        <br />
-        <div style="padding-top:8px;">
-          <button type="submit" class="btn btn-primary" style="padding-top:8px;float:right">Save</button>
-        </div>
-      </form>
-    </div>
   </div>
+  
+  
 </template>
