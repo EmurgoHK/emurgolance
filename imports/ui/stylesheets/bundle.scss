@@ -18,6 +18,9 @@
 @import "{}/node_modules/noty/src/noty.scss";
 @import "{}/imports/ui/stylesheets/theme/noty.scss";
 
+// Your own variables
+@import "{}/imports/ui/stylesheets/theme/variables.scss";
+
 // Import Core UI variables and Mixins
 @import "{}/node_modules/@coreui/coreui/scss/_variables";
 @import "{}/node_modules/@coreui/coreui/scss/_mixins";

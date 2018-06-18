@@ -2,8 +2,6 @@
   <div class="documents-index container-fluid">
     <div class="row">
       <div class="col-sm-12">
-          {{> loginButtons}}
-          <a href="/settings">Settings</a> {{#if isModerator}}<a href="/moderator/users">Manage users</a>{{/if}}
           <div class="card">
             <div class="card-header">
               Timesheet
@@ -20,8 +18,7 @@
                 </div>
 
               </div>
-              
-              
+
               <br>
               {{#if Template.subscriptionsReady}}
                 {{#if timesheets.count}}
