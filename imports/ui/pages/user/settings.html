@@ -12,31 +12,55 @@
                       </div>
                       
                       <div class="form-group">
-                          <label for="payment-method">Payment method:</label> <br>
+                          <label for="payment-method">Payment method: </label> <br>
                           <div class="form-check form-check-inline mr-5">
-                              <input type="radio" name="js-payment" class="form-check-input" value="paypal"> 
+                              <input type="radio" name="js-payment" id="paypal-payment" class="form-check-input" value="paypal"> 
                               <label for="" class="form-check-label">Paypal</label> 
                           </div>
 
                           <div class="form-check form-check-inline mr-5">
-                              <input type="radio" name="js-payment" class="form-check-input" value="swift"> 
+                              <input type="radio" name="js-payment"  id="swift-payment" class="form-check-input" value="swift"> 
                               <label for="" class="form-check-label">SWIFT bank transfer</label> 
                           </div>
 
                           <div class="form-check form-check-inline mr-5">
-                              <input type="radio" name="js-payment" class="form-check-input" value="bitcoin"> 
+                              <input type="radio" name="js-payment"  id="bitcoin-payment" class="form-check-input" value="bitcoin"> 
                               <label for="" class="form-check-label">Bitcoin</label> 
                           </div>
 
                           <div class="form-check form-check-inline mr-5">
-                              <input type="radio" name="js-payment" class="form-check-input" value="cardano"> 
+                              <input type="radio" name="js-payment"  id="cardano-payment" class="form-check-input" value="cardano"> 
                               <label for="" class="form-check-label">Cardano</label> 
                           </div>
-                          
-                          
-                          
-                          
                       </div>
+
+                      {{#if selectedPaymentMethod 'paypal'}}
+                        <div class="form-group">
+                            <label for="name">Paypal email:</label>
+                            <input type="text" id="js-paypal-email" class="form-control" placeholder="paypal email"  value="{{currentUser.profile.paypalEmail}}">
+                        </div>
+                      {{/if}}
+                      
+                      {{#if selectedPaymentMethod 'cardano'}}
+                        <div class="form-group">
+                            <label for="name">Wallet address:</label>
+                            <input type="text" id="js-wallet-address" class="form-control" placeholder="Cardano wallet address"  value="{{currentUser.profile.walletAddress}}">
+                        </div>
+                      {{/if}}
+
+                      {{#if selectedPaymentMethod 'bitcoin'}}
+                        <div class="form-group">
+                            <label for="name">Wallet address:</label>
+                            <input type="text" id="js-wallet-address" class="form-control" placeholder="Bitcoin wallet address"  value="{{currentUser.profile.walletAddress}}">
+                        </div>
+                      {{/if}}
+                      
+                      {{#if selectedPaymentMethod 'swift' }}
+                        <div class="form-group">
+                            <label for="rate">Bank Details:</label>
+                            <textarea name="bank-details" id="js-bank-details" class="form-control" cols="30" rows="5" placeholder="Enter your bank details" value="{{currentUser.profile.bankDetails}}"></textarea>
+                        </div>
+                      {{/if}}
                      
                       <div class="form-group">
                           <label for="rate">Hourly rate:</label>

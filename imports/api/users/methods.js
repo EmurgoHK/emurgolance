@@ -25,11 +25,23 @@ export const saveSettings = new ValidatedMethod({
             hourlyRate: {
                 type: Number,
                 optional: false
+            },
+            walletAddress: {
+                type: String,
+                optional: true
+            },
+            bankDetails: {
+                type: String,
+                optional: true
+            },
+            paypalEmail: {
+                type: String,
+                optional: true
             }
         }).validator({
         	 clean: true
         }),
-    run({ name, paymentMethod, hourlyRate }) {
+    run({ name, paymentMethod, hourlyRate, walletAddress, bankDetails, paypalEmail }) {
         if (!Meteor.userId()) {
     	     throw new Meteor.Error('Error.', 'You have to be logged in.')
     	 }
@@ -41,7 +53,10 @@ export const saveSettings = new ValidatedMethod({
                 'profile.name': name,
                 'profile.paymentMethod': paymentMethod,
                 'profile.hourlyRate': hourlyRate,
-                'profile.hourlyRateApproved': false
+                'profile.hourlyRateApproved': false,
+                'profile.walletAddress': walletAddress || '',
+                'profile.bankDetails': bankDetails || '',
+                'profile.paypalEmail': paypalEmail || ''
             }
         })
     }

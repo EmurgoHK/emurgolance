@@ -4,6 +4,11 @@ import { FlowRouter } from 'meteor/kadira:flow-router'
 import { saveSettings } from '/imports/api/users/methods'
 import { notify } from '/imports/modules/notifier'
 
+
+Template.settings.onCreated(function() {
+	this.selectedPaymentMethod = new ReactiveVar('')
+})
+
 Template.settings.onRendered(function() {
 	Tracker.autorun(() => {
 		let user = Meteor.users.findOne({
@@ -11,9 +16,21 @@ Template.settings.onRendered(function() {
 		})
 
 		if (user && user.profile && user.profile.paymentMethod) {
-			$(`input[name="js-payment"][value="${user.profile.paymentMethod}"]`).prop('checked', true)
+			this.selectedPaymentMethod.set(user.profile.paymentMethod)
 		}
 	})
+})
+
+
+Template.settings.helpers({
+	selectedPaymentMethod: (paymentMethod) => {
+		let selected = Template.instance().selectedPaymentMethod.get()
+		$('#' + selected + '-payment').prop('checked', true)
+		return (selected === paymentMethod)
+	},
+	or: (a, b) => {
+		return a || b
+	}
 })
 
 Template.settings.events({
@@ -23,7 +40,10 @@ Template.settings.events({
 		saveSettings.call({
 			name: $('#js-name').val(),
 			paymentMethod: $('input[name="js-payment"]:checked').val(),
-			hourlyRate: $('#js-hr').val()
+			hourlyRate: $('#js-hr').val(),
+			paypalEmail: $('#js-paypal-email').val(),
+			walletAddress: $('#js-wallet-address').val(),
+			bankDetails: $('#js-bank-details').val()
 		}, (err, data) => {
 			if (!err) {
 				FlowRouter.go('/')
@@ -31,5 +51,9 @@ Template.settings.events({
 				notify(err.reason || err.message, 'error')
 			}
 		})
+	},
+	'click .form-check-input': (event, templateInstance) => {
+		event.preventDefault()
+		templateInstance.selectedPaymentMethod.set(event.target.value)
 	}
 })
