@@ -42,7 +42,7 @@
                         <th>Start time</th>
                         <th>End time</th>
                         <th>Total working time</th>
-                        <th class="text-right">Actions</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -53,7 +53,7 @@
                           <td>{{formatDate start}}</td>
                           <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
                           <td>{{totalTime}}</td>
-                          <td class="text-right">
+                          <td>
                       {{#if active}}
                       <a class="btn btn-sm btn-success" id="js-pause" href="#" role="button">
                         Pause
