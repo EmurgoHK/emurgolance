@@ -91,3 +91,33 @@ export const approveHourlyRate = new ValidatedMethod({
 })
 
 export { isModerator }
+
+if (Meteor.isDevelopment) {
+    Meteor.methods({
+        generateTestUser: () => {
+            let user = Meteor.users.findOne({
+                username: 'testing'
+            })
+
+            if (!user) {
+                let uId = Accounts.createUser({
+                    username: 'testing',
+                    password: 'testing',
+                    email: 'testing@testing.test',
+                    profile: {
+                        name: 'Tester',
+                        paymentMethod: 'swift'
+                    }
+                })
+
+                Meteor.users.update({
+                    _id: uId
+                }, {
+                    $set: {
+                        moderator: true
+                    }
+                })
+            }
+        }
+    })
+}
