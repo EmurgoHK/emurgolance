@@ -191,3 +191,13 @@ export const finishWork = new ValidatedMethod({
 		})
     }
 })
+
+if (Meteor.isDevelopment) {
+    Meteor.methods({
+        removeTestTimesheet: () => { // it's your own fault if you call this in dev :)
+            Timesheet.remove({
+            	owner: Meteor.userId()
+            })
+        }
+    })
+}
