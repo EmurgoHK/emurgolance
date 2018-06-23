@@ -1,4 +1,5 @@
 import './header.html'
+import { notify } from "/imports/modules/notifier"
 
 Template.header.events({
     'click .sidebar-toggler': function() {
@@ -6,7 +7,6 @@ Template.header.events({
     },
     'click .sign-in': function(event) {
         event.preventDefault();
-        console.log("called")
 
         Meteor.loginWithGithub({}, (err) => {
             if (err) {
