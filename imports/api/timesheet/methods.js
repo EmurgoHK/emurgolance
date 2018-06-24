@@ -65,15 +65,18 @@ export const startWork = new ValidatedMethod({
 
   				if (prevWork) {
   					throw new Meteor.Error('Error.', 'You can only start one task at a time.')
-  				}
+				  }
+				  
 
   				return Timesheet.insert({
   					owner: Meteor.userId(),
   					start: startTime, // original start time
   					startTime: startTime, // changes each time the time is paused
-            project: project, // project related to the issue
+            		project: project, // project related to the issue
   					active: true,
-  					issue: issue
+					issue: issue,
+					rate: Meteor.user().profile.hourlyRate // user's current hourly rate
+					  
   				})
   			} else {
   				throw new Meteor.Error('Error.', 'Invalid Github issue.')
@@ -104,7 +107,9 @@ export const pauseWork = new ValidatedMethod({
 
   		if (!work.active) {
   			throw new Meteor.Error('Error.', 'You can\'t pause work that\'s has been completed.')
-  		}
+		  }
+		  
+		let totalTime = new Date().getTime() - work.startTime + (work.totalTime || 0)
 
 		return Timesheet.update({
 			_id: workId
@@ -112,7 +117,8 @@ export const pauseWork = new ValidatedMethod({
 			$set: {
 			    paused: true,
 			    active: false,
-			    totalTime: new Date().getTime() - work.startTime + (work.totalTime || 0)
+				totalTime: totalTime,
+				totalEarnings: (totalTime/(1000*60*60)) * Meteor.user().profile.hourlyRate
 			}
 		})
     }
@@ -176,7 +182,8 @@ export const finishWork = new ValidatedMethod({
   			throw new Meteor.Error('Error.', 'You can\'t finish work that\'s not active.')
   		}
 
-  		let endTime = new Date().getTime()
+		  let endTime = new Date().getTime()
+		  let totalTime = endTime - work.startTime + (work.totalTime || 0)  // have to take care of pauses in between
 
 		return Timesheet.update({
 			_id: workId
@@ -186,7 +193,8 @@ export const finishWork = new ValidatedMethod({
 			    paused: false,
 			    active: false,
 			    endTime: endTime,
-			    totalTime: endTime - work.startTime + (work.totalTime || 0) // have to take care of pauses in between
+				totalTime: totalTime,
+				totalEarnings: (totalTime/(1000*60*60)) * Meteor.user().profile.hourlyRate
 			}
 		})
     }

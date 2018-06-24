@@ -23,6 +23,13 @@ Template.home.onCreated(function() {
 })
 
 Template.home.helpers({
+	totalEarnings: () => {
+		let sum = Timesheet.find({ owner: Meteor.userId() }).fetch()
+		
+		return sum.map(v => v.totalEarnings ? v.totalEarnings : 0 ).reduce(
+			(acc, curr) => acc + curr, 0
+		)
+	},
 	timesheets: () => Timesheet.find({
 		owner: Meteor.userId()
 	}, {
