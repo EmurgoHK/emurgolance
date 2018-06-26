@@ -1,0 +1,47 @@
+<template name="payments">
+  <div class="payments-index container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              Payments
+            </div>
+              <div class="card-body">
+                {{#if isModerator}}
+                
+        
+                {{#if Template.subscriptionsReady}}
+                    <table class="table table-responsive-sm table-hover table-outline mb-0">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>User</th>
+                          <th>Amount</th>
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each payments}}
+                        <tr class="user-item">
+                          <td>{{getName owner}}</td>
+                          <td>${{fixed amount}}</td>
+                          <td>{{statusName status}}</td>
+                          <td>{{#unless notPaid _id}}<a href="#" class="btn btn-sm btn-success paid">Mark as Paid</a>{{/unless}}</td>
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                {{else}}
+                  {{> loader}}
+                {{/if}}
+                {{else}}
+                <h1>This page is for moderators only.</h1>
+                {{/if}}
+              </div>
+            </div>
+      </div>
+    </div>
+    
+  </div>
+
+</template>

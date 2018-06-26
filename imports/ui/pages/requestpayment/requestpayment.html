@@ -1,0 +1,48 @@
+<template name="requestpayment">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">Payments
+                       <button type="button" class="btn btn-success float-right" id="js-requestPayment" href="#" role="button">Request Payment</button>
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-4 col-sm-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="text-muted small text-uppercase font-weight-bold">Available Payments</div>
+                                    <div class="text-value-lg py-3">${{fixed outstandingEarnings}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-6">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="text-muted small text-uppercase font-weight-bold">Pending Payments</div>
+                                    <div class="text-value-lg py-3">${{fixed inprogressEarnings}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div class="text-muted small text-uppercase font-weight-bold">Total Paid</div>
+                                    <div class="text-value-lg py-3">${{fixed paidEarnings}}</div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                        <p class="mt-3 text-center">
+                            Balances greater than <strong>${{currentUser.profile.maxpayout}}</strong> will be automatically sent <strong>{{endOfWeek}}</strong>.
+                        </p>
+                        <p class="text-center">
+                            If your balance is greater than <strong>${{currentUser.profile.minpayout}}</strong> you can request a manual payment which will be sent on <strong>{{endOfWeek}}</strong>.
+                        </p>
+ 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

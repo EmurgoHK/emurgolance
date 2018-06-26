@@ -5,7 +5,9 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout'
 import '../../ui/layouts/body/body.js'
 import '../../ui/pages/home/home.js'
 import '../../ui/pages/user/settings'
+import '../../ui/pages/requestpayment/requestpayment'
 import '../../ui/pages/moderator/users/userList'
+import '../../ui/pages/moderator/payments/payments'
 
 const modRoutes = FlowRouter.group({
 	prefix: '/moderator',
@@ -34,6 +36,17 @@ FlowRouter.route('/settings', {
     	})
   	}
 })
+FlowRouter.route('/requestpayment', {
+  name: 'settings',
+    action: () => {
+      BlazeLayout.render('mainLayout', {
+      header: 'header',
+      main: 'requestpayment',
+      sidebar: 'sidebar'
+      })
+    }
+})
+
 
 modRoutes.route('/users', {
     action: () => {
@@ -45,6 +58,19 @@ modRoutes.route('/users', {
     },
     name: 'userList'
 })
+
+modRoutes.route('/payments', {
+    action: () => {
+        BlazeLayout.render('mainLayout', {
+      header: 'header',
+        main: 'payments',
+        sidebar: 'sidebar'
+        })
+    },
+    name: 'payments'
+})
+
+
 
 
 FlowRouter.notFound = {
