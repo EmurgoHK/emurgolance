@@ -52,7 +52,9 @@ describe('User methods', () => {
             hourlyRate: 100,
             walletAddress: 'randomAddress',
             bankDetails: 'randomDetails',
-            paypalEmail: 'random@mail.com'
+            paypalEmail: 'random@mail.com',
+            minpayout: '200',
+            maxpayout: '2000'
         }
         return callWithPromise('saveSettings', update).then(() => {
             let user = Meteor.users.findOne({
