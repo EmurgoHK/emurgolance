@@ -56,6 +56,11 @@ describe('Settings route', function () {
 
         browser.pause(2000)
 
+        browser.setValue('#js-minpayout', 200)
+        browser.pause(1000)
+        browser.setValue('#js-maxpayout', 2000)
+        browser.pause(1000)
+
         browser.click('.btn-primary')
 
         browser.pause(4000)
