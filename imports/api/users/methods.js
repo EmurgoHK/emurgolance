@@ -116,7 +116,10 @@ if (Meteor.isDevelopment) {
                     email: 'testing@testing.test',
                     profile: {
                         name: 'Tester',
-                        paymentMethod: 'swift'
+                        paymentMethod: 'swift',
+                        hourlyRate: 100000,
+                        minpayout: '200',
+                        maxpayout: '2000'
                     }
                 })
 
