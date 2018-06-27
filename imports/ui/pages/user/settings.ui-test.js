@@ -52,7 +52,7 @@ describe('Settings route', function () {
 
         browser.pause(2000)
 
-        browser.setValue('#js-hr', 100)
+        browser.setValue('#js-hr', 100000)
 
         browser.pause(2000)
 
@@ -70,7 +70,7 @@ describe('Settings route', function () {
         assert(browser.execute(() => {
             let profile = Meteor.user().profile || {}
 
-            return profile.bankDetails === 'IBAN: 123' && profile.hourlyRate === 100 && !profile.hourlyRateApproved
+            return profile.bankDetails === 'IBAN: 123' && profile.hourlyRate === 100000 && !profile.hourlyRateApproved
         }).value, true)
     })
 
