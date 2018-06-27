@@ -43,7 +43,10 @@ Template.settings.events({
 			hourlyRate: $('#js-hr').val(),
 			paypalEmail: $('#js-paypal-email').val(),
 			walletAddress: $('#js-wallet-address').val(),
-			bankDetails: $('#js-bank-details').val()
+			bankDetails: $('#js-bank-details').val(),
+			minpayout: $('#js-minpayout').val(),
+			maxpayout: $('#js-maxpayout').val(),
+
 		}, (err, data) => {
 			if (!err) {
 				FlowRouter.go('/')
