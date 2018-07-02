@@ -24,3 +24,9 @@ Meteor.publish('timesheet.completed', function () {
 		completed: true
 	})
 })
+
+Meteor.publish('timesheet.paymentId', function (paymentId) {
+	return Timesheet.find({
+		paymentId:paymentId
+	})
+})
