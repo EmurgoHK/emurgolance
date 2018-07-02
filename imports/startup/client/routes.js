@@ -8,6 +8,7 @@ import '../../ui/pages/user/settings'
 import '../../ui/pages/requestpayment/requestpayment'
 import '../../ui/pages/moderator/users/userList'
 import '../../ui/pages/moderator/payments/payments'
+import '../../ui/pages/moderator/payments/paymentsview'
 
 const modRoutes = FlowRouter.group({
 	prefix: '/moderator',
@@ -69,6 +70,18 @@ modRoutes.route('/payments', {
     },
     name: 'payments'
 })
+
+modRoutes.route('/payments/:paymentId', {
+    action: () => {
+        BlazeLayout.render('mainLayout', {
+          main: 'paymentsview',
+          header: 'header',
+          sidebar: 'sidebar'
+        })
+    },
+    name: 'profile'
+})
+
 
 
 

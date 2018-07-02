@@ -39,7 +39,7 @@
                           <td>{{getName owner}}</td>
                           <td>${{fixed amount}}</td>
                           <td>{{statusName status}}</td>
-                          <td>{{#unless notPaid _id}}<a href="#" class="btn btn-sm btn-success paid">Mark as Paid</a>{{/unless}}</td>
+                          <td>{{#unless notPaid _id}}<a href="#" class="btn btn-sm btn-success paid">Mark as Paid</a>{{/unless}} <a href="#" class="btn btn-sm btn-primary review">Review</a></td>
                         </tr>
                         {{/each}}
                       </tbody>

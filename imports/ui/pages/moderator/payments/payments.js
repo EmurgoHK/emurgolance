@@ -59,7 +59,11 @@ Template.payments.helpers({
     }),
 })
 
-Template.payments.events({
+Template.payments.events({    
+    'click .review': function(event, templateInstance) {
+        event.preventDefault()
+        FlowRouter.go('/moderator/payments/'+this._id)
+    },
     'click .paid': function(event, templateInstance) {
         event.preventDefault()
 
