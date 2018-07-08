@@ -15,19 +15,40 @@
                       <strong class="h4">{{total.formattedTime}}</strong>
                     </div>
                   </div>
+                  {{#unless paid}}
                   <div class="col-sm-2">
-                    <div class="callout callout-success float-right" style="margin:0">
-                      <small class="text-muted">Total earnings</small><br>
-                      <strong class="h4">{{#if currentUser.profile.hourlyRateApproved}}<span style="color: green">$ {{fixed totalEarnings }}</span>{{else}}<span style="color: orange">$ {{fixed totalEarnings}}</span>{{/if}}</strong>
+                    <div class="callout callout-danger float-right" style="margin:0">
+                      <small class="text-muted">Total pending earnings</small><br>
+                      <strong class="h4">{{#if currentUser.profile.hourlyRateApproved}}<span style="color: red">$ {{fixed totalTimeSheetEarnings }}</span>{{else}}<span style="color: orange">$ {{fixed totalTimeSheetEarnings}}</span>{{/if}}</strong>
                     </div>
                   </div>
+                  {{/unless}}
+                  {{#unless paid}}
+                   <div class="col-sm-2">
+                    <div class="callout callout-success float-right" style="margin:0">
+                      <small class="text-muted">Total approved earnings</small><br>
+                      <strong class="h4">{{#if currentUser.profile.hourlyRateApproved}}<span style="color: green">$ {{fixed totalApprovedEarnings }}</span>{{else}}<span style="color: orange">$ 
+                      {{fixed totalApprovedEarnings}}</span>{{/if}}</strong>
+                    </div>
+                  </div>
+                  {{/unless}}
+                  {{#if paid}}
+                   <div class="col-sm-2">
+                    <div class="callout callout-success float-right" style="margin:0">
+                      <small class="text-muted">Total paid earnings</small><br>
+                      <strong class="h4"><span style="color: green">$ {{fixed totalPaidEarnings }}</span>
+                      </strong>
+                    </div>
+                  </div>
+                  {{/if}}
                 {{/if}}
-                {{#unless notPaid}}
-                <button type="button" class="btn btn-success btn-lg pull-right paid">MARK AS PAID</button>
-                {{else}}
+                {{#if paid}}
                 <button type="button" class="btn btn-danger btn-lg pull-right disabled">PAID</button>
 
-                {{/unless}}
+                {{else}}
+                 <button type="button" class="btn btn-success btn-lg pull-right paid">MARK AS PAID</button>
+
+                {{/if}}
               </div>
               <br>
               {{#if Template.subscriptionsReady}}
@@ -35,39 +56,36 @@
                   <table class="table table-responsive-sm table-hover table-outline mb-0">
                     <thead class="thead-light">
                       <tr>
+                        <th></th>
                         <th>Issue</th>
                         <th>Project</th>
-                        <th>Rate</th>
                         <th>Start time</th>
                         <th>End time</th>
                         <th>Total Time</th>
+                        <th>Earnings</th>
+                        <th>Status</th>
                         <th></th>
                       </tr>
                     </thead>
                     <tbody>
                       {{#each timesheets}}
                         <tr class="documents-index-item">
+                          <td scope="row">
+                             {{#unless paid}}
+                    <div class="form-check">
+                        <input class="form-check-input earningsCheckbox" type="checkbox" id="{{_id}}" rel="{{totalEarnings}}">
+                    </div>
+                    {{/unless}}
+                    </td>
                           <td scope="row">{{issue}}</td>
                           <td scope="row">{{project}}</td>
-                          <td>$ {{ rate }}</td>
                           <td>{{formatDate start}}</td>
                           <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
                           <td>{{totalTime}}</td>
+                          <td>${{fixed totalEarnings}}</td>
+                          <td>{{status}}</td>
                           <td>
-                      {{#if active}}
-                      <a class="btn btn-sm btn-success" id="js-pause" href="#" role="button">
-                        Pause
-                      </a>
-                      {{else}}
-                      {{#if paused}}
-                      <a class="btn btn-sm btn-success" id="js-continue" href="#" role="button">
-                          Continue
-                        </a>
-                      {{/if}}
-                    {{/if}}
-                  {{#if active}}
-                  <a class="btn btn-sm btn-secondary" href="#" id="js-finish" role="button">Finish</a>
-                  {{/if}}
+
                   </td>
                 </tr>
                       {{/each}}
