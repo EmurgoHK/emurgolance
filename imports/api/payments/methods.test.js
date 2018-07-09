@@ -66,7 +66,11 @@ describe('Timesheet methods', () => {
         assert.ok(payment)
 
         return callWithPromise('markAsPaid', {
-            paymentId: payment._id
+            paymentId: payment._id,
+            approvedTimesheets: Timesheet.find({
+                paymentId: payment._id
+            }).fetch().map(i => i._id),
+            notApprovedTimesheets: []
         }).then(data => {
             let p = Payments.findOne({
                 _id: payment._id

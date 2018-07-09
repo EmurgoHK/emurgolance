@@ -64,19 +64,6 @@ Template.payments.events({
         event.preventDefault()
         FlowRouter.go('/moderator/payments/'+this._id)
     },
-    'click .paid': function(event, templateInstance) {
-        event.preventDefault()
-
-        markAsPaid.call({
-            paymentId: this._id
-        }, (err, data) => {
-            if (err) {
-                notify(err.reason || err.message, 'error')
-            } else {
-                notify('Marked as Paid', 'success')
-            }
-        })
-    },
     'click .filtersPanel': (event, templateInstance) => {
         templateInstance.statuses.set(Array.from($('.filtersPanel input:checked').map(function() {
             return $(this).val()
