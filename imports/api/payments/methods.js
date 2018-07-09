@@ -107,3 +107,11 @@ export const markAsPaid = new ValidatedMethod({
 
     }
 })
+
+if (Meteor.isDevelopment) {
+    Meteor.methods({
+        removePayments: () => {
+            Payments.remove({})
+        }
+    })
+}

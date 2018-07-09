@@ -54,11 +54,24 @@ describe('Request payment route', function () {
         let hasNonPaid = browser.execute(() => $('td').text().toLowerCase().includes('not paid')).value
 
         if (hasNonPaid) {
+            browser.click('.review')
+
+            browser.pause(5000)
+
+            browser.execute(() => $('.form-check-input').each((i, el) => $(el).click()))
+
+            browser.pause(3000)
+
             browser.click('.paid')
 
-            browser.pause(2000)
+            browser.pause(6000)
 
-            assert(!browser.execute(() => $('td').text().toLowerCase().includes('not paid')).value, true)
+            assert(browser.execute(() => FlowRouter.current().route.name === 'home').value, true)
         }
+    })
+
+    after(() => {
+        browser.pause(3000)
+        browser.execute(() => Meteor.call('removePayments', (err, data) => {}))
     })
 })
