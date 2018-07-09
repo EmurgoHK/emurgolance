@@ -43,9 +43,9 @@ export const requestPayment = new ValidatedMethod({
         })
 
         //if we have a paymentId return true, otherwise return an error to the client
-        if(paymentId){
+        if (paymentId) {
             return true;
-        }else{
+        } else {
             throw new Meteor.Error('Error.', 'Unable to process payments')
 
         }
@@ -58,25 +58,44 @@ export const markAsPaid = new ValidatedMethod({
         paymentId: {
             type: String,
             optional: false
-        }
+        },
+        approvedTimesheets: [String],
+        notApprovedTimesheets: [String]
+
+
     }).validator({
         clean: true
     }),
-    run({ paymentId }) {
+    run({ paymentId, approvedTimesheets, notApprovedTimesheets }) {
         if (!Meteor.userId()) {
             throw new Meteor.Error('Error.', 'You have to be logged in.')
         }
 
-        //update timesheet entries as paid 
-        Timesheet.update({
-            paymentId: paymentId
-        }, {
-            $set: {
-                status: 'payment-paid',
-            }
+        approvedTimesheets.forEach(function(doc) {
+
+            //update timesheet entries as paid 
+            Timesheet.update({
+                _id: doc
+            }, {
+                $set: {
+                    status: 'payment-paid',
+                }
+            })
         })
 
-        //update payment as paid
+        notApprovedTimesheets.forEach(function(doc) {
+
+            //update timesheet entries as rejected
+            Timesheet.update({
+                _id: doc
+            }, {
+                $set: {
+                    status: 'payment-rejected',
+                }
+            })
+        })
+        
+       // update payment as paid
         Payments.update({
             _id: paymentId
         }, {
