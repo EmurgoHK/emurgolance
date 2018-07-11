@@ -35,6 +35,15 @@ Template.paymentsview.onCreated(function() {
 })
 
 Template.paymentsview.helpers({
+    markedForApproval: (id) => {
+        //check to see if the payment has been made.
+        if($('#' + id).is(":checked")){
+            console.log(true)
+            return true
+        }else{
+            console.log(false)
+        }
+    },
     paid: () => {
         //check to see if the payment has been made.
         let paid = Payments.findOne({ _id: FlowRouter.getParam("paymentId"), status: 'payment-paid' });
@@ -139,6 +148,7 @@ Template.paymentsview.events({
 
         let updateEarnings = calculateEarnings();
         templateInstance.approvedEarnings.set(updateEarnings);
+        $('#reject_'+event.target.id).toggle();
 
     },
     'click .paid': function(event, templateInstance) {
@@ -152,13 +162,15 @@ Template.paymentsview.events({
         });
 
         $("input:checkbox:not(:checked)").each(function() {
-            notApprovedTimesheets.push(this.id)
+           notApprovedTimesheets.push({_id: this.id, rejectReason: $('#reject_'+this.id).val()})
+
         });
+
 
             markAsPaid.call({
                 paymentId : FlowRouter.getParam("paymentId"),
                 approvedTimesheets: approvedTimesheets,
-                notApprovedTimesheets: notApprovedTimesheets
+                notApprovedTimesheets: notApprovedTimesheets,
             }, (err, data) => {
                 if (err) {
                     notify(err.reason || err.message, 'error')
