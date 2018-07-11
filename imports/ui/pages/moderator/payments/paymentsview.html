@@ -73,11 +73,17 @@
                           <td scope="row">
                              {{#unless paid}}
                     <div class="form-check">
-                        <input class="form-check-input earningsCheckbox" type="checkbox" id="{{_id}}" rel="{{totalEarnings}}">
+                        <input class="form-check-input earningsCheckbox" type="checkbox" id="{{_id}}" rel="{{totalEarnings}}" checked>
                     </div>
                     {{/unless}}
                     </td>
-                          <td scope="row">{{issue}}</td>
+                          <td scope="row">{{issue}}<br />
+                                                  <div class="form-group">
+                          <label for="name">Name</label>
+                          <input type="text" id="reject_{{_id}}" class="form-control" style="display:none" placeholder="Why are you rejecting this timesheet?">
+                      </div>
+                              
+                          </td>
                           <td scope="row">{{project}}</td>
                           <td>{{formatDate start}}</td>
                           <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
