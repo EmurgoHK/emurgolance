@@ -58,10 +58,6 @@ describe('Request payment route', function () {
 
             browser.pause(5000)
 
-            browser.execute(() => $('.form-check-input').each((i, el) => $(el).click()))
-
-            browser.pause(3000)
-
             browser.click('.paid')
 
             browser.pause(6000)

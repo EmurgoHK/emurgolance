@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema'
 
 import { Payments } from './payments'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
-SimpleSchema.debug = true
+// SimpleSchema.debug = true
 
 export const requestPayment = new ValidatedMethod({
     name: 'requestPayment',
@@ -61,19 +61,18 @@ export const markAsPaid = new ValidatedMethod({
             optional: false
         },
         approvedTimesheets: [String],
-                'notApprovedTimesheets': {
+        'notApprovedTimesheets': {
             type: Array
         },
         'notApprovedTimesheets.$': {
-            type: String
+            type: Object
         },
         'notApprovedTimesheets.$._id': {
             type: String
         },
        'notApprovedTimesheets.$.rejectReason': {
             type: String
-        },
-
+        }
     }).validator({
         clean: true
     }),
@@ -82,10 +81,7 @@ export const markAsPaid = new ValidatedMethod({
             throw new Meteor.Error('Error.', 'You have to be logged in.')
         }
 
-
         approvedTimesheets.forEach(function(doc) {
-
-            //update timesheet entries as paid 
             Timesheet.update({
                 _id: doc
             }, {
@@ -96,7 +92,6 @@ export const markAsPaid = new ValidatedMethod({
         })
 
         notApprovedTimesheets.forEach(function(doc) {
-
             Timesheet.update({
                 _id: doc._id
             }, {
@@ -105,10 +100,8 @@ export const markAsPaid = new ValidatedMethod({
                     rejectReason: doc.rejectReason,
                 }
             })
+        })
 
-        });
-
-        // update payment as paid
         Payments.update({
             _id: paymentId
         }, {
@@ -117,7 +110,6 @@ export const markAsPaid = new ValidatedMethod({
                 paidDate: new Date().getTime()
             }
         })
-
     }
 })
 

@@ -16,13 +16,16 @@ const workManipulationSchema = new SimpleSchema({
 const validateGithubIssue = (issue) => {
 	var isValidIssue = false
 	return new Promise((resolve, reject) => {
-		HTTP.get(`https://api.github.com/repos/${issue}`, { headers: {
-      "User-Agent": "gazhayes-blockrazor"
-    }}, (err, data) => {
+		// add auth to github api calls in order to prevent rate limiting (60 per hour without auth and 5000 per hour with auth)
+		// these credentials are from some test app specifically created for this purpose so using them here won't have any effect elsewhere
+		HTTP.get(`https://api.github.com/repos/${issue}?client_id=59b6ea8f244deea72301&client_secret=d70815c427d0a3b4a9bd4c634b2285a419caaeef`, { headers: {
+      		'User-Agent': 'EmurgoBot'
+    	}}, (err, data) => {
 			if (!err && data.data.html_url.includes(issue)) // checks the url for the issue. This is needed to distinguish between a PR & issue
-      {
-        isValidIssue = true
-      }
+      		{
+        		isValidIssue = true
+      		}
+			
 			resolve(isValidIssue)
 		})
 	})
