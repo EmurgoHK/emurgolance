@@ -10,27 +10,27 @@
                           <label for="name">Name</label>
                           <input type="text" id="js-name" class="form-control" placeholder="Name" value="{{currentUser.profile.name}}" required >
                       </div>
-                      
+
                       <div class="form-group">
                           <label for="payment-method">Payment Method </label> <br>
                           <div class="form-check form-check-inline mr-5">
-                              <input type="radio" name="js-payment" id="paypal-payment" class="form-check-input" value="paypal"> 
-                              <label for="" class="form-check-label">Paypal</label> 
+                              <input type="radio" name="js-payment" id="paypal-payment" class="form-check-input" value="paypal">
+                              <label for="" class="form-check-label">Paypal</label>
                           </div>
 
                           <div class="form-check form-check-inline mr-5">
-                              <input type="radio" name="js-payment"  id="swift-payment" class="form-check-input" value="swift"> 
-                              <label for="" class="form-check-label">SWIFT bank transfer</label> 
+                              <input type="radio" name="js-payment"  id="swift-payment" class="form-check-input" value="swift">
+                              <label for="" class="form-check-label">SWIFT bank transfer</label>
                           </div>
 
                           <div class="form-check form-check-inline mr-5">
-                              <input type="radio" name="js-payment"  id="bitcoin-payment" class="form-check-input" value="bitcoin"> 
-                              <label for="" class="form-check-label">Bitcoin</label> 
+                              <input type="radio" name="js-payment"  id="bitcoin-payment" class="form-check-input" value="bitcoin">
+                              <label for="" class="form-check-label">Bitcoin</label>
                           </div>
 
                           <div class="form-check form-check-inline mr-5">
-                              <input type="radio" name="js-payment"  id="cardano-payment" class="form-check-input" value="cardano"> 
-                              <label for="" class="form-check-label">Cardano</label> 
+                              <input type="radio" name="js-payment"  id="cardano-payment" class="form-check-input" value="cardano">
+                              <label for="" class="form-check-label">Cardano</label>
                           </div>
                       </div>
 
@@ -40,7 +40,7 @@
                             <input type="text" id="js-paypal-email" class="form-control" placeholder="paypal email"  value="{{currentUser.profile.paypalEmail}}">
                         </div>
                       {{/if}}
-                      
+
                       {{#if selectedPaymentMethod 'cardano'}}
                         <div class="form-group">
                             <label for="name">Wallet Address</label>
@@ -54,14 +54,14 @@
                             <input type="text" id="js-wallet-address" class="form-control" placeholder="Bitcoin wallet address"  value="{{currentUser.profile.walletAddress}}">
                         </div>
                       {{/if}}
-                      
+
                       {{#if selectedPaymentMethod 'swift' }}
                         <div class="form-group">
                             <label for="rate">Bank Details</label>
                             <textarea name="bank-details" id="js-bank-details" class="form-control" cols="30" rows="5" placeholder="Enter your bank details" value="{{currentUser.profile.bankDetails}}"></textarea>
                         </div>
                       {{/if}}
-                     
+
 <div class="form-group">
     <label for="rate">Hourly Rate</label>
     <input type="number" id="js-hr" class="form-control" placeholder="0.00" value="{{currentUser.profile.hourlyRate}}" required>
@@ -69,11 +69,11 @@
 <div class="form-group row">
     <div class="col-md-4">
         <label for="rate">Minimum Payout</label>
-        <input type="number" id="js-minpayout" min="10" max="500" class="form-control" placeholder="0.00" value="{{currentUser.profile.minpayout}}" required>
+        <input type="number" id="js-minpayout" min="0" max="5000" class="form-control" placeholder="0.00" value="{{currentUser.profile.minpayout}}" required>
     </div>
     <div class="col-md-4">
         <label for="rate">Max Payout</label>
-        <input type="number" id="js-maxpayout" min="10" max="2000" class="form-control" placeholder="0.00" value="{{currentUser.profile.maxpayout}}" required>
+        <input type="number" id="js-maxpayout" min="0" max="5000" class="form-control" placeholder="0.00" value="{{currentUser.profile.maxpayout}}" required>
     </div>
 
 </div>
@@ -91,6 +91,6 @@
           </div>
         </div>
   </div>
-  
-  
+
+
 </template>
