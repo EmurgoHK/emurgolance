@@ -10,6 +10,15 @@ const isModerator = userId => {
     return user && user.moderator
 }
 
+const approvedUser = userId => {
+    let user = Meteor.users.findOne({
+       _id: userId
+    })
+    console.log(user && user.profile.hourlyRateApproved);
+
+    return user && user.profile.hourlyRateApproved
+}
+
 export const saveSettings = new ValidatedMethod({
     name: 'saveSettings',
     validate:
@@ -100,7 +109,7 @@ export const approveHourlyRate = new ValidatedMethod({
     }
 })
 
-export { isModerator }
+export { isModerator, approvedUser }
 
 if (Meteor.isDevelopment) {
     Meteor.methods({

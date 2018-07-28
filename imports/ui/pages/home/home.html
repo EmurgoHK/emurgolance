@@ -2,6 +2,11 @@
   <div class="documents-index container-fluid">
     <div class="row">
       <div class="col-sm-12">
+          {{#if unapprovedUser}}
+          <div class="alert alert-warning" role="alert">
+            Your approval is pending
+          </div>
+          {{/if}}
           <div class="card">
             <div class="card-header">
               Timesheet
@@ -12,7 +17,7 @@
                     <div class="input-group">
                         <input type="text" id="js-issue" class="form-control" placeholder="GitHub issue link">
                         <span class="input-group-append">
-                          <button type="button" class="btn btn-primary" id="js-start" href="#" role="button">Start work</button>
+                          <button type="button" class="btn btn-primary {{#if unapprovedUser }} disabled {{/if}}" id="js-start" href="#" role="button" >Start work</button>
                         </span>
                     </div>
                 </div>
