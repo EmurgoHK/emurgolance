@@ -8,14 +8,18 @@ Template.header.events({
     'click .sign-in': function(event) {
         event.preventDefault();
 
-        Meteor.loginWithGithub({}, (err) => {
-            if (err) {
-                notify(err.message, "error")
-            return
-            }
-            var redirectTo = window.last || '/'
-            FlowRouter.go(redirectTo)
-        })
+        if (process.env && process.env.NODE_ENV == 'development') {
+            $('#signInModal').modal('show')
+        } else {
+            Meteor.loginWithGithub({}, (err) => {
+                if (err) {
+                    notify(err.message, "error")
+                return
+                }
+                var redirectTo = window.last || '/'
+                FlowRouter.go(redirectTo)
+            })
+        }
     },
     'click .sign-out': (event) => {
         event.preventDefault()
