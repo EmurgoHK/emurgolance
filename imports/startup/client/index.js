@@ -8,6 +8,7 @@ import '/imports/ui/shared/header/header.js'
 import '/imports/ui/shared/sidebar/sidebar.js'
 import '/imports/ui/shared/empty-result/empty-result.js'
 import '/imports/ui/shared/loader/loader.js'
+import '/imports/ui/pages/auth/auth.js'
 
 import '/imports/ui/helpers/global'
 
