@@ -127,6 +127,7 @@ if (Meteor.isDevelopment) {
                         name: 'Tester',
                         paymentMethod: 'swift',
                         hourlyRate: 100000,
+                        hourlyRateApproved: true,
                         minpayout: '200',
                         maxpayout: '2000'
                     }

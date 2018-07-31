@@ -12,7 +12,7 @@ Meteor.user = () => ({ profile: { name: 'Test User'} })
 
 describe('Timesheet methods', () => {
     it('user can start working on a valid issue', () => {
-        const issue = 'https://github.com/EmurgoHK/Emurgolance/issues/38'
+        const issue = 'https://github.com/EmurgoHK/emurgolance/issues/67'
 
         return callWithPromise('startWork', {
             issue: issue
@@ -24,7 +24,7 @@ describe('Timesheet methods', () => {
             assert.ok(timesheet)
             assert.equal(timesheet.issue, issue)
             assert.ok(timesheet.active)
-            assert.equal(timesheet.project, 'Emurgolance')
+            assert.equal(timesheet.project, 'Emurgolance'.toLowerCase())
         })
     }).timeout(15000)
 
@@ -36,12 +36,12 @@ describe('Timesheet methods', () => {
         }).then(tId => {
             assert.isNull(tId)
         }).catch(err => {
-            assert.include(err.message.toLowerCase(), 'github')
+            assert.include(err.message.toLowerCase(), 'invalid issue')
         })
     }).timeout(15000)
 
     it('user cannot start working on two issues at the same time', () => {
-        const issue = 'https://github.com/EmurgoHK/Emurgolance/issues/37'
+        const issue = 'https://github.com/EmurgoHK/emurgolance/issues/67'
 
         return callWithPromise('startWork', {
             issue: issue
