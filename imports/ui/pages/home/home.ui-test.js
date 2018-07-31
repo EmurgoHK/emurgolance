@@ -25,7 +25,7 @@ describe('Home route', function () {
     })
 
     it('user should be able to start working on an issue', () => {
-        const issueUrl = 'https://github.com/EmurgoHK/Emurgolance/issues/37'
+        const issueUrl = 'https://github.com/EmurgoHK/emurgolance/issues/67'
 
         browser.setValue('#js-issue', issueUrl)
 
