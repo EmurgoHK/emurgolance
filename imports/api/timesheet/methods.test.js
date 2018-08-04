@@ -130,6 +130,27 @@ describe('Timesheet methods', () => {
         })
     })
 
+    it('user can edit time spent working on an issue', () => {
+        let work = Timesheet.findOne({
+            owner: Meteor.userId()
+        })
+
+        assert.ok(work)
+
+        return callWithPromise('editWork', {
+            workId: work._id,
+            newTotal: 600000 // 00:10:00
+        }).then(tId => {
+            let timesheet = Timesheet.findOne({
+                _id: work._id
+            })
+
+            assert.ok(timesheet)
+            assert.ok(timesheet.history.length > 0)
+            assert.ok(timesheet.totalTime >= 600000)
+        })
+    })
+
     it('user can finish working on an issue', () => {
         let work = Timesheet.findOne({
             owner: Meteor.userId(),
@@ -167,6 +188,24 @@ describe('Timesheet methods', () => {
             assert.isNull(tId)
         }).catch(err => {
             assert.include(err.message, 'You can\'t finish work that\'s not active')
+        })
+    })
+
+    it('user can remove a timecard if necessary', () => {
+        let work = Timesheet.findOne({
+            owner: Meteor.userId()
+        })
+
+        assert.ok(work)
+
+        return callWithPromise('deleteWork', {
+            workId: work._id
+        }).then(tId => {
+            let timesheet = Timesheet.findOne({
+                _id: work._id
+            })
+
+            assert.notOk(timesheet)
         })
     })
 

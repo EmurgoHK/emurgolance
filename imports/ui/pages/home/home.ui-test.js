@@ -70,6 +70,47 @@ describe('Home route', function () {
         assert(!browser.isVisible('#js-finish'), true)
     })
 
+    it('user should be able to modify time spent working on an issue', () => {
+        browser.click('#js-edit')
+
+        browser.pause(3000)
+
+        assert(browser.execute(() => FlowRouter.current().route.name === 'entry').value, true)
+
+        assert(browser.isExisting('#js-edit'), true)
+        assert(browser.isVisible('#js-edit'), true)
+
+        browser.setValue('#js-totalTime', '')
+        browser.pause(1000)
+        browser.setValue('#js-totalTime', '00:10:00')
+        browser.pause(3000)
+
+        browser.click('#js-edit')
+        browser.pause(3000)
+
+        assert(browser.isExisting('.documents-index-item'))
+        assert(browser.isVisible('.documents-index-item'))
+
+        assert(browser.execute(() => $($('.documents-index-item').find('td').get(2)).text().includes('+')).value, true)
+
+        browser.pause(3000)
+
+        browser.url(`${baseUrl}/`)
+        browser.pause(5000)
+    })
+
+    it('user should be able to delete a timecard', () => {
+        let oldLength = browser.execute(() => $('.documents-index-item').length).value
+
+        browser.click('#js-remove')
+
+        browser.pause(3000)
+
+        let newLength = browser.execute(() => $('.documents-index-item').length).value
+
+        assert(oldLength === newLength + 1, true)
+    })
+
     it('user shouldn\'t be able to start working if he/she provides an invalid issue', () => {
         const issueUrl = 'testingIssueUrl'
 

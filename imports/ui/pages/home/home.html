@@ -59,22 +59,24 @@
                           <td>$ {{ rate }}</td>
                           <td>{{formatDate start}}</td>
                           <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
-                          <td>{{totalTime}}</td>
-                          <td>
+                          <td>{{totalTime}} {{#if history.length}}<a href="/entry/{{_id}}"><i style="color: red;" title="Modified" class="icon-flag"></i></a>{{/if}}</td>
+                          <td style="width: 170px;">
                       {{#if active}}
-                      <a class="btn btn-sm btn-success" id="js-pause" href="#" role="button">
-                        Pause
+                      <a class="btn btn-sm btn-success" id="js-pause" href="#" role="button" title="Pause">
+                        <i class="icon-control-pause"></i>
                       </a>
                       {{else}}
                       {{#if paused}}
-                      <a class="btn btn-sm btn-success" id="js-continue" href="#" role="button">
-                          Continue
+                      <a class="btn btn-sm btn-success" id="js-continue" href="#" role="button" title="Continue">
+                          <i class="icon-control-play"></i>
                         </a>
                       {{/if}}
                     {{/if}}
                   {{#if active}}
-                  <a class="btn btn-sm btn-secondary" href="#" id="js-finish" role="button">Finish</a>
+                  <a class="btn btn-sm btn-secondary" href="#" id="js-finish" role="button" title="Finish"><i class="icon-control-end"></i></a>
                   {{/if}}
+                  <a class="btn btn-sm btn-danger" href="/entry/{{_id}}" id="js-edit" role="button" title="Edit"><i class="icon-pencil"></i></a>
+                  <a class="btn btn-sm btn-danger" href="#" id="js-remove" role="button" title="Remove"><i class="icon-ban"></i></a>
                   </td>
                 </tr>
                       {{/each}}

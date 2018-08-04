@@ -1,6 +1,6 @@
 import './home.html'
 
-import { startWork, pauseWork, continueWork, finishWork } from '/imports/api/timesheet/methods'
+import { startWork, pauseWork, continueWork, finishWork, deleteWork } from '/imports/api/timesheet/methods'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
 import { notify } from '/imports/modules/notifier.js'
 
@@ -9,8 +9,10 @@ import moment from 'moment'
 const formatDuration = (duration) => {
 	const pad = val => ('00' + val).slice(-2)
 
-	return `${pad(duration.hours())}:${pad(duration.minutes())}:${pad(duration.seconds())}`
+	return `${duration.days() > 0 ? `${pad(duration.days())}:` : ''}${pad(duration.hours())}:${pad(duration.minutes())}:${pad(duration.seconds())}`
 }
+
+export { formatDuration }
 
 Template.home.onCreated(function() {
 	this.autorun(() => {
@@ -122,6 +124,17 @@ Template.home.events({
 		event.preventDefault()
 
 		finishWork.call({
+			workId: this._id
+		}, (err, data) => {
+			if (err) {
+				notify(err.reason || err.message, 'error')
+			}
+		})
+	},
+	'click #js-remove': function (event, templateInstance) {
+		event.preventDefault()
+
+		deleteWork.call({
 			workId: this._id
 		}, (err, data) => {
 			if (err) {
