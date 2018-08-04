@@ -5,6 +5,7 @@ import { ValidatedMethod } from 'meteor/mdg:validated-method'
 import SimpleSchema from 'simpl-schema'
 
 import { Timesheet } from './timesheet'
+import { isModerator } from '/imports/api/users/methods'
 
 const workManipulationSchema = new SimpleSchema({
     workId: {
@@ -220,6 +221,89 @@ export const finishWork = new ValidatedMethod({
 				totalTime: totalTime,
 				totalEarnings: (totalTime/(1000*60*60)) * Meteor.user().profile.hourlyRate
 			}
+		})
+    }
+})
+
+export const editWork = new ValidatedMethod({
+    name: 'editWork',
+    validate: new SimpleSchema({
+	    workId: {
+	       	type: String,
+	       	optional: false
+	    },
+	    newTotal: {
+	    	type: Number,
+	    	optional: false
+	    },
+	}).validator({
+        clean: true
+    }),
+    run({ workId, newTotal }) {
+    	if (!Meteor.userId()) {
+    		throw new Meteor.Error('Error.', 'You have to be logged in.')
+    	}
+
+  		let work = Timesheet.findOne({
+  			_id: workId
+  		})
+
+		if (!work) {
+			throw new Meteor.Error('Error.', 'Invalid id.')
+		}
+
+  		if (work.owner !== Meteor.userId() && !isModerator(Meteor.userId())) {
+  			throw new Meteor.Error('Error.', 'You can\'t edit this entry.')
+		}
+
+		return Timesheet.update({
+			_id: workId
+		}, {
+			$set: {
+				totalTime: newTotal,
+				totalEarnings: (newTotal/(1000*60*60)) * ((Meteor.users.findOne({
+					_id: work.owner
+				}) || {}).profile || {}).hourlyRate || 0
+			},
+			$push: {
+				history: {
+					$each: [{
+						oldTime: work.totalTime || 0,
+						newTime: newTotal,
+						editedAt: new Date().getTime(),
+						editedBy: Meteor.userId()
+					}],
+					$position: 0
+				}
+			}
+		})
+    }
+})
+
+export const deleteWork = new ValidatedMethod({
+    name: 'deleteWork',
+    validate: workManipulationSchema.validator({
+        clean: true
+    }),
+    run({ workId }) {
+    	if (!Meteor.userId()) {
+    		throw new Meteor.Error('Error.', 'You have to be logged in.')
+    	}
+
+  		let work = Timesheet.findOne({
+  			_id: workId
+  		})
+
+		if (!work) {
+			throw new Meteor.Error('Error.', 'Invalid id.')
+		}
+
+  		if (work.owner !== Meteor.userId() && !isModerator(Meteor.userId())) {
+  			throw new Meteor.Error('Error.', 'You can\'t remove this entry.')
+		}
+
+		return Timesheet.remove({
+			_id: workId
 		})
     }
 })

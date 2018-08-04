@@ -11,6 +11,12 @@ Meteor.publish('timesheet.all', function () {
 	})
 })
 
+Meteor.publish('timesheet.id', (id) => {
+	return Timesheet.find({
+		_id: id
+	})
+})
+
 Meteor.publish('timesheet.active', function () {
 	return Timesheet.find({
 		owner: Meteor.userId(),

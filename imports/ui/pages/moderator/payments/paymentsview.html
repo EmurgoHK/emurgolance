@@ -86,7 +86,7 @@
                           <td scope="row">{{project}}</td>
                           <td>{{formatDate start}}</td>
                           <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
-                          <td>{{totalTime}}</td>
+                          <td>{{totalTime}} {{#if history.length}}<a href="/entry/{{_id}}"><i style="color: red;" title="Modified" class="icon-flag"></i></a>{{/if}}</td>
                           <td>${{fixed totalEarnings}}</td>
                           <td>{{status}}</td>
                           <td>
