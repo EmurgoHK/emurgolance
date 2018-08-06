@@ -234,8 +234,24 @@ export const editWork = new ValidatedMethod({
 	    },
 	    newTotal: {
 	    	type: Number,
-	    	optional: false
-	    },
+	    	optional: false,
+	    	custom: function() {
+	    		if (this.value === 0) {
+	    			return 'New total time can\'t be zero.'
+	    		}
+	    		
+	    		let work = Timesheet.findOne({
+		  			_id: this.field('workId').value
+		  		}) || {}
+
+	    		// let diff = moment.duration((work.totalTime || 0)).seconds() - moment.duration(this.value).seconds() // this one has weird side effects
+	    		let diff = (((work.totalTime || 0) - this.value) < 1000) && (((work.totalTime || 0) - this.value) > -1000)
+
+				if (diff) { // 1 second difference
+					return 'Difference between total times can\'t be zero.'
+				}
+	    	}
+	    }
 	}).validator({
         clean: true
     }),

@@ -80,6 +80,18 @@ describe('Home route', function () {
         assert(browser.isExisting('#js-edit'), true)
         assert(browser.isVisible('#js-edit'), true)
 
+        browser.click('#js-edit')
+        browser.pause(800)
+        assert(browser.execute(() => $('.noty_body').text().includes('Difference between total times can\'t be zero.')))
+
+        browser.setValue('#js-totalTime', '')
+        browser.pause(1000)
+        browser.setValue('#js-totalTime', '00:00:00')
+        browser.pause(3000)
+        browser.click('#js-edit')
+        browser.pause(800)
+        assert(browser.execute(() => $('.noty_body').text().includes('New total time can\'t be zero.')))
+
         browser.setValue('#js-totalTime', '')
         browser.pause(1000)
         browser.setValue('#js-totalTime', '00:10:00')

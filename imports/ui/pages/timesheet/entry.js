@@ -92,7 +92,7 @@ Template.entry.events({
 			newTotal: moment.duration($('#js-totalTime').val())._milliseconds
 		}, (err, data) => {
 			if (err) {
-				notify(err.reason || err.message, 'error')
+				notify(((err.details || [])[0] || {}).type || err.reason || err.message, 'error')
 			}
 		})
 	}
