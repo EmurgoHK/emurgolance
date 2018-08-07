@@ -60,7 +60,9 @@ describe('Home route', function () {
 
     it('user should be able to finish working on an issue', () => {
         browser.click('#js-finish')
+        browser.pause(3000)
 
+        browser.click('.swal-button--confirm')
         browser.pause(3000)
 
         assert(!browser.isExisting('#js-pause'), true)
@@ -81,6 +83,8 @@ describe('Home route', function () {
         assert(browser.isVisible('#js-edit'), true)
 
         browser.click('#js-edit')
+        browser.pause(3000)
+        browser.click('.swal-button--confirm')
         browser.pause(800)
         assert(browser.execute(() => $('.noty_body').text().includes('Difference between total times can\'t be zero.')))
 
@@ -89,6 +93,8 @@ describe('Home route', function () {
         browser.setValue('#js-totalTime', '00:00:00')
         browser.pause(3000)
         browser.click('#js-edit')
+        browser.pause(3000)
+        browser.click('.swal-button--confirm')
         browser.pause(800)
         assert(browser.execute(() => $('.noty_body').text().includes('New total time can\'t be zero.')))
 
@@ -98,6 +104,8 @@ describe('Home route', function () {
         browser.pause(3000)
 
         browser.click('#js-edit')
+        browser.pause(3000)
+        browser.click('.swal-button--confirm')
         browser.pause(3000)
 
         assert(browser.isExisting('.documents-index-item'))
@@ -115,7 +123,8 @@ describe('Home route', function () {
         let oldLength = browser.execute(() => $('.documents-index-item').length).value
 
         browser.click('#js-remove')
-
+        browser.pause(3000)
+        browser.click('.swal-button--confirm')
         browser.pause(3000)
 
         let newLength = browser.execute(() => $('.documents-index-item').length).value
