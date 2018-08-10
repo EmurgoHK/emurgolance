@@ -139,7 +139,8 @@ describe('Timesheet methods', () => {
 
         return callWithPromise('editWork', {
             workId: work._id,
-            newTotal: 600000 // 00:10:00
+            newTotal: 600000, // 00:10:00
+            reason: 'Test reason'
         }).then(tId => {
             let timesheet = Timesheet.findOne({
                 _id: work._id
@@ -147,6 +148,7 @@ describe('Timesheet methods', () => {
 
             assert.ok(timesheet)
             assert.ok(timesheet.history.length > 0)
+            assert.ok(timesheet.history.some(i => i.reason === 'Test reason'))
             assert.ok(timesheet.totalTime >= 600000)
         })
     })

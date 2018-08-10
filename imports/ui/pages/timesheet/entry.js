@@ -89,62 +89,53 @@ Template.entry.events({
 	'click #js-edit': (event, templateInstance) => {
 		event.preventDefault()
 
-		if (!~(Meteor.users.findOne({ _id: Meteor.userId() }).hidden || []).indexOf('edit')) {
-			swal({
-	            text: `Are you sure that you want to edit the total time? All changes are saved in timecard history.`,
-	            icon: 'warning',
-	            buttons: {
-	            	hide: {
-	            		text: 'Don\'t show again',
-	            		value: 'hide',
-	            		visible: true,
-	            		closeModal: true
-	            	},
-				  	cancel: {
-				    	text: 'No',
-				    	value: false,
-				    	visible: true,
-				    	closeModal: true
-				  	},
-				  	confirm: {
-				    	text: 'Yes',
-				    	value: true,
-				    	visible: true,
-				    	closeModal: true
-				  	}
-				},
-	            dangerMode: true
-	        }).then(val => {
-	        	if (val === 'hide') {
-	        		hideConfirmationModal.call({
-	                    modalId: 'edit'
-	                }, (err, data) => {
-	                    if (err) {
-	                        notify(err.reason || err.message, 'error')
-	                    }
-	                })
-	        	}
-
-	        	if (val) {
-	        		editWork.call({
-						workId: FlowRouter.getParam('id'),
-						newTotal: moment.duration($('#js-totalTime').val())._milliseconds
-					}, (err, data) => {
-						if (err) {
-							notify(((err.details || [])[0] || {}).type || err.reason || err.message, 'error')
-						}
-					})
-	        	}
-	        })
-		} else {
-			editWork.call({
-				workId: FlowRouter.getParam('id'),
+		try {
+		    Timesheet.editWorkSchema.validate({
+		    	workId: FlowRouter.getParam('id'),
 				newTotal: moment.duration($('#js-totalTime').val())._milliseconds
-			}, (err, data) => {
-				if (err) {
-					notify(((err.details || [])[0] || {}).type || err.reason || err.message, 'error')
+		    })
+	    } catch(err) {
+	    	notify(((err.details || [])[0] || {}).type || err.reason || err.message, 'error')
+
+	    	return
+	    } // try to validate the change before showing the modal shows so the user doesn't have to enter the edit reason if the edit is not valid in the first place
+
+		swal({
+	        text: `Optionally provide a reason why you\'re editing the total time. All changes are saved in timecard history.`,
+	        content: {
+                element: 'input',
+                attributes: {
+                    placeholder: 'The reason goes here...',
+                    type: 'text',
+                }
+            },
+	        icon: 'warning',
+	        buttons: {
+				cancel: {
+			    	text: 'Cancel',
+				   	value: false,
+				   	visible: true,
+				   	closeModal: true
+				},
+				confirm: {
+				  	text: 'OK',
+				  	value: true,
+				   	visible: true,
+				   	closeModal: true
 				}
-			})
-		}
+			}
+	    }).then(val => {
+	        if (val !== false) { // val can be ''
+	        	editWork.call({
+					workId: FlowRouter.getParam('id'),
+					newTotal: moment.duration($('#js-totalTime').val())._milliseconds,
+					reason: val
+				}, (err, data) => {
+					if (err) {
+						notify(((err.details || [])[0] || {}).type || err.reason || err.message, 'error')
+					}
+				})
+	        }
+	    })
 	}
 })
