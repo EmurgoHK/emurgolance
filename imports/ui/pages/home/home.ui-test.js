@@ -83,8 +83,6 @@ describe('Home route', function () {
         assert(browser.isVisible('#js-edit'), true)
 
         browser.click('#js-edit')
-        browser.pause(3000)
-        browser.click('.swal-button--confirm')
         browser.pause(800)
         assert(browser.execute(() => $('.noty_body').text().includes('Difference between total times can\'t be zero.')))
 
@@ -93,8 +91,6 @@ describe('Home route', function () {
         browser.setValue('#js-totalTime', '00:00:00')
         browser.pause(3000)
         browser.click('#js-edit')
-        browser.pause(3000)
-        browser.click('.swal-button--confirm')
         browser.pause(800)
         assert(browser.execute(() => $('.noty_body').text().includes('New total time can\'t be zero.')))
 
@@ -105,13 +101,19 @@ describe('Home route', function () {
 
         browser.click('#js-edit')
         browser.pause(3000)
+        browser.setValue('.swal-content__input', 'Test reason')
+        browser.pause(2000)
         browser.click('.swal-button--confirm')
         browser.pause(3000)
 
         assert(browser.isExisting('.documents-index-item'))
         assert(browser.isVisible('.documents-index-item'))
 
-        assert(browser.execute(() => $($('.documents-index-item').find('td').get(2)).text().includes('+')).value, true)
+        assert(browser.execute(() => {
+            let tds = $('.documents-index-item').find('td')
+
+            return $(tds.get(1)).text().includes('00:10:00') && $(tds.get(2)).text().includes('+') && $(tds.get(3)).text().includes('Test reason')
+        }).value, true)
 
         browser.pause(3000)
 

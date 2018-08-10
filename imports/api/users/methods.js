@@ -14,7 +14,6 @@ const approvedUser = userId => {
     let user = Meteor.users.findOne({
        _id: userId
     })
-    console.log(user && user.profile.hourlyRateApproved);
 
     return user && user.profile.hourlyRateApproved
 }

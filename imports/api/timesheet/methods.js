@@ -225,37 +225,43 @@ export const finishWork = new ValidatedMethod({
     }
 })
 
+Timesheet.editWorkSchema = new SimpleSchema({
+	workId: {
+	   	type: String,
+	   	optional: false
+	},
+	newTotal: {
+	  	type: Number,
+	   	optional: false,
+	   	custom: function() {
+	   		if (this.value === 0) {
+	   			return 'New total time can\'t be zero.'
+	   		}
+	    		
+	   		let work = Timesheet.findOne({
+	  			_id: this.field('workId').value
+	  		}) || {}
+
+	   		// let diff = moment.duration((work.totalTime || 0)).seconds() - moment.duration(this.value).seconds() // this one has weird side effects
+	   		let diff = (((work.totalTime || 0) - this.value) < 1000) && (((work.totalTime || 0) - this.value) > -1000)
+
+			if (diff) { // 1 second difference
+				return 'Difference between total times can\'t be zero.'
+			}
+	   	}
+	},
+	reason: {
+	  	type: String,
+	   	optional: true
+	}
+})
+
 export const editWork = new ValidatedMethod({
     name: 'editWork',
-    validate: new SimpleSchema({
-	    workId: {
-	       	type: String,
-	       	optional: false
-	    },
-	    newTotal: {
-	    	type: Number,
-	    	optional: false,
-	    	custom: function() {
-	    		if (this.value === 0) {
-	    			return 'New total time can\'t be zero.'
-	    		}
-	    		
-	    		let work = Timesheet.findOne({
-		  			_id: this.field('workId').value
-		  		}) || {}
-
-	    		// let diff = moment.duration((work.totalTime || 0)).seconds() - moment.duration(this.value).seconds() // this one has weird side effects
-	    		let diff = (((work.totalTime || 0) - this.value) < 1000) && (((work.totalTime || 0) - this.value) > -1000)
-
-				if (diff) { // 1 second difference
-					return 'Difference between total times can\'t be zero.'
-				}
-	    	}
-	    }
-	}).validator({
+    validate: Timesheet.editWorkSchema.validator({
         clean: true
     }),
-    run({ workId, newTotal }) {
+    run({ workId, newTotal, reason }) {
     	if (!Meteor.userId()) {
     		throw new Meteor.Error('Error.', 'You have to be logged in.')
     	}
@@ -286,6 +292,7 @@ export const editWork = new ValidatedMethod({
 					$each: [{
 						oldTime: work.totalTime || 0,
 						newTime: newTotal,
+						reason: reason,
 						editedAt: new Date().getTime(),
 						editedBy: Meteor.userId()
 					}],

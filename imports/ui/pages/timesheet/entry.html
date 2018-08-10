@@ -43,6 +43,7 @@
                         <th>Old total time</th>
                         <th>New total time</th>
                         <th>Change</th>
+                        <th>Reason</th>
                         <th>Edited at</th>
                         <th>Edited by</th>
                       </tr>
@@ -53,6 +54,7 @@
                           <td scope="row">{{formatDuration oldTime}}</td>
                           <td scope="row">{{formatDuration newTime}}</td>
                           <td>{{{change}}}</td>
+                          <td>{{#if reason}}{{reason}}{{else}}-{{/if}}</td>
                           <td>{{formatDate editedAt}}</td>
                           <td>{{editedBy}}</td>
                         </tr>
