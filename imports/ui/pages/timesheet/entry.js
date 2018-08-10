@@ -5,10 +5,12 @@ import './entry.html'
 
 import { editWork } from '/imports/api/timesheet/methods'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
+import { hideConfirmationModal } from '/imports/api/users/methods'
 import { notify } from '/imports/modules/notifier.js'
 import { isModerator } from '/imports/api/users/methods'
 
 import moment from 'moment'
+import swal from 'sweetalert'
 
 import { formatDuration } from '../home/home'
 
@@ -87,13 +89,62 @@ Template.entry.events({
 	'click #js-edit': (event, templateInstance) => {
 		event.preventDefault()
 
-		editWork.call({
-			workId: FlowRouter.getParam('id'),
-			newTotal: moment.duration($('#js-totalTime').val())._milliseconds
-		}, (err, data) => {
-			if (err) {
-				notify(((err.details || [])[0] || {}).type || err.reason || err.message, 'error')
-			}
-		})
+		if (!~(Meteor.users.findOne({ _id: Meteor.userId() }).hidden || []).indexOf('edit')) {
+			swal({
+	            text: `Are you sure that you want to edit the total time? All changes are saved in timecard history.`,
+	            icon: 'warning',
+	            buttons: {
+	            	hide: {
+	            		text: 'Don\'t show again',
+	            		value: 'hide',
+	            		visible: true,
+	            		closeModal: true
+	            	},
+				  	cancel: {
+				    	text: 'No',
+				    	value: false,
+				    	visible: true,
+				    	closeModal: true
+				  	},
+				  	confirm: {
+				    	text: 'Yes',
+				    	value: true,
+				    	visible: true,
+				    	closeModal: true
+				  	}
+				},
+	            dangerMode: true
+	        }).then(val => {
+	        	if (val === 'hide') {
+	        		hideConfirmationModal.call({
+	                    modalId: 'edit'
+	                }, (err, data) => {
+	                    if (err) {
+	                        notify(err.reason || err.message, 'error')
+	                    }
+	                })
+	        	}
+
+	        	if (val) {
+	        		editWork.call({
+						workId: FlowRouter.getParam('id'),
+						newTotal: moment.duration($('#js-totalTime').val())._milliseconds
+					}, (err, data) => {
+						if (err) {
+							notify(((err.details || [])[0] || {}).type || err.reason || err.message, 'error')
+						}
+					})
+	        	}
+	        })
+		} else {
+			editWork.call({
+				workId: FlowRouter.getParam('id'),
+				newTotal: moment.duration($('#js-totalTime').val())._milliseconds
+			}, (err, data) => {
+				if (err) {
+					notify(((err.details || [])[0] || {}).type || err.reason || err.message, 'error')
+				}
+			})
+		}
 	}
 })

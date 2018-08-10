@@ -3,6 +3,7 @@ import './settings.html'
 import { FlowRouter } from 'meteor/kadira:flow-router'
 import { saveSettings } from '/imports/api/users/methods'
 import { notify } from '/imports/modules/notifier'
+import { resetHiddenModals } from '/imports/api/users/methods'
 
 
 Template.settings.onCreated(function() {
@@ -58,5 +59,16 @@ Template.settings.events({
 	'click .form-check-input': (event, templateInstance) => {
 		event.preventDefault()
 		templateInstance.selectedPaymentMethod.set(event.target.value)
+	},
+	'click #js-reset-hidden': (event, templateInstance) => {
+		event.preventDefault()
+
+		resetHiddenModals.call({}, (err, data) => {
+			if (!err) {
+				notify('Successfully reseted.', 'success')
+			} else {
+				notify(err.reason || err.message, 'error')
+			}
+		})
 	}
 })

@@ -109,6 +109,51 @@ export const approveHourlyRate = new ValidatedMethod({
     }
 })
 
+export const hideConfirmationModal = new ValidatedMethod({
+    name: 'hideConfirmationModal',
+    validate: new SimpleSchema({
+        modalId: {
+            type: String,
+            optional: false
+        }
+    }).validator({
+        clean: true
+    }),
+    run({ modalId }) {
+        if (!Meteor.userId()) {
+            throw new Meteor.Error('Error.', 'You have to be logged in.')
+        }
+
+        return Meteor.users.update({
+            _id: Meteor.userId()
+        }, {
+            $addToSet: {
+                hidden: modalId
+            }
+        })
+    }
+})
+
+export const resetHiddenModals = new ValidatedMethod({
+    name: 'resetHiddenModals',
+    validate: new SimpleSchema({}).validator({
+        clean: true
+    }),
+    run({ }) {
+        if (!Meteor.userId()) {
+            throw new Meteor.Error('Error.', 'You have to be logged in.')
+        }
+
+        return Meteor.users.update({
+            _id: Meteor.userId()
+        }, {
+            $set: {
+                hidden: []
+            }
+        })
+    }
+})
+
 export { isModerator, approvedUser }
 
 if (Meteor.isDevelopment) {

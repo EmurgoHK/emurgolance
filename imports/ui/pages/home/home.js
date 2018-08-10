@@ -3,8 +3,10 @@ import './home.html'
 import { startWork, pauseWork, continueWork, finishWork, deleteWork } from '/imports/api/timesheet/methods'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
 import { notify } from '/imports/modules/notifier.js'
+import { hideConfirmationModal } from '/imports/api/users/methods'
 
 import moment from 'moment'
+import swal from 'sweetalert'
 
 const formatDuration = (duration) => {
 	const pad = val => ('00' + val).slice(-2)
@@ -123,23 +125,93 @@ Template.home.events({
 	'click #js-finish': function (event, templateInstance) {
 		event.preventDefault()
 
-		finishWork.call({
-			workId: this._id
-		}, (err, data) => {
-			if (err) {
-				notify(err.reason || err.message, 'error')
-			}
-		})
+		if (!~(Meteor.users.findOne({ _id: Meteor.userId() }).hidden || []).indexOf('finish')) {
+			swal({
+	            text: `Are you sure that this issue is finished?`,
+	            icon: 'warning',
+	            buttons: {
+	            	hide: {
+	            		text: 'Don\'t show again',
+	            		value: 'hide',
+	            		visible: true,
+	            		closeModal: true
+	            	},
+				  	cancel: {
+				    	text: 'No',
+				    	value: false,
+				    	visible: true,
+				    	closeModal: true
+				  	},
+				  	confirm: {
+				    	text: 'Yes',
+				    	value: true,
+				    	visible: true,
+				    	closeModal: true
+				  	}
+				},
+	            dangerMode: true
+	        }).then(val => {
+	        	if (val === 'hide') {
+	        		hideConfirmationModal.call({
+	                    modalId: 'finish'
+	                }, (err, data) => {
+	                    if (err) {
+	                        notify(err.reason || err.message, 'error')
+	                    }
+	                })
+	        	}
+
+	        	if (val) {
+	        		finishWork.call({
+						workId: this._id
+					}, (err, data) => {
+						if (err) {
+							notify(err.reason || err.message, 'error')
+						}
+					})
+	        	}
+	        })
+		} else {
+			finishWork.call({
+				workId: this._id
+			}, (err, data) => {
+				if (err) {
+					notify(err.reason || err.message, 'error')
+				}
+			})
+		}
 	},
 	'click #js-remove': function (event, templateInstance) {
 		event.preventDefault()
 
-		deleteWork.call({
-			workId: this._id
-		}, (err, data) => {
-			if (err) {
-				notify(err.reason || err.message, 'error')
-			}
-		})
+		swal({
+            text: `Are you sure you want to remove this timecard? This action is not reversible.`,
+            icon: 'warning',
+            buttons: {
+			  	cancel: {
+			    	text: 'No',
+			    	value: false,
+			    	visible: true,
+			    	closeModal: true
+			  	},
+			  	confirm: {
+			    	text: 'Yes',
+			    	value: true,
+			    	visible: true,
+			    	closeModal: true
+			  	}
+			},
+            dangerMode: true
+        }).then(confirmed => {
+            if (confirmed) {
+                deleteWork.call({
+					workId: this._id
+				}, (err, data) => {
+					if (err) {
+						notify(err.reason || err.message, 'error')
+					}
+				})
+            }
+        })
 	}
 })

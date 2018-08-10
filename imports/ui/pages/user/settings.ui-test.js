@@ -82,6 +82,8 @@ describe('Settings route', function () {
 
         browser.click('.approve')
         browser.pause(2000)
+        browser.click('.swal-button--confirm')
+        browser.pause(3000)
 
         assert(browser.execute(count => $('.user-item').length === count - 1, count).value, true)
     })
