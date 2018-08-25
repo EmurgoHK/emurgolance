@@ -87,4 +87,24 @@ describe('Settings route', function () {
 
         assert(browser.execute(count => $('.user-item').length === count - 1, count).value, true)
     })
+
+    it('should redirect user back to home if he/she logs out', () => {
+        browser.url(`${baseUrl}/settings`)
+
+        browser.pause(6000)
+
+        browser.execute(() => Meteor.logout())
+
+        browser.pause(4000)
+
+        assert(browser.execute(() => FlowRouter.current().route.name === 'home').value, true)
+    })
+
+    it('if the user is not logged in, it should show a message and redirect him/her back to home', () => {
+        browser.url(`${baseUrl}/settings`)
+
+        browser.pause(7000)
+        
+        assert(browser.execute(() => FlowRouter.current().route.name === 'home').value, true)
+    })
 })

@@ -50,7 +50,7 @@ FlowRouter.route('/settings', {
   	}
 })
 FlowRouter.route('/requestpayment', {
-  name: 'settings',
+  name: 'requestPayment',
     action: () => {
       BlazeLayout.render('mainLayout', {
       header: 'header',
@@ -59,7 +59,6 @@ FlowRouter.route('/requestpayment', {
       })
     }
 })
-
 
 modRoutes.route('/users', {
     action: () => {
@@ -91,12 +90,8 @@ modRoutes.route('/payments/:paymentId', {
           sidebar: 'sidebar'
         })
     },
-    name: 'profile'
+    name: 'paymentsView'
 })
-
-
-
-
 
 FlowRouter.notFound = {
   	action: () => {

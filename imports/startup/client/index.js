@@ -1,6 +1,7 @@
 // Import client startup through a single index entry point
 
 import './routes.js'
+import './logout'
 
 import '/imports/ui/shared/error-404/error-404.js'
 import '/imports/ui/shared/footer/footer.js'
