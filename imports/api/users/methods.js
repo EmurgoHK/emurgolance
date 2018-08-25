@@ -15,7 +15,7 @@ const approvedUser = userId => {
        _id: userId
     })
 
-    return user && user.profile.hourlyRateApproved
+    return !user || (user && user.profile && user.profile.hourlyRateApproved)
 }
 
 export const saveSettings = new ValidatedMethod({
