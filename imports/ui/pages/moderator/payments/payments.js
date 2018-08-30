@@ -50,13 +50,11 @@ Template.payments.helpers({
         let getName = Meteor.users.findOne({ _id: owner }).profile.name;
         return getName ? getName : null
     },
-    payments: () => Payments.find(_.extend({
-        owner: Meteor.userId()
-    }, Template.instance().filter.get()), {
-        sort: {
-            createdAt: -1
-        }
-    }),
+    payments: () => Payments.find(Template.instance().filter.get(), {
+            sort: {
+                createdAt: -1
+            }
+        })
 })
 
 Template.payments.events({    
