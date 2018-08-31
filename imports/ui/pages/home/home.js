@@ -9,9 +9,9 @@ import moment from 'moment'
 import swal from 'sweetalert'
 
 const formatDuration = (duration) => {
-	const pad = val => ('00' + val).slice(-2)
+	const pad = val => val < 100 ? ('00' + val).slice(-2) : val
 
-	return `${duration.days() > 0 ? `${pad(duration.days())}:` : ''}${pad(duration.hours())}:${pad(duration.minutes())}:${pad(duration.seconds())}`
+	return `${pad((duration.days() * 24) + duration.hours())}:${pad(duration.minutes())}:${pad(duration.seconds())}`
 }
 
 export { formatDuration }
