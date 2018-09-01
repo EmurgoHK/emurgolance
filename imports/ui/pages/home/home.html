@@ -39,9 +39,10 @@
               <br>
               {{#if Template.subscriptionsReady}}
                 {{#if timesheets.count}}
+                	<small>Legend: <span style="color: green">paid</span>, <span style="color: orange">pending</span>, <span style="color: red">rejected</span></small>
                   <table class="table table-responsive-sm table-hover table-outline mb-0">
                     <thead class="thead-light">
-                      <tr>
+                      <tr class="documents-index-item">
                         <th>Issue</th>
                         <th>Project</th>
                         <th>Rate</th>
@@ -53,7 +54,7 @@
                     </thead>
                     <tbody>
                       {{#each timesheets}}
-                        <tr class="documents-index-item">
+                        <tr class="documents-index-item" style="{{#if paid}}color: green{{else}}{{#if pending}}color: orange{{else}}{{#if rejected}}color: red{{/if}}{{/if}}{{/if}}">
                           <td scope="row"><a href="{{issue}}" target="_blank">{{issue}}</a></td>
                           <td scope="row">{{project}}</td>
                           <td>$ {{ rate }}</td>

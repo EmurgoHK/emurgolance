@@ -33,7 +33,6 @@ describe('Request payment route', function () {
         let values = browser.execute(() => $('.text-value-lg.py-3').text()).value.split('$').filter(i => !!i).map(i => Number(i))
 
         assert(values[0] > 0, true)
-        assert(values[1] === 0, true)
     })
 
     it('user can request a payment', () => {
@@ -44,7 +43,6 @@ describe('Request payment route', function () {
         let values2 = browser.execute(() => $('.text-value-lg.py-3').text()).value.split('$').filter(i => !!i).map(i => Number(i))
 
         assert(values2[0] === 0, true)
-        assert(values[0] === values2[1], true)
     })
 
     it('moderator can mark payments as paid', () => {

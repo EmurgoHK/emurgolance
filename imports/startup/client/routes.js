@@ -7,6 +7,7 @@ import '../../ui/pages/home/home.js'
 import '../../ui/pages/user/settings'
 import '../../ui/pages/requestpayment/requestpayment'
 import '../../ui/pages/moderator/users/userList'
+import '../../ui/pages/moderator/users/userInfo'
 import '../../ui/pages/moderator/payments/payments'
 import '../../ui/pages/moderator/payments/paymentsview'
 import '../../ui/pages/timesheet/entry'
@@ -69,6 +70,17 @@ modRoutes.route('/users', {
         })
     },
     name: 'userList'
+})
+
+modRoutes.route('/user/:id', {
+    action: () => {
+        BlazeLayout.render('mainLayout', {
+			header: 'header',
+			  main: 'userInfo',
+			  sidebar: 'sidebar'
+        })
+    },
+    name: 'userInfo'
 })
 
 modRoutes.route('/payments', {

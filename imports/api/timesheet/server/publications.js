@@ -1,6 +1,8 @@
 import { Meteor } from 'meteor/meteor'
 import { Timesheet } from '../timesheet'
 
+import { isModerator } from '/imports/api/users/methods'
+
 Meteor.publish('timesheet.all', function () {
 	return Timesheet.find({
 		owner: Meteor.userId()
@@ -9,6 +11,16 @@ Meteor.publish('timesheet.all', function () {
 			start: -1
 		}
 	})
+})
+
+Meteor.publish('timesheet.mod', function () {
+	if (Meteor.userId() && isModerator(Meteor.userId())) {
+		return Timesheet.find({}, {
+			sort: {
+				start: -1
+			}
+		})
+	}
 })
 
 Meteor.publish('timesheet.id', (id) => {

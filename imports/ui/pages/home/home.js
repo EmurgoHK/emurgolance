@@ -85,7 +85,15 @@ Template.home.helpers({
 		return moment(date).format('DD/MM/YY HH:mm:ss')
 	},
 	fixed: val => val ? val.toFixed(2) : '0.00',
-
+	paid: function() {
+		return this.status === 'payment-paid'
+	},
+	pending: function() {
+		return this.status === 'payment-inprogress'
+	},
+	rejected: function() {
+		return this.status === 'payment-rejected'
+	}
 })
 
 Template.home.events({
