@@ -1,6 +1,6 @@
 import './requestpayment.html'
 
-import { FlowRouter } from 'meteor/kadira:flow-router'
+import { Payments } from '/imports/api/payments/payments'
 import moment from 'moment'
 import { requestPayment } from '/imports/api/payments/methods'
 import { notify } from '/imports/modules/notifier'
@@ -12,6 +12,7 @@ Template.requestpayment.onCreated(function() {
 
     this.autorun(() => {
         this.subscribe('timesheet.all')
+        this.subscribe('payments')
     })
 
 })
@@ -47,6 +48,19 @@ Template.requestpayment.helpers({
     fixed: val => val ? val.toFixed(2) : '0.00',
     endOfWeek: () => {
         return moment(moment().endOf('week').toDate()).format("DD/MM/YYYY");
+    },
+    payments: () => {
+        return Payments.find({ owner : Meteor.userId() }, {
+            sort: {
+                createAt: -1
+            }
+        })
+    },
+    statusName: (status) => {
+        return status.replace(/-/gi, ' ')
+    },
+    formatDate: (timestamp) => {
+        return moment(timestamp).format('dddd, MMMM Do YYYY, h:mm:ss a')
     }
 })
 

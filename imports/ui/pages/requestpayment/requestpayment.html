@@ -44,5 +44,37 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">Payment history</div>
+                    <div class="card-body">
+                        <table class="table table-responsive-sm table-hover table-outline mb-0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Requested on</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each payments}}
+                                    <tr>
+                                        <td>{{formatDate createAt}}</td>
+                                        <td>$ {{fixed amount}}</td>
+                                        <td>
+                                            <span class="badge badge-{{status}}">{{statusName status}}</span> 
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
