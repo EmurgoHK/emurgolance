@@ -12,7 +12,7 @@ import { Timesheet } from '/imports/api/timesheet/timesheet'
 const formatDuration = (duration) => {
     const pad = val => ('00' + val).slice(-2)
 
-    return `${pad(duration.hours())}:${pad(duration.minutes())}:${pad(duration.seconds())}`
+    return `${pad((duration.days() * 24) + duration.hours())}:${pad(duration.minutes())}:${pad(duration.seconds())}`
 }
 
 const calculateEarnings = () => {
@@ -111,7 +111,7 @@ Template.paymentsview.helpers({
             _id: Meteor.userId()
         }) || {}
 
-        let duration = total.reduce((i1, i2) => i1 + i2.totalTime, 0)
+        let duration = total.reduce((acc, curr) => acc + curr.totalTime, 0)
 
         if (active) {
             duration += (Template.instance().timer.get() - active.startTime) + (active.totalTime || 0)
