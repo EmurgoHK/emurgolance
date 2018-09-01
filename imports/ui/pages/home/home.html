@@ -54,7 +54,7 @@
                     <tbody>
                       {{#each timesheets}}
                         <tr class="documents-index-item">
-                          <td scope="row">{{issue}}</td>
+                          <td scope="row"><a href="{{issue}}" target="_blank">{{issue}}</a></td>
                           <td scope="row">{{project}}</td>
                           <td>$ {{ rate }}</td>
                           <td>{{formatDate start}}</td>
