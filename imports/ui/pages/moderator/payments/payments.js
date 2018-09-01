@@ -52,7 +52,7 @@ Template.payments.helpers({
     },
     payments: () => Payments.find(Template.instance().filter.get(), {
             sort: {
-                createdAt: -1
+                createAt: -1
             }
         })
 })

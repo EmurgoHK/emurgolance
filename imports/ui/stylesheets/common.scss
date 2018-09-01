@@ -17,5 +17,15 @@ body {
     .container-fluid {
       padding: 30px 30px 0 30px !important;
     }
+
+    span {
+      &.badge-payment-paid {
+        @extend .badge-success;
+      }
+
+      &.badge-not-paid {
+        @extend .badge-danger;
+      }
+    }
   }
 }
