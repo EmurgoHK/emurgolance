@@ -16,15 +16,19 @@
                         <tr>
                           <th>Username</th>
                           <th>Hourly rate</th>
-                          <th>Approve</th>
+                          <th>Not paid earnings</th>
+                          <th>Last payment date</th>
+                          <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                         {{#each users}}
                         <tr class="user-item">
                           <td>{{profile.name}}</td>
-                          <td>{{profile.hourlyRate}}</td>
-                          <td><a href="#" class="btn btn-sm btn-primary approve">Approve</a></td>
+                          <td>${{#if approved}}<span style="color: green">{{fixed profile.hourlyRate}}</span>{{else}}<span style="color: orange">{{fixed profile.hourlyRate}}</span>{{/if}}</td>
+                          <td>${{fixed currentEarnings}}</td>
+                          <td>{{#if lastPayment}}{{formatDate lastPayment}}{{else}}-{{/if}}</td>
+                          <td><a href="/moderator/user/{{_id}}" class="btn btn-sm btn-primary">View status</a>{{#unless approved}}<a href="#" class="btn btn-sm btn-success approve">Approve hourly rate</a>{{/unless}}</td>
                         </tr>
                         {{/each}}
                       </tbody>
