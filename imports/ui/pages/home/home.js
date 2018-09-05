@@ -28,7 +28,7 @@ Template.home.onCreated(function() {
 
 Template.home.helpers({
 	totalEarnings: () => {
-		let sum = Timesheet.find({ owner: Meteor.userId() }).fetch()
+		let sum = Timesheet.find({ owner: Meteor.userId(), paymentId: {$exists: false} }).fetch()
 		
 		return sum.map(v => v.totalEarnings ? v.totalEarnings : 0 ).reduce(
 			(acc, curr) => acc + curr, 0
@@ -44,12 +44,14 @@ Template.home.helpers({
 	total: () => {
 		let total = Timesheet.find({
 			owner: Meteor.userId(),
-			active: false
+			active: false,
+			paymentId: {$exists: false}
 		}).fetch()
 
 		let active = Timesheet.findOne({
 			owner: Meteor.userId(),
-			active: true
+			active: true,
+			paymentId: {$exists: false}
 		})
 
 		let user = Meteor.users.findOne({
