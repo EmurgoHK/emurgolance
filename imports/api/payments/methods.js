@@ -4,7 +4,7 @@ import SimpleSchema from 'simpl-schema'
 
 import { Payments } from './payments'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
-// SimpleSchema.debug = true
+import { sendNotification } from '/imports/api/notifications/both/notificationsMethods'
 
 export const requestPayment = new ValidatedMethod({
     name: 'requestPayment',
@@ -45,6 +45,18 @@ export const requestPayment = new ValidatedMethod({
 
         //if we have a paymentId return true, otherwise return an error to the client
         if (paymentId) {
+
+            //return all users that are moderators
+            let getAllModerators = Meteor.users.find({ moderator: true }).fetch()
+
+            //send a notification to all moderators
+            //
+            getAllModerators.forEach(i => {
+                sendNotification(i._id, 'Payment Request', Meteor.user().profile.name, '/moderator/payments','notification') //userId, message, from, href, type
+
+            })
+
+
             return true;
         } else {
             throw new Meteor.Error('Error.', 'Unable to process payments')

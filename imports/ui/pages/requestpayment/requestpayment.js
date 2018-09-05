@@ -6,8 +6,6 @@ import { requestPayment } from '/imports/api/payments/methods'
 import { notify } from '/imports/modules/notifier'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
 
-
-
 Template.requestpayment.onCreated(function() {
 
     this.autorun(() => {
@@ -102,6 +100,7 @@ Template.requestpayment.events({
                     notify(err.reason || err.message, 'error')
                 }
             })
+
             notify('Great news, payments will be sent out on ' + endOfWeek, 'success');
 
         }

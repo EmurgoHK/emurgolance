@@ -19,17 +19,12 @@
         </ul>
 
         <ul class="nav navbar-nav ml-auto">
-            <!-- <li class="nav-item d-md-down-none">
-                <a class="nav-link" href="#">
-                    <i class="icon-bell"></i>
-                </a>
-            </li>
-
-            <li class="nav-item d-md-down-none">
-                <a class="nav-link" href="#">
-                    <i class="icon-list"></i>
-                </a>
-            </li> -->
+          <li class="nav-item">
+            <a class="nav-link" href="/notifications" role="button">
+              <i class="icon-bell"></i>
+              {{#if notificationsCount}}<span class="badge badge-pill badge-danger">{{notificationsCount}}</span>{{/if}}
+            </a>
+          </li>
             <li class="nav-item dropdown mr-5">
                 {{#if currentUser}}
                   <a href="" class="nav-link dropdown-toggle d-none d-sm-block" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

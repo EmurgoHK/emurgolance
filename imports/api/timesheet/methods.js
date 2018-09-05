@@ -99,7 +99,6 @@ export const startWork = new ValidatedMethod({
 					issue: issue
 				}).count();
 				
-				console.log(issue, existingIssue)
 				if (existingIssue) {
 					throw new Meteor.Error('Error.', 'You are already working on this issue.')
 				}

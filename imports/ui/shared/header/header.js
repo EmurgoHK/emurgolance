@@ -1,5 +1,31 @@
 import './header.html'
 import { notify } from "/imports/modules/notifier"
+import { Notifications } from '/imports/api/notifications/both/notificationsCollection'
+
+Template.header.onCreated(function() {
+
+    this.autorun(() => {
+
+        if (Meteor.userId()) {
+            this.subscribe('notifications')
+        }
+    })
+})
+
+Template.header.helpers({
+    notificationsCount: () => Notifications.find({
+        userId: Meteor.userId(),
+        read: false,
+        $or: [{
+            type: 'notification'
+        }, {
+            type: {
+                $exists: false
+            }
+        }]
+    }).count()
+})
+
 
 Template.header.events({
     'click .sidebar-toggler': function() {
@@ -14,7 +40,7 @@ Template.header.events({
             Meteor.loginWithGithub({}, (err) => {
                 if (err) {
                     notify(err.message, "error")
-                return
+                    return
                 }
                 var redirectTo = window.last || '/'
                 FlowRouter.go(redirectTo)
