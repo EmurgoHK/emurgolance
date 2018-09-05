@@ -11,6 +11,8 @@ import '../../ui/pages/moderator/users/userInfo'
 import '../../ui/pages/moderator/payments/payments'
 import '../../ui/pages/moderator/payments/paymentsview'
 import '../../ui/pages/timesheet/entry'
+import '../../ui/pages/notifications/notifications'
+
 
 const modRoutes = FlowRouter.group({
 	prefix: '/moderator',
@@ -50,6 +52,19 @@ FlowRouter.route('/settings', {
     	})
   	}
 })
+
+FlowRouter.route('/notifications', {
+  name: 'notifications',
+    action: () => {
+      BlazeLayout.render('mainLayout', {
+      header: 'header',
+      main: 'notifications',
+      sidebar: 'sidebar'
+      })
+    }
+})
+
+
 FlowRouter.route('/requestpayment', {
   name: 'requestPayment',
     action: () => {
