@@ -105,6 +105,9 @@ Template.home.events({
 		}, (err, data) => {
 			if (err) {
 				notify(err.reason || err.message, 'error')
+				$('#js-issue').val(''); //clear the issue input as the supplied data is invalid
+			}else{
+				$('#js-issue').val(''); //clear the input if succesfull
 			}
 		})
 	},
