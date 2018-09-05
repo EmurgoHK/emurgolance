@@ -7,6 +7,11 @@
             Your approval is pending
           </div>
           {{/if}}
+          {{#if noPaymentDetail currentUser}}
+          <div class="alert alert-warning" role="alert">
+            You have not yet added payment details. Please go to your settings and add the details
+          </div> 
+          {{/if}}
           <div class="card">
             <div class="card-header">
               Timesheet
