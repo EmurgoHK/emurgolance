@@ -95,6 +95,9 @@ Template.home.helpers({
 	},
 	rejected: function() {
 		return this.status === 'payment-rejected'
+	},
+	canEdit: function() {
+		return ~['payment-paid', 'payment-rejected', 'payment-inprogress'].indexOf(this.status)
 	}
 })
 
