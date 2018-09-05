@@ -73,6 +73,10 @@ describe('Home route', function () {
     })
 
     it('user should be able to modify time spent working on an issue', () => {
+        browser.execute(() => Meteor.call('addTestTimesheet', (err, data) => {}))
+
+        browser.pause(5000)
+
         browser.click('#js-edit')
 
         browser.pause(3000)
