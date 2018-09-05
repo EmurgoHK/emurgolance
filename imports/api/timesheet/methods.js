@@ -93,6 +93,17 @@ export const startWork = new ValidatedMethod({
 					throw new Meteor.Error('Error.', 'You can only start one task at a time.')
 				}
 
+				let existingIssue = Timesheet.find({
+					owner: Meteor.userId(),
+					finished: {$exists: false},
+					issue: issue
+				}).count();
+				
+				console.log(issue, existingIssue)
+				if (existingIssue) {
+					throw new Meteor.Error('Error.', 'You are already working on this issue.')
+				}
+
 				return Timesheet.insert({
 					owner: Meteor.userId(),
 					start: startTime, // original start time
