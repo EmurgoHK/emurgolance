@@ -53,7 +53,6 @@ export const requestPayment = new ValidatedMethod({
             //
             getAllModerators.forEach(i => {
                 sendNotification(i._id, 'Payment Request', Meteor.user().profile.name, '/moderator/payments','notification') //userId, message, from, href, type
-
             })
 
 
@@ -122,6 +121,12 @@ export const markAsPaid = new ValidatedMethod({
                 paidDate: new Date().getTime()
             }
         })
+
+        let payment = Payments.findOne({ _id : paymentId });
+        
+        // send a notification to the user
+        sendNotification(payment.owner, 'Payment completed', 'System' ,'/requestpayment', 'notification')
+        
     }
 })
 
