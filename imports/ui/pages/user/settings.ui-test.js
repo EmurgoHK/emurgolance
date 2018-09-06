@@ -52,7 +52,9 @@ describe('Settings route', function () {
 
         browser.pause(2000)
 
-        browser.setValue('#js-hr', 100000)
+        let hrVal = Number(browser.getValue('#js-hr') || 0) + 1000
+
+        browser.setValue('#js-hr', hrVal)
 
         browser.pause(2000)
 
@@ -67,11 +69,11 @@ describe('Settings route', function () {
 
         assert(browser.execute(() => FlowRouter.current().route.name).value === 'home', true)
 
-        assert(browser.execute(() => {
+        assert(browser.execute((hrVal) => {
             let profile = Meteor.user().profile || {}
 
-            return profile.bankDetails === 'IBAN: 123' && profile.hourlyRate === 100000 && !profile.hourlyRateApproved
-        }).value, true)
+            return profile.bankDetails === 'IBAN: 123' && profile.hourlyRate === hrVal && !profile.hourlyRateApproved
+        }, hrVal).value, true)
     })
 
     it('moderator should be able to accept payment rate change', () => {

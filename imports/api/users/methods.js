@@ -60,7 +60,11 @@ export const saveSettings = new ValidatedMethod({
     run({ name, paymentMethod, hourlyRate, walletAddress, bankDetails, paypalEmail, minpayout,maxpayout }) {
         if (!Meteor.userId()) {
     	     throw new Meteor.Error('Error.', 'You have to be logged in.')
-    	 }
+    	}
+
+        let user = Meteor.users.findOne({
+            _id: Meteor.userId()
+        })
 
     	return Meteor.users.update({
             _id: Meteor.userId()
@@ -69,7 +73,7 @@ export const saveSettings = new ValidatedMethod({
                 'profile.name': name,
                 'profile.paymentMethod': paymentMethod,
                 'profile.hourlyRate': hourlyRate,
-                'profile.hourlyRateApproved': false,
+                'profile.hourlyRateApproved': hourlyRate === ((user || {}).profile || {}).hourlyRate,
                 'profile.walletAddress': walletAddress || '',
                 'profile.bankDetails': bankDetails || '',
                 'profile.paypalEmail': paypalEmail || '',
