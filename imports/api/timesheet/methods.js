@@ -340,6 +340,41 @@ export const deleteWork = new ValidatedMethod({
 		})
     }
 })
+//* method to calculate some totals for the dashboard buckets, only used by mods *//
+export const calcDashboard = new ValidatedMethod({
+    name: 'calcDashboard',
+    validate: new SimpleSchema({}).validator({
+        clean: true
+    }),
+    run({}) {
+        if (!Meteor.userId()) {
+            throw new Meteor.Error('Error.', 'You have to be logged in.')
+        }
+        //Total timesheets completed
+        let openWork = Timesheet.find({
+            finished: { $exists: false }
+        }).count();
+
+        let completedWork = Timesheet.find({
+            finished: true
+        }).count();
+
+		let totalPaymentsSum = Timesheet.find({ status: 'payment-paid' }).fetch()
+	    let totalPayments = totalPaymentsSum.map(v => v.totalEarnings ? v.totalEarnings : 0 ).reduce(
+			(acc, curr) => acc + curr, 0
+		)
+		totalPayments = Math.round(totalPayments * 100) / 100; //round to 2 decimal places.
+
+        
+		let pendingPaymentsSum = Timesheet.find({ status: 'payment-inprogress'}).fetch()
+	    let pendingPayments = pendingPaymentsSum.map(v => v.totalEarnings ? v.totalEarnings : 0 ).reduce(
+			(acc, curr) => acc + curr, 0
+		)
+		pendingPayments = Math.round(pendingPayments * 100) / 100; //round to 2 decimal places.
+
+        return {openWork:openWork, completedWork:completedWork, totalPayments:totalPayments, pendingPayments:pendingPayments}
+    }
+})
 
 if (Meteor.isDevelopment) {
     Meteor.methods({

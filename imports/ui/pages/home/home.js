@@ -1,6 +1,6 @@
 import './home.html'
 
-import { startWork, pauseWork, continueWork, finishWork, deleteWork } from '/imports/api/timesheet/methods'
+import { startWork, pauseWork, continueWork, finishWork, deleteWork, calcDashboard } from '/imports/api/timesheet/methods'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
 import { notify } from '/imports/modules/notifier.js'
 import { hideConfirmationModal } from '/imports/api/users/methods'
@@ -22,11 +22,24 @@ Template.home.onCreated(function() {
 	})
 
 	this.timer = new ReactiveVar(new Date().getTime())
+	this.calcDashboard = new ReactiveVar()
+	
+	//method call to calculate dashboard counts, I have used a method instead of pubs to improve performance
+	calcDashboard.call({}, (err, data) => {
+			if (!err) {
+				this.calcDashboard.set(data)
+			} else {
+				notify(err.reason || err.message, 'error')
+			}
+		})
 
 	Meteor.setInterval(() => this.timer.set(new Date().getTime()), 1000)
 })
 
 Template.home.helpers({
+	dashboardCounts: () =>{
+		return Template.instance().calcDashboard.get();
+	},
 	totalEarnings: () => {
 		let sum = Timesheet.find({ owner: Meteor.userId(), paymentId: {$exists: false} }).fetch()
 		
