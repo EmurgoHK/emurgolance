@@ -16,24 +16,31 @@ const formatDuration = (duration) => {
 
 export { formatDuration }
 
+
 Template.home.onCreated(function() {
-	this.autorun(() => {
-		this.subscribe('timesheet.all')
-	})
+    this.autorun(() => {
 
-	this.timer = new ReactiveVar(new Date().getTime())
-	this.calcDashboard = new ReactiveVar()
-	
-	//method call to calculate dashboard counts, I have used a method instead of pubs to improve performance
-	calcDashboard.call({}, (err, data) => {
-			if (!err) {
-				this.calcDashboard.set(data)
-			} else {
-				notify(err.reason || err.message, 'error')
-			}
-		})
+        this.subscribe('timesheet.all');
 
-	Meteor.setInterval(() => this.timer.set(new Date().getTime()), 1000)
+        //method call to calculate dashboard counts, I have used a method instead of pubs to improve performance
+        //method needs to be in the autorun so it's executed once the user logs in
+        if (Meteor.userId()) {
+            calcDashboard.call({}, (err, data) => {
+                if (!err) {
+                    this.calcDashboard.set(data)
+                } else {
+                    notify(err.reason || err.message, 'error')
+                }
+            })
+        }
+
+    })
+
+    this.timer = new ReactiveVar(new Date().getTime())
+    this.calcDashboard = new ReactiveVar()
+
+
+    Meteor.setInterval(() => this.timer.set(new Date().getTime()), 1000)
 })
 
 Template.home.helpers({
