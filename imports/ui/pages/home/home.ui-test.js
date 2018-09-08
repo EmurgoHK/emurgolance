@@ -38,6 +38,11 @@ describe('Home route', function () {
         assert(browser.execute(() => $('.documents-index-item').length >= 1).value, true)
 
         assert(browser.execute((issueUrl) => Array.from($('.documents-index-item').map((ind, el) => $(el).find('td').html())).pop() === issueUrl), true)
+
+        assert(browser.isExisting('.dashboard'), true)
+        assert(browser.isVisible('.dashboard'), true)
+ 
+        assert(browser.execute(() => Number($($($('.dashboard').find('.card-body')[0]).find('div')[0]).text().slice(-1))).value > 0, true)
     })
 
     it('user should be able to pause working on an issue', () => {
@@ -70,6 +75,11 @@ describe('Home route', function () {
 
         assert(!browser.isExisting('#js-finish'), true)
         assert(!browser.isVisible('#js-finish'), true)
+
+        assert(browser.isExisting('.dashboard'), true)
+        assert(browser.isVisible('.dashboard'), true)
+ 
+        assert(browser.execute(() => Number($($($('.dashboard').find('.card-body')[1]).find('div')[0]).text().slice(-1))).value > 0, true)
     })
 
     it('user should be able to modify time spent working on an issue', () => {
@@ -158,8 +168,39 @@ describe('Home route', function () {
         assert(browser.execute((issueUrl) => Array.from($('.documents-index-item').map((ind, el) => $(el).find('td').html())).pop() !== issueUrl), true)
     })
 
+    it('non privileged users shouldn\'t be able to see the dashboard on the front page', () => {
+        browser.execute(() => Meteor.call('toggleModStatus', false, (err, data) => {}))
+
+        browser.pause(3000)
+
+        assert(!browser.isExisting('.dashboard'), true)
+        assert(!browser.isVisible('.dashboard'), true)
+    })
+
+    it('privileged users should see the dashboard', () => {
+        browser.execute(() => Meteor.call('toggleModStatus', true, (err, data) => {}))
+
+        browser.pause(3000)
+
+        assert(browser.isExisting('.dashboard'), true)
+        assert(browser.isVisible('.dashboard'), true)
+    })
+
+    it('logged out users shouldn\'t be able to see the dashboard on the front page', () => {
+        browser.execute(() => Meteor.logout())
+
+        browser.pause(3000)
+
+        assert(!browser.isExisting('.dashboard'), true)
+        assert(!browser.isVisible('.dashboard'), true)
+    })
+
     after(() => {
         browser.pause(3000)
+
+        browser.execute(() => Meteor.loginWithPassword('testing', 'testing'))
+
+        browser.pause(5000)
 
         browser.execute(() => {
             Meteor.call('removeTestTimesheet', (err, data) => {})

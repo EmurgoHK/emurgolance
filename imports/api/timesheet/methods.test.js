@@ -211,6 +211,17 @@ describe('Timesheet methods', () => {
         })
     })
 
+    it('dashboard data is calculated correctly', () => {
+        return callWithPromise('calcDashboard', {}).then(data => {
+            let timesheets = Timesheet.find({}).fetch()
+
+            assert.equal(data.openWork, timesheets.filter(j => !j.finished).length)
+            assert.equal(data.completedWork, timesheets.filter(j => !!j.finished).length)
+            assert.equal(Math.round(data.totalPayments), Math.round(timesheets.filter(j => j.status === 'payment-paid').reduce((i1, i2) => i1 + (i2.totalEarnings || 0), 0)))
+            assert.equal(Math.round(data.pendingPayments), Math.round(timesheets.filter(j => j.status === 'payment-inprogress').reduce((i1, i2) => i1 + (i2.totalEarnings || 0), 0)))
+        })
+    })
+
     after(function() {
         Timesheet.remove({
             owner: Meteor.userId()
