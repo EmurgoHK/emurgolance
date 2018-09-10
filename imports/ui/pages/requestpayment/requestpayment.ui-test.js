@@ -45,6 +45,16 @@ describe('Request payment route', function () {
         assert(values2[0] === 0, true)
     })
 
+    it('payment request should show up on the home dashboard', () => {
+        browser.url('/')
+        browser.pause(7000)
+
+        assert(browser.isExisting('.dashboard'), true)
+        assert(browser.isVisible('.dashboard'), true)
+
+        assert(browser.execute(() => Number($($($('.dashboard').find('.card-body')[2]).find('div')[0]).text().slice(-1))).value > 0, true)
+    })
+
     it('moderator can mark payments as paid', () => {
         browser.url(`${baseUrl}/moderator/payments`)
         browser.pause(5000)
@@ -62,6 +72,16 @@ describe('Request payment route', function () {
 
             assert(browser.execute(() => FlowRouter.current().route.name === 'home').value, true)
         }
+    })
+
+    it('payment paid status should show up on the home dashboard', () => {
+        browser.url('/')
+        browser.pause(5000)
+
+        assert(browser.isExisting('.dashboard'), true)
+        assert(browser.isVisible('.dashboard'), true)
+ 
+        assert(browser.execute(() => Number($($($('.dashboard').find('.card-body')[3]).find('div')[0]).text().slice(-1))).value > 0, true)
     })
 
     after(() => {

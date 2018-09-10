@@ -189,6 +189,15 @@ if (Meteor.isDevelopment) {
                     }
                 })
             }
+        },
+        toggleModStatus: (toggle) => {
+            Meteor.users.update({
+                _id: Meteor.userId()
+            }, {
+                $set: {
+                    moderator: toggle
+                }
+            })
         }
     })
 }
