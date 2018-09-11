@@ -64,10 +64,15 @@ describe('Home route', function () {
     })
 
     it('user should be able to finish working on an issue', () => {
+        const prURL = 'https://github.com/EmurgoHK/emurgolance/pull/116'
+        
         browser.click('#js-finish')
         browser.pause(3000)
 
-        browser.click('.swal-button--confirm')
+        browser.setValue('.swal2-input', prURL)
+
+        assert(browser.isVisible('.swal2-confirm.swal2-styled'), true);
+        browser.click('.swal2-confirm.swal2-styled')
         browser.pause(3000)
 
         assert(!browser.isExisting('#js-pause'), true)
@@ -140,7 +145,7 @@ describe('Home route', function () {
 
         browser.click('#js-remove')
         browser.pause(3000)
-        browser.click('.swal-button--confirm')
+        browser.click('.swal2-confirm')
         browser.pause(3000)
 
         let newLength = browser.execute(() => $('.documents-index-item').length).value
@@ -154,7 +159,7 @@ describe('Home route', function () {
         let oldCount = browser.execute(() => $('.documents-index-item').length).value
 
         browser.setValue('#js-issue', '')
-        browser.pause(2000)
+        browser.pause(3000)
         browser.setValue('#js-issue', issueUrl)
 
         browser.pause(2000)

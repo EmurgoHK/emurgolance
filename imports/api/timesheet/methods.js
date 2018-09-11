@@ -14,13 +14,10 @@ const workManipulationSchema = new SimpleSchema({
     }
 })
 
-
-
 const validateGithubIssue = (issue, provider) => {
 	provider = provider.toLowerCase()
 	var isValidIssue = false
 	var providerUrl = ''
-
 	if (provider === 'github') {
 		// add auth to github api calls in order to prevent rate limiting (60 per hour without auth and 5000 per hour with auth)
 		// these credentials are from some test app specifically created for this purpose so using them here won't have any effect elsewhere
@@ -64,7 +61,7 @@ export const startWork = new ValidatedMethod({
 			clean: true
 		}),
 	async run({ issue }) {
-		if (Meteor.isServer) {
+		if (Meteor.isServer) { 
 			if (!Meteor.userId()) {
 				throw new Meteor.Error('Error.', 'You have to be logged in.')
 			}
@@ -196,10 +193,19 @@ export const continueWork = new ValidatedMethod({
 
 export const finishWork = new ValidatedMethod({
     name: 'finishWork',
-    validate: workManipulationSchema.validator({
-        clean: true
-    }),
-    run({ workId }) {
+	validate: new SimpleSchema({
+		workId: {
+			type: String,
+       		optional: false
+		},
+		pr: {
+			type: SimpleSchema.RegEx.Url,
+			optional: false
+		}
+	}).validator({
+		clean: true
+	}),
+    run({ workId, pr }) {
     	if (!Meteor.userId()) {
     		throw new Meteor.Error('Error.', 'You have to be logged in.')
     	}
@@ -216,14 +222,15 @@ export const finishWork = new ValidatedMethod({
   		if (!work.active) {
   			throw new Meteor.Error('Error.', 'You can\'t finish work that\'s not active.')
   		}
-
-		  let endTime = new Date().getTime()
-		  let totalTime = endTime - work.startTime + (work.totalTime || 0)  // have to take care of pauses in between
+		
+		let endTime = new Date().getTime()
+		let totalTime = endTime - work.startTime + (work.totalTime || 0)  // have to take care of pauses in between
 
 		return Timesheet.update({
 			_id: workId
 		}, {
 			$set: {
+				pr: pr,
 			    finished: true,
 			    paused: false,
 			    active: false,

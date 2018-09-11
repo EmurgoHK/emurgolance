@@ -50,6 +50,7 @@
                         <th>Start time</th>
                         <th>End time</th>
                         <th>Total working time</th>
+                        <th>PR</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -61,7 +62,8 @@
                           <td>{{formatDate start}}</td>
                           <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
                           <td>{{totalTime}} {{#if history.length}}<a href="/entry/{{_id}}"><i style="color: red;" title="Modified" class="icon-flag"></i></a>{{/if}}</td>
-                </tr>
+                          <td scope="row"><a href="{{pr}}" target="_blank">{{pr}}</a></td>
+                        </tr>
                       {{/each}}
                     </tbody>
                   </table>

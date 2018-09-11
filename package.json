@@ -28,6 +28,7 @@
     "simpl-schema": "^1.5.0",
     "source-map-support": "^0.5.6",
     "sweetalert": "^2.1.0",
+    "sweetalert2": "^7.26.28",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
