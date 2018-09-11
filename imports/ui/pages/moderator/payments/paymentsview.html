@@ -19,7 +19,7 @@
                   <div class="col-sm-2">
                     <div class="callout callout-danger float-right" style="margin:0">
                       <small class="text-muted">Total pending earnings</small><br>
-                      <strong class="h4">{{#if currentUser.profile.hourlyRateApproved}}<span style="color: red">$ {{fixed totalTimeSheetEarnings }}</span>{{else}}<span style="color: orange">$ {{fixed totalTimeSheetEarnings}}</span>{{/if}}</strong>
+                      <strong class="h4">{{#if currentUser.profile.hourlyRateApproved}}<span class="total-pending" style="color: red">$ {{fixed totalTimeSheetEarnings }}</span>{{else}}<span class="total-pending" style="color: orange">$ {{fixed totalTimeSheetEarnings}}</span>{{/if}}</strong>
                     </div>
                   </div>
                   {{/unless}}
@@ -52,8 +52,29 @@
               </div>
               <br>
               {{#if Template.subscriptionsReady}}
+                {{#if costBreakdown.length}}
+                  <table class="table table-responsive-sm table-hover table-outline mb-0 breakdown">
+                    <thead class="thead-light">
+                      <tr>
+                        <th>Project</th>
+                        <th>Earnings</th>
+                        <th>Percentage</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each costBreakdown}}
+                        <tr class="documents-index-item">
+                          <td scope="row">{{project}}</td>
+                          <td scope="row">{{earnings}}</td>
+                          <td scope="row">{{percentage}}</td>
+                        </tr>
+                      {{/each}}
+                    </tbody>
+                  </table>
+                {{/if}}
+                <br />
                 {{#if timesheets.count}}
-                  <table class="table table-responsive-sm table-hover table-outline mb-0">
+                  <table class="table table-responsive-sm table-hover table-outline mb-0 timesheets">
                     <thead class="thead-light">
                       <tr>
                         <th></th>
