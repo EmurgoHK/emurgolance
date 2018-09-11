@@ -57,14 +57,19 @@ Template.paymentsview.helpers({
         return Template.instance().approvedEarnings.get()
     },
     totalPaidEarnings:  () => {
-        let sum = Timesheet.find({status:'payment-paid'}).fetch()
+        let sum = Timesheet.find({
+            paymentId: FlowRouter.getParam('paymentId'),
+            status:'payment-paid'
+        }).fetch()
 
         return sum.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce(
             (acc, curr) => acc + curr, 0
         )
     },
     totalTimeSheetEarnings: () => {
-        let sum = Timesheet.find({}).fetch()
+        let sum = Timesheet.find({
+            paymentId: FlowRouter.getParam('paymentId')
+        }).fetch()
 
         return sum.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce(
             (acc, curr) => acc + curr, 0
@@ -73,12 +78,14 @@ Template.paymentsview.helpers({
     totalTime: (id) => {
         let total = Timesheet.find({
             owner: Meteor.userId(),
-            active: false
+            active: false,
+            paymentId: FlowRouter.getParam('paymentId')
         }).fetch()
 
         let active = Timesheet.findOne({
             owner: Meteor.userId(),
-            active: true
+            active: true,
+            paymentId: FlowRouter.getParam('paymentId')
         })
 
         let user = Meteor.users.findOne({
@@ -102,12 +109,14 @@ Template.paymentsview.helpers({
     total: () => {
         let total = Timesheet.find({
             owner: Meteor.userId(),
-            active: false
+            active: false,
+            paymentId: FlowRouter.getParam('paymentId')
         }).fetch()
 
         let active = Timesheet.findOne({
             owner: Meteor.userId(),
-            active: true
+            active: true,
+            paymentId: FlowRouter.getParam('paymentId')
         })
 
         let user = Meteor.users.findOne({
@@ -139,11 +148,31 @@ Template.paymentsview.helpers({
 
         return formatDuration(duration)
     },
-    timesheets: () => Timesheet.find({}),
+    timesheets: () => Timesheet.find({
+        paymentId: FlowRouter.getParam('paymentId')
+    }),
     fixed: val => val ? val.toFixed(2) : '0.00',
     formatDate: (date) => {
         return moment(date).format('DD/MM/YY HH:mm:ss')
     },
+    costBreakdown: () => {
+        let projects = {}
+        let total = 0
+
+        Timesheet.find({
+            paymentId: FlowRouter.getParam('paymentId')
+        }).fetch().forEach(i => {
+            projects[i.project] = (projects[i.project] || 0) + i.totalEarnings
+
+            total += i.totalEarnings
+        })
+
+        return Object.keys(projects).sort((i1, i2) => projects[i2] - projects[i1]).map(i => ({
+            project: `${i[0].toUpperCase()}${i.slice(1)}`,
+            earnings: `$${projects[i].toFixed(2)}`,
+            percentage: `${((projects[i] / total) * 100).toFixed(2)}%`
+        }))
+    }
 })
 
 Template.paymentsview.events({

@@ -55,7 +55,7 @@ describe('Request payment route', function () {
         assert(browser.execute(() => Number($($($('.dashboard').find('.card-body')[2]).find('div')[0]).text().slice(-1))).value > 0, true)
     })
 
-    it('moderator can mark payments as paid', () => {
+    it('moderator can see correct data and mark payments as paid', () => {
         browser.url(`${baseUrl}/moderator/payments`)
         browser.pause(5000)
 
@@ -65,6 +65,17 @@ describe('Request payment route', function () {
             browser.click('.review')
 
             browser.pause(5000)
+
+            // get sum of projects
+            let projectsSum = browser.execute(() => Array.from($('.breakdown').find('tr').map((e, i) => Number($($(i).find('td').get(1)).text().trim().slice(1)))).reduce((i1, i2) => i1 + i2, 0)).value
+            let timesheetsSum = browser.execute(() => Array.from($('.timesheets').find('tr').map((e, i) => Number($($(i).find('td').get(6)).text().trim().slice(1)))).reduce((i1, i2) => i1 + i2, 0)).value
+            let totalPending = browser.execute(() => Number($('.total-pending').text().slice(2))).value
+
+            assert(Math.abs(projectsSum - timesheetsSum) < 1, true)
+            assert(Math.abs(totalPending - timesheetsSum) < 1, true)
+            assert(Math.abs(projectsSum - totalPending) < 1, true)
+
+            browser.pause(2000)
 
             browser.click('.paid')
 
