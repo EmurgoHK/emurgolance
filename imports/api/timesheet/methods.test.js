@@ -162,7 +162,8 @@ describe('Timesheet methods', () => {
         assert.ok(work)
 
         return callWithPromise('finishWork', {
-            workId: work._id
+            workId: work._id,
+            pr: 'https://github.com/EmurgoHK/emurgolance/pull/116'
         }).then(tId => {
             let timesheet = Timesheet.findOne({
                 _id: work._id
@@ -185,7 +186,8 @@ describe('Timesheet methods', () => {
         assert.ok(work)
 
         return callWithPromise('finishWork', {
-            workId: work._id
+            workId: work._id,
+            pr: 'https://github.com/EmurgoHK/emurgolance/pull/116'
         }).then(tId => {
             assert.isNull(tId)
         }).catch(err => {

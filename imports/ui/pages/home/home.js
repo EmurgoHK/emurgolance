@@ -6,7 +6,7 @@ import { notify } from '/imports/modules/notifier.js'
 import { hideConfirmationModal } from '/imports/api/users/methods'
 
 import moment from 'moment'
-import swal from 'sweetalert'
+import swal from 'sweetalert2'
 
 const formatDuration = (duration) => {
 	const pad = val => val < 100 ? ('00' + val).slice(-2) : val
@@ -160,62 +160,27 @@ Template.home.events({
 	},
 	'click #js-finish': function (event, templateInstance) {
 		event.preventDefault()
-
-		if (!~(Meteor.users.findOne({ _id: Meteor.userId() }).hidden || []).indexOf('finish')) {
-			swal({
-	            text: `Are you sure that this issue is finished?`,
-	            icon: 'warning',
-	            buttons: {
-	            	hide: {
-	            		text: 'Don\'t show again',
-	            		value: 'hide',
-	            		visible: true,
-	            		closeModal: true
-	            	},
-				  	cancel: {
-				    	text: 'No',
-				    	value: false,
-				    	visible: true,
-				    	closeModal: true
-				  	},
-				  	confirm: {
-				    	text: 'Yes',
-				    	value: true,
-				    	visible: true,
-				    	closeModal: true
-				  	}
-				},
-	            dangerMode: true
-	        }).then(val => {
-	        	if (val === 'hide') {
-	        		hideConfirmationModal.call({
-	                    modalId: 'finish'
-	                }, (err, data) => {
-	                    if (err) {
-	                        notify(err.reason || err.message, 'error')
-	                    }
-	                })
-	        	}
-
-	        	if (val) {
-	        		finishWork.call({
-						workId: this._id
-					}, (err, data) => {
-						if (err) {
-							notify(err.reason || err.message, 'error')
-						}
-					})
-	        	}
-	        })
-		} else {
-			finishWork.call({
-				workId: this._id
-			}, (err, data) => {
-				if (err) {
-					notify(err.reason || err.message, 'error')
-				}
-			})
-		}
+		
+		swal({
+			title: '<strong>Are You Sure?</u></strong>',
+  			type: 'warning',
+			input: 'url',
+			inputPlaceholder: 'Enter the link to PR',
+			allowOutsideClick: false,
+			showCancelButton: true,
+			showLoaderOnConfirm: true
+		}).then((val) => {
+			if (val.value) {
+				finishWork.call({
+					workId: this._id,
+					pr: val.value
+				}, (err, data) => {
+					if (err) {
+						notify(err.reason || err.message, 'error')
+					}
+				})
+			}
+		})
 	},
 	'click #js-remove': function (event, templateInstance) {
 		event.preventDefault()
