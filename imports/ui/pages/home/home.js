@@ -164,11 +164,27 @@ Template.home.events({
 		swal({
 			title: '<strong>Are You Sure?</u></strong>',
   			type: 'warning',
-			input: 'url',
+			input: 'text',
 			inputPlaceholder: 'Enter the link to PR',
 			allowOutsideClick: false,
 			showCancelButton: true,
-			showLoaderOnConfirm: true
+			showLoaderOnConfirm: true,
+			preConfirm: (url) => {
+				var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+				var regex = new RegExp(expression);
+
+				// check if it is a URL using regex
+				if (url !== '-')  {
+					if (url.match(regex)) {
+						return url
+					} 
+					swal.showValidationError(
+						`Please enter a valid url`
+					  )
+				} if (url === '-') {
+					return url;
+				}
+			  },
 		}).then((val) => {
 			if (val.value) {
 				finishWork.call({
