@@ -11,6 +11,7 @@ Meteor.users.findOne = () => ({ profile: { name: 'Test User'} }) // stub user da
 Meteor.user = () => ({ profile: { name: 'Test User'} })
 
 describe('Timesheet methods', () => {
+    
     it('user can start working on a valid issue', () => {
         const issue = 'https://github.com/EmurgoHK/emurgolance/issues/67'
 
@@ -153,7 +154,7 @@ describe('Timesheet methods', () => {
         })
     })
 
-    it('user can finish working on an issue', () => {
+    it('user can finish working on an issue with a valid PR link', () => {
         let work = Timesheet.findOne({
             owner: Meteor.userId(),
             active: true
@@ -192,6 +193,56 @@ describe('Timesheet methods', () => {
             assert.isNull(tId)
         }).catch(err => {
             assert.include(err.message, 'You can\'t finish work that\'s not active')
+        })
+    })
+
+    it('user can finish working on an issue with a pr link -', () => {
+        Timesheet.update({ owner: Meteor.userId() }, {
+            $set : { active : true }
+        })
+
+        let work = Timesheet.findOne({
+            owner: Meteor.userId(),
+            active: true
+        })
+
+        assert.ok(work)
+        
+        return callWithPromise('finishWork', {
+            workId: work._id,
+            pr: '-'
+        }).then(tId => {
+            let timesheet = Timesheet.findOne({
+                _id: work._id
+            })
+
+            assert.ok(timesheet)
+            assert.notOk(timesheet.paused)
+            assert.notOk(timesheet.active)
+            assert.ok(timesheet.finished)
+            assert.ok(timesheet.totalTime > 0)
+        })
+    })
+
+    it('user cannot finish working on an issue with an invalid pr link', () => {
+        Timesheet.update({ owner: Meteor.userId() }, {
+            $set : { active : true }
+        })
+
+        let work = Timesheet.findOne({
+            owner: Meteor.userId(),
+            active: true
+        })
+
+        assert.ok(work)
+
+        return callWithPromise('finishWork', {
+            workId: work._id,
+            pr: 'https://github.com/EmurgoHK/emurgolance/pull/115'
+        }).then(tId => {
+            assert.isNull(tId)
+        }).catch(err => {
+            assert.include(err.message, 'Please enter a valid link to the PR')
         })
     })
 

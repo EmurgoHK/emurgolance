@@ -49,6 +49,30 @@ const validateGithubIssue = (issue, provider) => {
 	})
 }
 
+const validateGithubPR = (pr) => {
+	var isValidPr = false
+	var urlPR = pr.replace('pull', 'pulls');
+
+	var providerUrl = `https://api.github.com/repos/${urlPR}?client_id=59b6ea8f244deea72301&client_secret=d70815c427d0a3b4a9bd4c634b2285a419caaeef`
+	
+	console.log(providerUrl)
+	return new Promise((resolve, reject) => {
+		HTTP.get(providerUrl, { headers: {
+			  'User-Agent': 'EmurgoBot'
+    	}}, (err, data) => {
+			console.log(data)
+			if (!err && data.statusCode === 200) {
+				console.log(data.data.html_url.includes(pr))
+				if (data.data.html_url.includes(pr)) {
+					isValidPr = true;
+				}
+			}
+			
+			resolve(isValidPr)
+		})
+	})
+}
+
 export const startWork = new ValidatedMethod({
 	name: 'startWork',
 	validate:
@@ -61,7 +85,7 @@ export const startWork = new ValidatedMethod({
 			clean: true
 		}),
 	async run({ issue }) {
-		if (Meteor.isServer) { 
+		if (Meteor.isServer) {
 			if (!Meteor.userId()) {
 				throw new Meteor.Error('Error.', 'You have to be logged in.')
 			}
@@ -205,7 +229,7 @@ export const finishWork = new ValidatedMethod({
 	}).validator({
 		clean: true
 	}),
-    run({ workId, pr }) {
+    async run({ workId, pr }) {
     	if (!Meteor.userId()) {
     		throw new Meteor.Error('Error.', 'You have to be logged in.')
     	}
@@ -223,9 +247,24 @@ export const finishWork = new ValidatedMethod({
   			throw new Meteor.Error('Error.', 'You can\'t finish work that\'s not active.')
   		}
 		
+		let prTitle = pr.replace(/((http|https):\/\/)?(github.com)\//, '').replace(/\/+$/, '')
+		
+		// check if the URL for PR is valid here
+		let isValidPr = false;
+		
+		if (pr === '-') {
+			isValidPr = true;
+		} else {
+			isValidPr = await validateGithubPR(prTitle);
+		}
+		
+		if (!isValidPr) {
+			throw new Meteor.Error('Error.', 'Please enter a valid link to the PR')
+		}
+
 		let endTime = new Date().getTime()
 		let totalTime = endTime - work.startTime + (work.totalTime || 0)  // have to take care of pauses in between
-
+		
 		return Timesheet.update({
 			_id: workId
 		}, {
