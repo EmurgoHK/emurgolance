@@ -1,0 +1,49 @@
+<template name="statistics">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+                        Amounts per project
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            {{#each projectsAmount}}
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="text-uppercase text-muted small">{{project}}</div>
+                            <div class="text-value small" style="font-size: 1.1rem; font-weight: 500;">$ {{fixed earnings}}</div>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-responsive-sm table-hover table-outline mb-0" style="background-color: #fff">
+                    <thead class="thead-light">
+                        <tr>
+                            <th></th>
+                            {{#each projectsAmount}}
+                                <th style="text-transform: capitalize;">{{project}}</th>
+                            {{/each}}
+                        </tr>  
+                    </thead>
+                    <tbody>
+                        {{#each user in freelancers}}
+                            <tr>
+                                <td>{{userProfile user.userId}}</td>
+                                {{#each projectsAmount}}
+                                    <td>$ {{userAmounts user.userId this.project}}</td>
+                                {{/each}}
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</template>
