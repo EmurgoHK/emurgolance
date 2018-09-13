@@ -10,6 +10,7 @@ import '../../ui/pages/moderator/users/userList'
 import '../../ui/pages/moderator/users/userInfo'
 import '../../ui/pages/moderator/payments/payments'
 import '../../ui/pages/moderator/payments/paymentsview'
+import '../../ui/pages/moderator/statistics/statistics'
 import '../../ui/pages/timesheet/entry'
 import '../../ui/pages/notifications/notifications'
 
@@ -118,6 +119,17 @@ modRoutes.route('/payments/:paymentId', {
         })
     },
     name: 'paymentsView'
+})
+
+modRoutes.route('/statistics', {
+    action: () => {
+        BlazeLayout.render('mainLayout', {
+          main: 'statistics',
+          header: 'header',
+          sidebar: 'sidebar'
+        })
+    },
+    name: 'statistics'
 })
 
 FlowRouter.notFound = {
