@@ -14,8 +14,12 @@
                     <h4>Issue URL</h4>
                     <a href="{{issue}}" target="_blank">{{issue}}</a>
                 </div>
+              <div class="col-sm-8">
+                    <h4>PR URL</h4>
+                    <a href="{{pr}}" target="_blank">{{pr}}</a>
+                </div>
                   <div class="col-sm-2">
-                    <div class="callout callout-primary float-right" style="margin:0;width: 200px;">
+                    <div class="callout callout-primary float-right">
                       <small class="text-muted">Time logged (HH:MM:SS)</small><br>
                       {{#if canEdit}}
                       <input type="text" style="width: 85px;" class="h4" value="{{total.formattedTime}}" id="js-totalTime">
