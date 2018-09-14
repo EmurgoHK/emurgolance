@@ -44,6 +44,9 @@ Template.home.onCreated(function() {
 })
 
 Template.home.helpers({
+    removeHostname: (url) => {
+       return url.slice(28);
+    },
 	dashboardCounts: () =>{
 		return Template.instance().calcDashboard.get();
 	},

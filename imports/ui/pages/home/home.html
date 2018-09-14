@@ -92,19 +92,19 @@
                         <th>Rate</th>
                         <th>Start time</th>
                         <th>End time</th>
-                        <th>Total working time</th>
+                        <th>Total Time</th>
                         <th></th>
                       </tr>
                     </thead>
                     <tbody>
                       {{#each timesheets}}
                         <tr class="documents-index-item" style="{{#if paid}}color: green{{else}}{{#if pending}}color: orange{{else}}{{#if rejected}}color: red{{/if}}{{/if}}{{/if}}">
-                          <td scope="row"><a href="{{issue}}" target="_blank">{{issue}}</a></td>
+                          <td scope="row"><a href="{{issue}}" target="_blank">{{removeHostname issue}}</a></td>
                           <td scope="row">{{project}}</td>
-                          <td>$ {{ rate }}</td>
+                          <td style="width:10%">$ {{ rate }}</td>
                           <td>{{formatDate start}}</td>
                           <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
-                          <td>{{totalTime}} {{#if history.length}}<a href="/entry/{{_id}}"><i style="color: red;" title="Modified" class="icon-flag"></i></a>{{/if}}</td>
+                          <td style="width:15%">{{totalTime}} {{#if history.length}}<a href="/entry/{{_id}}"><i style="color: red;" title="Modified" class="icon-flag"></i></a>{{/if}}</td>
                           <td style="width: 170px;">
                       {{#if active}}
                       <a class="btn btn-sm btn-success" id="js-pause" href="#" role="button" title="Pause">
