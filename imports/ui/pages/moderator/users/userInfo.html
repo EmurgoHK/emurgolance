@@ -56,13 +56,13 @@
                     <tbody>
                       {{#each timesheets}}
                         <tr class="documents-index-item" style="{{#if paid}}color: green{{else}}{{#if pending}}color: orange{{else}}{{#if rejected}}color: red{{/if}}{{/if}}{{/if}}">
-                          <td scope="row"><a href="{{issue}}" target="_blank">{{issue}}</a></td>
+                          <td scope="row"><a href="{{issue}}" target="_blank">{{removeHostname issue}}</a></td>
                           <td scope="row">{{project}}</td>
                           <td>${{ rate }}</td>
                           <td>{{formatDate start}}</td>
                           <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
                           <td>{{totalTime}} {{#if history.length}}<a href="/entry/{{_id}}"><i style="color: red;" title="Modified" class="icon-flag"></i></a>{{/if}}</td>
-                          <td scope="row"><a href="{{pr}}" target="_blank">{{pr}}</a></td>
+                          <td scope="row"><a href="{{pr}}" target="_blank">{{removeHostname pr}}</a></td>
                         </tr>
                       {{/each}}
                     </tbody>

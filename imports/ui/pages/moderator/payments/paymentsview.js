@@ -36,7 +36,7 @@ Template.paymentsview.onCreated(function() {
 
 Template.paymentsview.helpers({
     removeHostname: (url) => {
-       return url.slice(28);
+       return url.replace(/http(s|):\/\/github.com\/(blockrazor|emurgohk)\//i, '')
     },
     markedForApproval: (id) => {
         //check to see if the payment has been made.

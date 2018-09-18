@@ -21,6 +21,9 @@ Template.userInfo.onCreated(function() {
 })
 
 Template.userInfo.helpers({
+	removeHostname: (url) => {
+       return url.replace(/http(s|):\/\/github.com\/(blockrazor|emurgohk)\//i, '')
+    },
 	user: () => Meteor.users.findOne({ _id: FlowRouter.getParam('id') }),
 	totalEarnings: () => {
 		let sum = Timesheet.find({ owner: FlowRouter.getParam('id') }).fetch()
