@@ -55,19 +55,15 @@ const validateGithubPR = (pr) => {
 
 	var providerUrl = `https://api.github.com/repos/${urlPR}?client_id=59b6ea8f244deea72301&client_secret=d70815c427d0a3b4a9bd4c634b2285a419caaeef`
 	
-	console.log(providerUrl)
 	return new Promise((resolve, reject) => {
 		HTTP.get(providerUrl, { headers: {
 			  'User-Agent': 'EmurgoBot'
     	}}, (err, data) => {
-			console.log(data)
 			if (!err && data.statusCode === 200) {
-				console.log(data.data.html_url.includes(pr))
-				if (data.data.html_url.includes(pr)) {
+				if (data.data.html_url.includes(pr) && data.data.commits > 0) {
 					isValidPr = true;
 				}
 			}
-			
 			resolve(isValidPr)
 		})
 	})
