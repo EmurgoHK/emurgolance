@@ -35,6 +35,7 @@ Template.paymentsview.onCreated(function() {
 })
 
 Template.paymentsview.helpers({
+    payment: () => Payments.findOne({ _id: FlowRouter.getParam("paymentId") }),
     removeHostname: (url) => {
        return url.replace(/http(s|):\/\/github.com\/(blockrazor|emurgohk)\//i, '')
     },

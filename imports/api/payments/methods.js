@@ -14,6 +14,21 @@ export const requestPayment = new ValidatedMethod({
             throw new Meteor.Error('Error.', 'You have to be logged in.')
         }
 
+        // find current user
+        let user = Meteor.users.findOne({ _id : Meteor.userId()})
+
+        // get user's payment Details
+        let paymentDetails = (paymentMethod) => {
+            if (paymentMethod === 'swift')
+                return user.profile.bankDetails
+
+            if (paymentMethod === 'paypal')
+                return user.profile.paypalEmail
+
+            if (paymentMethod === 'bitcoin' || paymentMethod === 'cardano')
+                return user.profile.walletAddress
+        }
+
         //return all timesheets which have not had payments requested
         let notPaidTimesheets = Timesheet.find({ owner: Meteor.userId(), status: { $exists: false } }).fetch()
 
@@ -27,6 +42,8 @@ export const requestPayment = new ValidatedMethod({
             amount: totalEarnings,
             status: 'not-paid',
             owner: Meteor.userId(),
+            paymentMethod: user.profile.paymentMethod,
+            paymentDetails: paymentDetails(user.profile.paymentMethod),
             createAt: new Date().getTime()
 
         })
