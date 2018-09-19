@@ -14,8 +14,8 @@ export const requestPayment = new ValidatedMethod({
             throw new Meteor.Error('Error.', 'You have to be logged in.')
         }
 
-        // find current user
-        let user = Meteor.users.findOne({ _id : Meteor.userId()})
+        // get current user and assign it to the user variable
+        let user = Meteor.user()
 
         // get user's payment Details
         let paymentDetails = (paymentMethod) => {
@@ -42,7 +42,7 @@ export const requestPayment = new ValidatedMethod({
             amount: totalEarnings,
             status: 'not-paid',
             owner: Meteor.userId(),
-            paymentMethod: user.profile.paymentMethod,
+            paymentMethod: user.profile.paymentMethod || '',
             paymentDetails: paymentDetails(user.profile.paymentMethod),
             createAt: new Date().getTime()
 
