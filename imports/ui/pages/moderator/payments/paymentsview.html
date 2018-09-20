@@ -2,6 +2,25 @@
   <div class="documents-index container-fluid">
     <div class="row">
       <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            Payment method
+          </div>
+          <div class="card-body">
+            {{#with payment}}
+              <h4 class="card-title" style="text-transform: capitalize;">
+                {{paymentMethod}}
+              </h4>
+              <div class="alert alert-info">
+                {{paymentDetails}}
+              </div>
+            {{/with}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
           <div class="card">
             <div class="card-header">
               Payment Timesheets
