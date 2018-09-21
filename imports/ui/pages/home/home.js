@@ -6,7 +6,7 @@ import { notify } from '/imports/modules/notifier.js'
 import { hideConfirmationModal } from '/imports/api/users/methods'
 
 import moment from 'moment'
-import swal from 'sweetalert2'
+import swal from 'sweetalert'
 
 const formatDuration = (duration) => {
 	const pad = val => val < 100 ? ('00' + val).slice(-2) : val
@@ -203,35 +203,38 @@ Template.home.events({
 	},
 	'click #js-remove': function (event, templateInstance) {
 		event.preventDefault()
-
 		swal({
-            text: `Are you sure you want to remove this timecard? This action is not reversible.`,
-            icon: 'warning',
-            buttons: {
-			  	cancel: {
-			    	text: 'No',
-			    	value: false,
-			    	visible: true,
-			    	closeModal: true
-			  	},
-			  	confirm: {
-			    	text: 'Yes',
-			    	value: true,
-			    	visible: true,
-			    	closeModal: true
-			  	}
-			},
-            dangerMode: true
-        }).then(confirmed => {
-            if (confirmed) {
-                deleteWork.call({
-					workId: this._id
-				}, (err, data) => {
-					if (err) {
-						notify(err.reason || err.message, 'error')
-					}
-				})
-            }
+      text: `Are you sure you want to remove this timecard? This action is not reversible.`,
+      icon: 'warning',
+      buttons: {
+        cancel: {
+          text: 'No',
+          value: false,
+          visible: true,
+          closeModal: true
+        },
+        confirm: {
+          text: 'Yes',
+          value: true,
+          visible: true,
+          closeModal: true
+        }
+      },
+      dangerMode: true
+    }).then(confirmed => {
+      if (confirmed) {
+        deleteWork.call({
+          workId: this._id
+        }, (err, data) => {
+          if (err) {
+            notify(err.reason || err.message, 'error')
+          } else {
+            notify('Timecard removed', 'success')
+          }
         })
+      } else {
+        notify('Operation Cancelled', 'error')
+      }
+    })
 	}
 })
