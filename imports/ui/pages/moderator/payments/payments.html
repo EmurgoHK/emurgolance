@@ -27,10 +27,11 @@
                     <table class="table table-responsive-sm table-hover table-outline mb-0">
                       <thead class="thead-light">
                         <tr>
-                          <th>User</th>
-                          <th>Amount</th>
-                          <th>Status</th>
-                          <th></th>
+                          <th style="width: 20%">User</th>
+                          <th style="width: 20%">Amount</th>
+                          <th style="width: 30%">Payment method</th>
+                          <th style="width: 20%">Status</th>
+                          <th style="width: 10%"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -38,6 +39,12 @@
                         <tr class="user-item">
                           <td>{{getName owner}}</td>
                           <td>${{fixed amount}}</td>
+                          <td>
+                            {{paymentMethod}}
+                            <br><br>
+                            {{{paymentDetails}}}
+                            
+                          </td>
                           <td>{{statusName status}}</td>
                           <td><a href="#" class="btn btn-sm btn-primary review">Review</a></td>
                         </tr>
