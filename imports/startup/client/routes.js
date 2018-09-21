@@ -4,6 +4,7 @@ import { BlazeLayout } from 'meteor/kadira:blaze-layout'
 // Import needed templates
 import '../../ui/layouts/body/body.js'
 import '../../ui/pages/home/home.js'
+import '../../ui/pages/landing/landing'
 import '../../ui/pages/user/settings'
 import '../../ui/pages/requestpayment/requestpayment'
 import '../../ui/pages/moderator/users/userList'
@@ -24,11 +25,15 @@ const modRoutes = FlowRouter.group({
 FlowRouter.route('/', {
 	name: 'home',
   	action: () => {
-    	BlazeLayout.render('mainLayout', {
-			header: 'header',
-			main: 'home',
-			sidebar: 'sidebar'
-    	})
+      if (Meteor.userId() || (process.env && process.env.NODE_ENV == 'development')){
+        BlazeLayout.render('mainLayout', {
+          header: 'header',
+          main: 'home',
+          sidebar: 'sidebar'
+        })
+      } else {
+        BlazeLayout.render('landingPage')
+      }
   	}
 })
 
