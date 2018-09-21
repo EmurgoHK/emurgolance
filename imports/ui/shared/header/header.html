@@ -1,67 +1,73 @@
 <template name="header">
-    <header class="app-header navbar">
-        <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+  <header class="app-header navbar">
+    <button class="navbar-toggler sidebar-toggler d-lg-none mr-auto" type="button" data-toggle="sidebar-show">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <a class="navbar-brand" href="/">
-            Emurgolance
+    <a class="navbar-brand" href="/">
+      Emurgolance
+    </a>
+
+    <button class="navbar-toggler sidebar-toggler d-none d-lg-block" type="button" data-toggle="sidebar-show">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <ul class="nav navbar-nav d-none d-lg-block">
+      <li class="nav-item px-3">
+        <a class="nav-link" href="/">Timesheet</a>
+      </li>
+    </ul>
+
+    <ul class="nav navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/notifications" role="button">
+          <i class="icon-bell"></i>
+          {{#if notificationsCount}}<span class="badge badge-pill badge-danger">{{notificationsCount}}</span>{{/if}}
+        </a>
+      </li>
+      <li class="nav-item dropdown mr-5">
+        {{#if currentUser}}
+        <a href="" class="nav-link dropdown-toggle d-none d-sm-block" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          {{currentUser.profile.name}}
+        </a>
+        <!-- For Smaller Screen -->
+        <a href="" class="nav-link dropdown-toggle d-block d-sm-none" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          <i class="icon-user"></i>
         </a>
 
-        <button class="navbar-toggler sidebar-toggler d-none d-lg-block" type="button" data-toggle="sidebar-show">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          {{#if isModerator}}
+          <div class="dropdown-header text-center">
+            <strong>Moderator</strong>
+          </div>
+          <a class="dropdown-item" href="/moderator/users">
+            <i class="nav-icon icon-people"></i> Manage users
+          </a>
+          {{/if}}
+          <div class="dropdown-header text-center">
+            <strong>Account</strong>
+          </div>
+          <a class="dropdown-item" href="/settings"><i class="nav-icon icon-settings"></i> Settings</a>
+          <a class="dropdown-item" href="/requestpayment"><i class="nav-icon icon-diamond"></i> Request Payment</a>
 
-        <ul class="nav navbar-nav d-none d-lg-block">
-            <li class="nav-item px-3">
-                <a class="nav-link" href="/">Timesheet</a>
-            </li>
-        </ul>
+          <a class="sign-out dropdown-item" style="cursor: pointer;"><i class="nav-icon icon-logout"></i> Sign out</a>
 
-        <ul class="nav navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/notifications" role="button">
-              <i class="icon-bell"></i>
-              {{#if notificationsCount}}<span class="badge badge-pill badge-danger">{{notificationsCount}}</span>{{/if}}
-            </a>
-          </li>
-            <li class="nav-item dropdown mr-5">
-                {{#if currentUser}}
-                  <a href="" class="nav-link dropdown-toggle d-none d-sm-block" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  {{currentUser.profile.name}}
-                  </a>
-                  
-                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        {{#if isModerator}}
-                        <div class="dropdown-header text-center">
-                            <strong>Moderator</strong>
-                        </div>
-                        <a class="dropdown-item" href="/moderator/users">
-                            <i class="nav-icon icon-people"></i> Manage users
-                        </a>
-                    {{/if}}
-                        <div class="dropdown-header text-center">
-                                <strong>Account</strong>
-                            </div>
-                    <a class="dropdown-item" href="/settings"><i class="nav-icon icon-settings"></i> Settings</a>
-                    <a class="dropdown-item" href="/requestpayment"><i class="nav-icon icon-diamond"></i> Request Payment</a>
 
-                    <a class="sign-out dropdown-item" style="cursor: pointer;"><i class="nav-icon icon-logout"></i>  Sign out</a>
+        </div>
+        {{else}}
+        <a class="sign-in nav-link" style="cursor: pointer;">Sign in</a>
+        {{/if}}
+      </li>
+    </ul>
 
-                    
-                  </div>
-                {{else}}
-                  <a class="sign-in nav-link" style="cursor: pointer;">Sign in</a>
-                {{/if}}
-            </li>
-        </ul>
-
-        <!-- <button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" data-toggle="aside-menu-lg-show">
+    <!-- <button class="navbar-toggler aside-menu-toggler d-md-down-none" type="button" data-toggle="aside-menu-lg-show">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <button class="navbar-toggler aside-menu-toggler d-lg-none" type="button" data-toggle="aside-menu-show">
             <span class="navbar-toggler-icon"></span>
         </button> -->
-    </header>
+  </header>
 </template>
