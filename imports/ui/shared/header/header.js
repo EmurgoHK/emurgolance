@@ -29,7 +29,7 @@ Template.header.helpers({
 
 Template.header.events({
     'click .sidebar-toggler': function() {
-        $('body').toggleClass("sidebar-lg-show")
+        $('body').toggleClass("sidebar-show")
     },
     'click .sign-in': function(event) {
         event.preventDefault();
