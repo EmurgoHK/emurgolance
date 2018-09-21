@@ -10,31 +10,36 @@
             </div>
             <div class="card-body">
               <div class="row" style="align-items: flex-end">
-                <div class="col-sm-8">
-                    <h4>Issue URL</h4>
+                <div class="col-sm-12">
+                    <h5 class="card-title">Issue URL</h5>
                     <a href="{{issue}}" target="_blank">{{issue}}</a>
                 </div>
-              <div class="col-sm-8">
-                    <h4>PR URL</h4>
-                    <a href="{{pr}}" target="_blank">{{pr}}</a>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col-sm-6">
+                  <h5 class="card-title">PR URL</h5>
+                  <a href="{{pr}}" target="_blank">{{pr}}</a>
                 </div>
-                  <div class="col-sm-2">
-                    <div class="callout callout-primary float-right">
-                      <small class="text-muted">Time logged (HH:MM:SS)</small><br>
-                      {{#if canEdit}}
-                      <input type="text" style="width: 85px;" class="h4" value="{{total.formattedTime}}" id="js-totalTime">
-                      <a class="btn btn-sm btn-success" style="font-size: 1.12rem;line-height: 1.2;vertical-align: top;" id="js-edit" href="#" role="button">
-                        Save
-                      </a>
+                <div class="col-sm-3">
+                  <div class="callout callout-primary">
+                    <small class="text-muted">Time logged (HH:MM:SS)</small><br>
+                    {{#if canEdit}}
+                      <div class="input-group">
+                        <input type="text" class="form-control form-control-sm" value="{{total.formattedTime}}" id="js-totalTime">
+                        <span class="input-group-append">
+                          <button class="btn btn-success btn-sm" type="button" id="js-edit"  >Save</button>
+                        </span>
+                      </div>
                       {{else}}
                       <strong class="h4">{{total.formattedTime}}</strong>
-                      {{/if}}
+                    {{/if}}
                     </div>
                   </div>
-                  <div class="col-sm-2">
-                    <div class="callout callout-success float-right" style="margin:0">
+                  <div class="col-sm-3">
+                    <div class="callout callout-success pull-right">
                       <small class="text-muted">Total earnings</small><br>
-                      <strong class="h4"><span style="color: green">${{fixed totalEarnings}}</span></strong>
+                      <strong class="h3"><span class="text-success">${{fixed totalEarnings}}</span></strong>
                     </div>
                   </div>
               </div>
