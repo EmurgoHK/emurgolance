@@ -1,0 +1,26 @@
+.emurgolance-home{
+  position: relative;
+  min-width: 100vw;
+  min-height: 100vh;
+  background-image: url('img/landing-bg.png');
+  max-height: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #73818f;
+  .logo{
+    font-size: 3em;
+    padding-bottom: 1em;
+  }
+  .content{
+    text-align: center;
+    font-size: 2em;
+    img{
+      max-width: 140px;
+      height: auto;
+      padding-bottom: 1em;
+    }
+  }
+}
