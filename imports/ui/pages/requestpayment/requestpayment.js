@@ -2,9 +2,10 @@ import './requestpayment.html'
 
 import { Payments } from '/imports/api/payments/payments'
 import moment from 'moment'
-import { requestPayment } from '/imports/api/payments/methods'
+import { requestPayment, cancelPayment } from '/imports/api/payments/methods'
 import { notify } from '/imports/modules/notifier'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
+import swal from 'sweetalert'
 
 Template.requestpayment.onCreated(function() {
 
@@ -19,7 +20,6 @@ Template.requestpayment.onRendered(function() {
 
 
 })
-
 
 Template.requestpayment.helpers({
     outstandingEarnings: () => {
@@ -59,6 +59,9 @@ Template.requestpayment.helpers({
     },
     formatDate: (timestamp) => {
         return moment(timestamp).format('dddd, MMMM Do YYYY, h:mm:ss a')
+    },
+    notPaid: (status) => {
+        return status === 'not-paid'
     }
 })
 
@@ -106,5 +109,26 @@ Template.requestpayment.events({
         }
 
 
+    },
+    'click .cancelPayment': (event, _templateInstance) => {
+        swal({
+            text: 'Arr you sure you want to cancel this payment?',
+            icon: 'warning',
+            buttons: true,
+            dangerMode: true
+        }).then((cancel) => {
+            if (cancel) {
+                let paymentId = event.currentTarget.id
+                
+                cancelPayment.call({ paymentId : paymentId }, (err, _data) => {
+                    if (err) {
+                        notify(err.reason || err.message, 'error')
+                        return
+                    }
+                    
+                    notify('You have successfully cancelled payment', 'success');
+                })      
+            }
+        })
     }
 })

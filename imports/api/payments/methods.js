@@ -81,6 +81,53 @@ export const requestPayment = new ValidatedMethod({
     }
 })
 
+export const cancelPayment = new ValidatedMethod({
+    name: 'cancelPayment',
+    validate: new SimpleSchema({
+        paymentId: {
+            type: String,
+            optional: false
+        },
+    }).validator({
+        clean: true
+    }),
+    run({ paymentId }) {
+        if (Meteor.isServer) { 
+            if (!Meteor.userId()) {
+                throw new Meteor.Error('Error.', 'You have to be logged in.')
+            }
+
+            let payment = Payments.findOne({ _id : paymentId })
+
+            if (payment && payment.status === 'not-paid') {
+                Payments.update({ _id : paymentId }, {
+                    $set: { status: 'cancelled' }
+                })
+
+                Timesheet.update({ paymentId: paymentId, status: 'payment-inprogress' }, { 
+                    $unset : {  status: 1, paymentId: 1 }
+                }, { multi : true })
+
+
+                //return all users that are moderators
+                let getAllModerators = Meteor.users.find({ moderator: true }).fetch()
+                let message = 'Cancelled payment request by ' + Meteor.user().profile.name 
+
+                //send a notification to all moderators
+
+                getAllModerators.forEach(i => {
+                    sendNotification(i._id, message, Meteor.user().profile.name, '/moderator/payments', 'notification') //userId, message, from, href, type
+                })
+
+                return true;
+            } else {
+                throw new Meteor.Error('Error.', 'Unable to cancel payment')
+
+            }
+        }
+    }
+})
+
 export const markAsPaid = new ValidatedMethod({
     name: 'markAsPaid',
     validate: new SimpleSchema({

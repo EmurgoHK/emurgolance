@@ -67,7 +67,11 @@
                                         <td>
                                             <span class="badge badge-{{status}}">{{statusName status}}</span> 
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            {{#if notPaid status}}
+                                                <a href id="{{_id}}" class="cancelPayment text-warning"> Cancel </a>
+                                            {{/if}}
+                                        </td>
                                     </tr>
                                 {{/each}}
                             </tbody>
