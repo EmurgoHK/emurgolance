@@ -54,7 +54,7 @@ describe('Home route', function () {
         assert(browser.isVisible('#js-continue'), true)
     })
 
-    it('user should be able to continue wokring on an issue', () => {
+    it('user should be able to continue working on an issue', () => {
         browser.click('#js-continue')
 
         browser.pause(3000)
@@ -71,9 +71,10 @@ describe('Home route', function () {
 
         browser.setValue('.swal-content__input', prURL)
 
-        assert(browser.isVisible('.swal-button.swal-button--confirm'), true);
+        assert(browser.isVisible('.swal-button.swal-button--confirm'), true)
         browser.click('.swal-button.swal-button--confirm')
         browser.pause(3000)
+        browser.click('.swal-button.swal-button--confirm')
 
         assert(!browser.isExisting('#js-pause'), true)
         assert(!browser.isVisible('#js-pause'), true)
