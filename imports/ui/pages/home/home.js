@@ -212,22 +212,10 @@ Template.home.events({
 	'click #js-remove': function (event, templateInstance) {
 		event.preventDefault()
 		swal({
-      text: `Are you sure you want to remove this timecard? This action is not reversible.`,
+      title: `Are you sure?`,
+      text: `This will remove current timecard and this action is not reversible.`,
       icon: 'warning',
-      buttons: {
-        cancel: {
-          text: 'No',
-          value: false,
-          visible: true,
-          closeModal: true
-        },
-        confirm: {
-          text: 'Yes',
-          value: true,
-          visible: true,
-          closeModal: true
-        }
-      },
+      buttons: true,
       dangerMode: true
     }).then(confirmed => {
       if (confirmed) {
