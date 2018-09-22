@@ -6,7 +6,7 @@ import { notify } from '/imports/modules/notifier.js'
 import { hideConfirmationModal } from '/imports/api/users/methods'
 
 import moment from 'moment'
-import swal from 'sweetalert2'
+import swal from 'sweetalert'
 
 const formatDuration = (duration) => {
 	const pad = val => val < 100 ? ('00' + val).slice(-2) : val
@@ -165,73 +165,72 @@ Template.home.events({
 		event.preventDefault()
 		
 		swal({
-			title: '<strong>Are You Sure?</u></strong>',
-  			type: 'warning',
-			input: 'text',
-			inputPlaceholder: 'Enter the link to PR',
-			allowOutsideClick: false,
-			showCancelButton: true,
-			showLoaderOnConfirm: true,
-			preConfirm: (url) => {
-				var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
-				var regex = new RegExp(expression);
-
-				// check if it is a URL using regex
-				if (url !== '-')  {
-					if (url.match(regex)) {
-						return url
-					} 
-					swal.showValidationError(
-						`Please enter a valid url`
-					  )
-				} if (url === '-') {
-					return url;
-				}
-			  },
+			title: 'Enter the link to PR',
+      type: 'warning',
+      content: "input",
+      button: {
+        text: "Finish!",
+        closeModal: false,
+      },
+		}).then((url) => {
+			var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+      var regex = new RegExp(expression);
+      // check if it is a URL using regex
+      if (url !== '-')  {
+        if (url.match(regex)) {
+          return url
+        } else {
+          swal("Oh no!", "PR link is invalid", "error")
+          swal.stopLoading()
+        }
+        // return new Error;
+      } if (url === '-') {
+        return url;
+      }
 		}).then((val) => {
-			if (val.value) {
+      if (val) {
 				finishWork.call({
 					workId: this._id,
-					pr: val.value
+					pr: val
 				}, (err, data) => {
 					if (err) {
 						notify(err.reason || err.message, 'error')
-					}
+					} else {
+            swal("Good job!", "You have finished this issue!", "success");
+          }
 				})
 			}
-		})
+    }).catch(err => {
+      if (err) {
+        swal("Oh No!", err, "error");
+      } else {
+        swal.stopLoading();
+        swal.close();
+      }
+    })
 	},
 	'click #js-remove': function (event, templateInstance) {
 		event.preventDefault()
-
 		swal({
-            text: `Are you sure you want to remove this timecard? This action is not reversible.`,
-            icon: 'warning',
-            buttons: {
-			  	cancel: {
-			    	text: 'No',
-			    	value: false,
-			    	visible: true,
-			    	closeModal: true
-			  	},
-			  	confirm: {
-			    	text: 'Yes',
-			    	value: true,
-			    	visible: true,
-			    	closeModal: true
-			  	}
-			},
-            dangerMode: true
-        }).then(confirmed => {
-            if (confirmed) {
-                deleteWork.call({
-					workId: this._id
-				}, (err, data) => {
-					if (err) {
-						notify(err.reason || err.message, 'error')
-					}
-				})
-            }
+      title: `Are you sure?`,
+      text: `This will remove current timecard and this action is not reversible.`,
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true
+    }).then(confirmed => {
+      if (confirmed) {
+        deleteWork.call({
+          workId: this._id
+        }, (err, data) => {
+          if (err) {
+            notify(err.reason || err.message, 'error')
+          } else {
+            notify('Timecard removed', 'success')
+          }
         })
+      } else {
+        notify('Operation Cancelled', 'error')
+      }
+    })
 	}
 })
