@@ -72,7 +72,7 @@ describe('Home route', function () {
         browser.setValue('.swal-content__input', prURL)
 
         assert(browser.isVisible('.swal-button.swal-button--confirm'), true);
-        browser.click('..swal-button.swal-button--confirm')
+        browser.click('.swal-button.swal-button--confirm')
         browser.pause(3000)
 
         assert(!browser.isExisting('#js-pause'), true)
