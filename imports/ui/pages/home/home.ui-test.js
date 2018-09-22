@@ -69,10 +69,10 @@ describe('Home route', function () {
         browser.click('#js-finish')
         browser.pause(3000)
 
-        browser.setValue('.swal2-input', prURL)
+        browser.setValue('.swal-content__input', prURL)
 
-        assert(browser.isVisible('.swal2-confirm.swal2-styled'), true);
-        browser.click('.swal2-confirm.swal2-styled')
+        assert(browser.isVisible('.swal-button.swal-button--confirm'), true);
+        browser.click('..swal-button.swal-button--confirm')
         browser.pause(3000)
 
         assert(!browser.isExisting('#js-pause'), true)
@@ -145,7 +145,7 @@ describe('Home route', function () {
 
         browser.click('#js-remove')
         browser.pause(3000)
-        browser.click('.swal2-confirm')
+        browser.click('.swal-button.swal-button--confirm')
         browser.pause(3000)
 
         let newLength = browser.execute(() => $('.documents-index-item').length).value
