@@ -1,38 +1,43 @@
 <template name="sidebar">
-    <div class="sidebar">
-        <nav class="sidebar-nav">
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">
-                        <i class="nav-icon icon-speedometer"></i> Timesheet
-                    </a>
-                </li>
-                {{#if isModerator}}
-                <li class="nav-item nav-dropdown open">
-                    <a class="nav-link nav-dropdown-toggle" href="#">
-                            <i class="nav-icon icon-energy"></i> Moderator
-                        </a>
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/moderator/payments">
-                                <i class="nav-icon icon-speedometer"></i> Payments
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/moderator/users">
-                                    <i class="nav-icon icon-people"></i> Manage users 
-                                </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/moderator/statistics">
-                                    <i class="nav-icon icon-graph"></i> Projects stats
-                                </a>
-                        </li>
-                    </ul>
-                </li>
-                {{/if}}
-            </ul>
-        </nav>
-        <button class="sidebar-minimizer brand-minimizer" type="button"></button>
-    </div>
+  <div class="sidebar">
+    <nav class="sidebar-nav">
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <i class="nav-icon icon-speedometer"></i> Timesheet
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/requestpayment">
+            <i class="nav-icon icon-wallet"></i> Payments
+          </a>
+        </li>
+        {{#if isModerator}}
+        <li class="nav-item nav-dropdown open">
+          <a class="nav-link nav-dropdown-toggle" href="#">
+            <i class="nav-icon icon-energy"></i> Moderator
+          </a>
+          <ul class="nav-dropdown-items">
+            <li class="nav-item">
+              <a class="nav-link" href="/moderator/payments">
+                <i class="nav-icon icon-speedometer"></i> Payments
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/moderator/users">
+                <i class="nav-icon icon-people"></i> Manage users
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/moderator/statistics">
+                <i class="nav-icon icon-graph"></i> Projects stats
+              </a>
+            </li>
+          </ul>
+        </li>
+        {{/if}}
+      </ul>
+    </nav>
+    <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+  </div>
 </template>
