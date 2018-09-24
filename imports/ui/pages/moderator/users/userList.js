@@ -63,12 +63,6 @@ Template.userList.events({
                 text: `Are you sure that you want to approve the hourly rate?`,
                 icon: 'warning',
                 buttons: {
-                    hide: {
-                        text: 'Don\'t show again',
-                        value: 'hide',
-                        visible: true,
-                        closeModal: true
-                    },
                     cancel: {
                         text: 'No',
                         value: false,
@@ -84,16 +78,6 @@ Template.userList.events({
                 },
                 dangerMode: true
             }).then(val => {
-                if (val === 'hide') {
-                    hideConfirmationModal.call({
-                        modalId: 'approve'
-                    }, (err, data) => {
-                        if (err) {
-                            notify(err.reason || err.message, 'error')
-                        }
-                    })
-                }
-
                 if (val) {
                     approveHourlyRate.call({
                         userId: this._id
