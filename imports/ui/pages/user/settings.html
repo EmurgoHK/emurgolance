@@ -34,6 +34,10 @@
                   <input type="radio" name="js-payment" id="cardano-payment" class="form-check-input" value="cardano">
                   <label for="" class="form-check-label">Cardano</label>
                 </div>
+                                            <div class="form-check form-check-inline mr-5">
+                              <input type="radio" name="js-payment"  id="banktransfer-payment" class="form-check-input" value="banktransfer">
+                              <label for="" class="form-check-label">Bank Transfer</label>
+                          </div>
               </div>
 
               {{#if selectedPaymentMethod 'paypal'}}
@@ -66,7 +70,12 @@
                   value="{{currentUser.profile.bankDetails}}"></textarea>
               </div>
               {{/if}}
-
+                        {{#if selectedPaymentMethod 'banktransfer' }}
+                        <div class="form-group">
+                            <label for="rate">Bank Transfer </label>
+                            <textarea name="banktransfer-details" id="js-banktransfer-details" class="form-control" cols="30" rows="5" placeholder="Enter your bank transfer details" value="{{currentUser.profile.banktransferDetails}}"></textarea>
+                        </div>
+                      {{/if}}
               <div class="form-group">
                 <label for="rate">Hourly Rate</label>
                 <input type="number" id="js-hr" class="form-control" placeholder="0.00" value="{{currentUser.profile.hourlyRate}}"
