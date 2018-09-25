@@ -42,6 +42,10 @@ export const saveSettings = new ValidatedMethod({
                 type: String,
                 optional: true
             },
+            banktransferDetails: {
+                type: String,
+                optional: true
+            },
             paypalEmail: {
                 type: String,
                 optional: true
@@ -57,7 +61,7 @@ export const saveSettings = new ValidatedMethod({
         }).validator({
         	 clean: true
         }),
-    run({ name, paymentMethod, hourlyRate, walletAddress, bankDetails, paypalEmail, minpayout,maxpayout }) {
+    run({ name, paymentMethod, hourlyRate, walletAddress, bankDetails,banktransferDetails, paypalEmail, minpayout,maxpayout }) {
         if (!Meteor.userId()) {
     	     throw new Meteor.Error('Error.', 'You have to be logged in.')
     	}
@@ -77,6 +81,7 @@ export const saveSettings = new ValidatedMethod({
                 'profile.walletAddress': walletAddress || '',
                 'profile.bankDetails': bankDetails || '',
                 'profile.paypalEmail': paypalEmail || '',
+                'profile.banktransferDetails': banktransferDetails || '',
                 'profile.minpayout': minpayout || '',
                 'profile.maxpayout': maxpayout || ''
             }

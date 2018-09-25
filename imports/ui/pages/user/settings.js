@@ -45,6 +45,7 @@ Template.settings.events({
 			paypalEmail: $('#js-paypal-email').val(),
 			walletAddress: $('#js-wallet-address').val(),
 			bankDetails: $('#js-bank-details').val(),
+			banktransferDetails: $('#js-banktransfer-details').val(),
 			minpayout: $('#js-minpayout').val(),
 			maxpayout: $('#js-maxpayout').val(),
 
