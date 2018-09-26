@@ -4,6 +4,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router'
 import { saveSettings } from '/imports/api/users/methods'
 import { notify } from '/imports/modules/notifier'
 import { resetHiddenModals } from '/imports/api/users/methods'
+import { camelize } from '/imports/api/utilities.js'
 
 
 Template.settings.onCreated(function() {
@@ -31,6 +32,9 @@ Template.settings.helpers({
 	},
 	or: (a, b) => {
 		return a || b
+	},
+	defaultPaymentType: () => {
+		return camelize(Template.instance().selectedPaymentMethod.get());
 	}
 })
 

@@ -13,6 +13,13 @@
                 <input type="text" id="js-name" class="form-control" placeholder="Name" value="{{currentUser.profile.name}}"
                   required>
               </div>
+              <br />
+              <h5>Payment Details</h5>
+               <div class="form-group">
+                <label for="rate">Default Payment Method</label>
+                <br />{{defaultPaymentType}}
+              </div>
+              
               <div class="form-group">
                 <label for="payment-method">Payment Method </label> <br>
                 <div class="form-check form-check-inline mr-5">
