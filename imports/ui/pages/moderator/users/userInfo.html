@@ -63,7 +63,7 @@
                           <td>{{formatDate start}}</td>
                           <td>{{#if endTime}}{{formatDate endTime}}{{else}}-{{/if}}</td>
                           <td>{{totalTime}} {{#if history.length}}<a href="/entry/{{_id}}"><i style="color: red;" title="Modified" class="icon-flag"></i></a>{{/if}}</td>
-                          <td><a class="btn btn-sm btn-danger" href="/entry/{{_id}}"><i title="Edit" class="icon-pencil"></i></a></td>
+                          <td><a class="btn btn-sm btn-danger {{#if paid}}disabled{{/if}}" href="/entry/{{_id}}"><i title="Edit" class="icon-pencil"></i></a></td>
                           <td scope="row"><a href="{{pr}}" target="_blank">{{removeHostname pr}}</a></td>
                         </tr>
                       {{/each}}
