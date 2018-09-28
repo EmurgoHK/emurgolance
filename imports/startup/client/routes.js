@@ -14,7 +14,7 @@ import '../../ui/pages/moderator/payments/paymentsview'
 import '../../ui/pages/moderator/statistics/statistics'
 import '../../ui/pages/timesheet/entry'
 import '../../ui/pages/notifications/notifications'
-
+import '../../ui/pages/repos/repos'
 
 const modRoutes = FlowRouter.group({
 	prefix: '/moderator',
@@ -130,6 +130,17 @@ modRoutes.route('/statistics', {
     action: () => {
         BlazeLayout.render('mainLayout', {
           main: 'statistics',
+          header: 'header',
+          sidebar: 'sidebar'
+        })
+    },
+    name: 'statistics'
+})
+
+modRoutes.route('/repos', {
+    action: () => {
+        BlazeLayout.render('mainLayout', {
+          main: 'repos',
           header: 'header',
           sidebar: 'sidebar'
         })
