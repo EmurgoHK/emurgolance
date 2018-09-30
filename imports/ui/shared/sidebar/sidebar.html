@@ -18,6 +18,13 @@
           </a>
         </li>
         {{#if isModerator}}
+        <li class="nav-item">
+          <a class="nav-link" href="/moderator/repos">
+            <i class="nav-icon icon-wallet"></i> Repositories
+          </a>
+        </li>
+        {{/if}}
+        {{#if isModerator}}
         <li class="nav-item nav-dropdown open">
           <a class="nav-link nav-dropdown-toggle" href="#">
             <i class="nav-icon icon-energy"></i> Moderator
