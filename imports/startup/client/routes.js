@@ -15,6 +15,7 @@ import '../../ui/pages/moderator/statistics/statistics'
 import '../../ui/pages/timesheet/entry'
 import '../../ui/pages/notifications/notifications'
 import '../../ui/pages/repos/repos'
+import '../../ui/pages/issues/issues'
 
 const modRoutes = FlowRouter.group({
 	prefix: '/moderator',
@@ -34,6 +35,17 @@ FlowRouter.route('/', {
       } else {
         BlazeLayout.render('landingPage')
       }
+  	}
+})
+
+FlowRouter.route('/issues', {
+	name: 'issues',
+  	action: () => {
+    	BlazeLayout.render('mainLayout', {
+			header: 'header',
+			main: 'issues',
+			sidebar: 'sidebar'
+    	})
   	}
 })
 
