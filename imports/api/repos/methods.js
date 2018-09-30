@@ -6,43 +6,44 @@ import SimpleSchema from 'simpl-schema'
 
 import { isModerator } from '/imports/api/users/methods'
 
-
 export const getGithubRepos = () => {
-    let providerUrl = `https://api.github.com/orgs/EmurgoHK/repos?access_token=efd6bd79dead661f63d772f863392dd153e91e1f`
-    repoArray = []
-
+    let providerUrl = `https://api.github.com/orgs/EmurgoHK/repos?access_token=${process.env.GITHUB_API_TOKEN}`
+    
+    let repoArray = []
+    
     return new Promise(function(resolve, reject) {
-
-        HTTP.get(providerUrl, (err, data) => {
+        HTTP.get(providerUrl, {
+            headers: {
+                'User-Agent': 'emurgo/bot'
+            }
+        }, (err, data) => {
             if (!err && data.statusCode === 200) {
-
-                resolve(data.data)
-
+                 resolve(data.data)
             } else {
                 console.error(err)
             }
         })
-
     }).then(function(result) {
+         result.forEach(i => {
+            let repoUrl = `https://api.github.com/repos/EmurgoHK/${i.name}/pulls?access_token=${process.env.GITHUB_API_TOKEN}`
+            
+            let repoData = {}
+            try {
+                repoData = HTTP.get(repoUrl, {
+                    headers: {
+                        'User-Agent': 'emurgo/bot'
+                    }
+                })
+            } catch(e) {}
 
-
-        result.forEach(i => {
-
-            let repoUrl = `https://api.github.com/repos/EmurgoHK/${i.name}/pulls?access_token=efd6bd79dead661f63d772f863392dd153e91e1f`
-            HTTP.get(repoUrl, (err, repoData) => {
-                if (!err && repoData.statusCode === 200) {
-
-                    repoArray.push({ 'repo': i.name, pullCount: repoData.data.length })
-
-                } else {
-                    console.error(err)
-                }
-            })
-
+            if (repoData && repoData.statusCode === 200) {
+                repoArray.push({
+                    repo: i.name,
+                    pullCount: repoData.data.length
+                })
+            }
         })
 
-        return repoArray;
-
-    });
-
-}
+        return repoArray
+    })
+} 
