@@ -34,12 +34,32 @@ Template.userInfo.helpers({
 		let sum = Timesheet.find({
 			owner: FlowRouter.getParam('id'),
 			status: {
-                $nin: ['payment-paid', 'payment-rejected', 'payment-inprogress']
-            }
-        }).fetch()
+        $nin: ['payment-paid', 'payment-rejected', 'payment-inprogress']
+      }
+    }).fetch()
 		
 		return sum.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce((acc, curr) => acc + curr, 0)
-	},
+  },
+  paidEarnings: () => {
+    let sum = Timesheet.find({
+			owner: FlowRouter.getParam('id'),
+			status: {
+        $in: ['payment-paid']
+      }
+    }).fetch()
+		
+		return sum.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce((acc, curr) => acc + curr, 0)
+  },
+  rejectedEarnings: () => {
+    let sum = Timesheet.find({
+			owner: FlowRouter.getParam('id'),
+			status: {
+        $in: ['payment-rejected']
+      }
+    }).fetch()
+		
+		return sum.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce((acc, curr) => acc + curr, 0)
+  },
 	timesheets: () => Timesheet.find({
 		owner: FlowRouter.getParam('id')
 	}, {

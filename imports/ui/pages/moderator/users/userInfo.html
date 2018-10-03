@@ -10,11 +10,10 @@
             </div>
             <div class="card-body">
               <div class="row" style="align-items: flex-end">
-                <div class="col-sm-6">
-                    <h4>Payment</h4>
-                    <b>Minimal payout:</b> ${{fixed profile.minpayout}}<br />
-                    <b>Maximal payout:</b> ${{fixed profile.maxpayout}}
-                    
+                <div class="col-sm-2">
+                  <h4>Payment</h4>
+                  <b>Minimal payout:</b> ${{fixed profile.minpayout}}<br />
+                  <b>Maximal payout:</b> ${{fixed profile.maxpayout}}  
                 </div>
                 {{#if timesheets.count}}
                   <div class="col-sm-2">
@@ -25,13 +24,25 @@
                   </div>
                   <div class="col-sm-2">
                     <div class="callout callout-success float-right" style="margin:0">
-                      <small class="text-muted">Not paid earnings</small><br>
-                      <strong class="h4">{{#if profile.hourlyRateApproved}}<span style="color: red">$ {{fixed notPaidEarnings }}</span>{{else}}<span style="color: orange">$ {{fixed notPaidEarnings}}</span>{{/if}}</strong>
+                      <small class="text-muted">Pending Earnings</small><br>
+                      <strong class="h4">{{#if profile.hourlyRateApproved}}<span style="color: orange">$ {{fixed notPaidEarnings }}</span>{{else}}<span style="color: orange">$ {{fixed notPaidEarnings}}</span>{{/if}}</strong>
                     </div>
                   </div>
                   <div class="col-sm-2">
                     <div class="callout callout-success float-right" style="margin:0">
-                      <small class="text-muted">Total earnings</small><br>
+                      <small class="text-muted">Paid Earnings</small><br>
+                      <strong class="h4">{{#if profile.hourlyRateApproved}}<span style="color: green">$ {{fixed paidEarnings }}</span>{{else}}<span style="color: orange">$ {{fixed notPaidEarnings}}</span>{{/if}}</strong>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="callout callout-success float-right" style="margin:0">
+                      <small class="text-muted">Rejected Earnings</small><br>
+                      <strong class="h4">{{#if profile.hourlyRateApproved}}<span style="color: red">$ {{fixed rejectedEarnings }}</span>{{else}}<span style="color: orange">$ {{fixed notPaidEarnings}}</span>{{/if}}</strong>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
+                    <div class="callout callout-success float-right" style="margin:0">
+                      <small class="text-muted">Total Earnings</small><br>
                       <strong class="h4">{{#if profile.hourlyRateApproved}}<span style="color: green">$ {{fixed totalEarnings }}</span>{{else}}<span style="color: orange">$ {{fixed totalEarnings}}</span>{{/if}}</strong>
                     </div>
                   </div>
