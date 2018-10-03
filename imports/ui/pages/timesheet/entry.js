@@ -88,6 +88,18 @@ Template.entry.events({
   },
   'click #js-edit': function (event, templateInstance) {
 		event.preventDefault()
+
+    try {
+      Timesheet.editWorkSchema.validate({
+        workId: FlowRouter.getParam('id'),
+        newTotal: moment.duration($('#js-totalTime').val())._milliseconds
+      })
+    } catch (err) {
+      notify(((err.details || [])[0] || {}).type || err.reason || err.message, 'error')
+      return
+    } // try to validate the change before showing the modal shows so the user doesn't have to enter the edit reason if the edit is not valid in the first place
+     
+    
 		swal({
       title : 'Edit Timesheet',
 			text: `Please provide a reason why you\'re editing the total time. All changes are saved in timecard history.`,
