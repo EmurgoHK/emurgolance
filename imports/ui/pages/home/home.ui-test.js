@@ -123,7 +123,9 @@ describe('Home route', function () {
         browser.pause(3000)
         browser.setValue('.swal-content__input', 'Test reason')
         browser.pause(2000)
-        browser.click('.swal-button--confirm')
+        browser.click('.swal-button.swal-button--confirm')
+        browser.pause(3000)
+        browser.click('.swal-button.swal-button--confirm')
         browser.pause(3000)
 
         assert(browser.isExisting('.documents-index-item'))
