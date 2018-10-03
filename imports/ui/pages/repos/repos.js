@@ -7,17 +7,11 @@ import './repos.html'
 
 
 Template.repos.onCreated(async function reposCreated() {
-    this.activeRepos = new ReactiveVar([]);
+    this.activeRepos = new ReactiveVar([])
 
-    this.activeRepos.set(await getGithubRepos());
-
-});
+    getGithubRepos.call({}, async (err, data) => this.activeRepos.set(data))
+})
 
 Template.repos.helpers({
-    //get getGithubRepos into helper for each statement but its not working ¯\_(ツ)_/¯
-    githubRepos: () => {
-        let activeRepos = Template.instance().activeRepos.get()
-        return activeRepos;
-    },
-
-});
+    githubRepos: () => Template.instance().activeRepos.get()
+})
