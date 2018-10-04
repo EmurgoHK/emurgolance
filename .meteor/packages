@@ -32,3 +32,4 @@ github-config-ui@1.0.0
 http@1.4.0
 accounts-password@1.5.0
 service-configuration@1.0.11
+littledata:synced-cron

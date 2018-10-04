@@ -11,3 +11,5 @@ import '/imports/api/payments/methods'
 import '/imports/api/payments/server/publications'
 
 import '/imports/api/repos/methods'
+import '/imports/api/repos/server/publications'
+import '/imports/api/repos/server/startup'

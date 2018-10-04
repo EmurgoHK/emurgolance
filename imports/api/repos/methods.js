@@ -4,13 +4,14 @@ import { Promise } from 'meteor/promise'
 import { ValidatedMethod } from 'meteor/mdg:validated-method'
 
 import { Tokens } from '../tokens/tokens'
+import { Repos } from './repos'
 
 const token = (Tokens.findOne({
     _id: 'github-api-token'
 }) || {}).token || ''
 
-export const getGithubRepos = new ValidatedMethod({
-    name: 'getGithubRepos',
+export const updateGithubRepos = new ValidatedMethod({
+    name: 'updateGithubRepos',
     validate: null,
     run({}) {
         let providerUrl = `https://api.github.com/orgs/EmurgoHK/repos${token ? `?access_token=${token}` : ''}`
@@ -51,7 +52,10 @@ export const getGithubRepos = new ValidatedMethod({
                 }
             })
 
-            return repoArray
+            if (repoArray && repoArray.length) {
+                Repos.remove({})
+                repoArray.forEach(i => Repos.insert(i))
+            }
         })
     }
 })
