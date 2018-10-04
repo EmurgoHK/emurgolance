@@ -2,6 +2,7 @@ import { chai, assert } from 'chai'
 import { Meteor } from 'meteor/meteor'
 
 import './methods'
+import { Repos } from './repos'
 
 import { callWithPromise } from '/imports/api/utilities'
 
@@ -13,14 +14,16 @@ describe('Repo methods', function() {
     this.timeout(60000)
     
     it('repos can be fetched from github', () => {
-        return callWithPromise('getGithubRepos', {}).then(data => {
-            assert.ok(data)
+        return callWithPromise('updateGithubRepos', {}).then(data => {
+            let repos = Repos.find({}).fetch()
 
-            if (data.length > 0) {
-                assert.ok(data.length > 0)
-                assert.ok(data[0].repo)
-                assert.ok(data[0].issueCount >= 0)
-                assert.ok(data[0].pullCount >= 0)
+            assert.ok(repos)
+
+            if (repos.length > 0) {
+                assert.ok(repos.length > 0)
+                assert.ok(repos[0].repo)
+                assert.ok(repos[0].issueCount >= 0)
+                assert.ok(repos[0].pullCount >= 0)
             }
         }).catch(err => {})
     })

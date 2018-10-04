@@ -25,7 +25,5 @@ describe('Repos route', function () {
     it('it should render correctly', () => {
         assert(browser.isExisting('.card'), true)
         assert(browser.isVisible('.card'), true)
-
-        assert(browser.execute(() => $('.repo-index-item').length >= 0).value, true)
     })
 })
