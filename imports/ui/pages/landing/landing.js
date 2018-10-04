@@ -9,8 +9,8 @@ Template.landingPage.events({
         notify(err.message, "error")
         return
       }
-      var redirectTo = window.last || '/'
-      FlowRouter.go(redirectTo)
+      FlowRouter.go('/')
+      windows.location.reload(true)
     })
   }
 })
