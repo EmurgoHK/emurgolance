@@ -148,6 +148,36 @@
           </div>
       </div>
     </div>
+    {{#with payment}}
+    {{#if history}}
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-header">
+            Edit history
+          </div>
+          <div class="card-body">
+            <table class="table table-responsive-sm table-hover table-outline mb-0 breakdown">
+              <thead class="thead-light">
+                <tr>
+                  <th>Edited at</th>
+                  <th>Added amount</th>
+                </tr>
+              </thead>
+              <tbody>
+              {{#each history}}
+                <tr class="documents-index-item">
+                  <td scope="row">{{formatDate editedAt}}</td>
+                  <td scope="row" style="color: green">${{fixed added}}</td>
+                </tr>
+              {{/each}}
+              </tbody>
+            </table>  
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+    {{/with}}
   </div>
-
 </template>
