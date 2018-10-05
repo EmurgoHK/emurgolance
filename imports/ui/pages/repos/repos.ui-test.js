@@ -18,7 +18,7 @@ describe('Repos route', function () {
 
         browser.pause(10000)
 
-        browser.url(`${baseUrl}/moderator/repos`)
+        browser.url(`${baseUrl}/repos`)
         browser.pause(10000)
     })
 
