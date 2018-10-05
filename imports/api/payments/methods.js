@@ -37,16 +37,44 @@ export const requestPayment = new ValidatedMethod({
             (acc, curr) => acc + curr, 0
         )
 
-        //create a primary payment record assosciated to the user
-        let paymentId = Payments.insert({
-            amount: totalEarnings,
+        let prevPayment = Payments.findOne({
             status: 'not-paid',
-            owner: Meteor.userId(),
-            paymentMethod: user.profile.paymentMethod || '',
-            paymentDetails: paymentDetails(user.profile.paymentMethod),
-            createAt: new Date().getTime()
-
+            owner: Meteor.userId()
         })
+
+        let paymentId
+
+        // if there are previous unpaid requests, append them 
+        if (prevPayment) {
+            paymentId = prevPayment._id
+
+            Payments.update({
+                _id: prevPayment._id
+            }, {
+                $set: {
+                    amount: prevPayment.amount + totalEarnings,
+                    paymentMethod: user.profile.paymentMethod || '',
+                    paymentDetails: paymentDetails(user.profile.paymentMethod),
+                    status: 'not-paid'
+                },
+                $push: {
+                    history: {
+                        editedAt: new Date().getTime(),
+                        added: totalEarnings
+                    }
+                }
+            })
+        } else {
+            //create a primary payment record assosciated to the user
+            paymentId = Payments.insert({
+                amount: totalEarnings,
+                status: 'not-paid',
+                owner: Meteor.userId(),
+                paymentMethod: user.profile.paymentMethod || '',
+                paymentDetails: paymentDetails(user.profile.paymentMethod),
+                createAt: new Date().getTime()
+            })
+        }
 
         //update all timesheets to payment-inprogress
         notPaidTimesheets.forEach(i => {
@@ -62,21 +90,17 @@ export const requestPayment = new ValidatedMethod({
 
         //if we have a paymentId return true, otherwise return an error to the client
         if (paymentId) {
-
             //return all users that are moderators
             let getAllModerators = Meteor.users.find({ moderator: true }).fetch()
 
             //send a notification to all moderators
-            //
             getAllModerators.forEach(i => {
                 sendNotification(i._id, 'Payment Request', Meteor.user().profile.name, '/moderator/payments','notification') //userId, message, from, href, type
             })
 
-
-            return true;
+            return true
         } else {
             throw new Meteor.Error('Error.', 'Unable to process payments')
-
         }
     }
 })
@@ -108,21 +132,18 @@ export const cancelPayment = new ValidatedMethod({
                     $unset : {  status: 1, paymentId: 1 }
                 }, { multi : true })
 
-
                 //return all users that are moderators
                 let getAllModerators = Meteor.users.find({ moderator: true }).fetch()
                 let message = 'Cancelled payment request by ' + Meteor.user().profile.name 
 
                 //send a notification to all moderators
-
                 getAllModerators.forEach(i => {
                     sendNotification(i._id, message, Meteor.user().profile.name, '/moderator/payments', 'notification') //userId, message, from, href, type
                 })
 
-                return true;
+                return true
             } else {
                 throw new Meteor.Error('Error.', 'Unable to cancel payment')
-
             }
         }
     }
