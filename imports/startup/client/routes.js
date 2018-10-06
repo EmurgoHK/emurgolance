@@ -149,7 +149,7 @@ modRoutes.route('/statistics', {
     name: 'statistics'
 })
 
-modRoutes.route('/repos', {
+FlowRouter.route('/repos', {
     action: () => {
         BlazeLayout.render('mainLayout', {
           main: 'repos',
