@@ -17,6 +17,7 @@ import '../../ui/pages/notifications/notifications'
 import '../../ui/pages/repos/repos'
 import '../../ui/pages/issues/issues'
 
+
 const modRoutes = FlowRouter.group({
 	prefix: '/moderator',
 	name: 'moderator'  
@@ -26,17 +27,17 @@ const modRoutes = FlowRouter.group({
 FlowRouter.route('/', {
 	name: 'home',
   	action: () => {
-      if (Meteor.userId() || (process.env && process.env.NODE_ENV == 'development')){
+      if (Meteor.userId() || (process.env && process.env.NODE_ENV === 'development')){
         BlazeLayout.render('mainLayout', {
           header: 'header',
           main: 'home',
-          sidebar: 'sidebar'
+          sidebar: 'sidebar',
         })
       } else {
         BlazeLayout.render('landingPage')
       }
-  	}
-})
+  	},
+});
 
 FlowRouter.route('/issues', {
 	name: 'issues',
@@ -46,8 +47,8 @@ FlowRouter.route('/issues', {
 			main: 'issues',
 			sidebar: 'sidebar'
     	})
-  	}
-})
+  	},
+});
 
 FlowRouter.route('/entry/:id', {
 	name: 'entry',
@@ -55,10 +56,10 @@ FlowRouter.route('/entry/:id', {
     	BlazeLayout.render('mainLayout', {
 			header: 'header',
 			main: 'entry',
-			sidebar: 'sidebar'
+			sidebar: 'sidebar',
     	})
-  	}
-})
+  	},
+});
 
 FlowRouter.route('/settings', {
 	name: 'settings',
@@ -66,10 +67,10 @@ FlowRouter.route('/settings', {
     	BlazeLayout.render('mainLayout', {
 			header: 'header',
 			main: 'settings',
-			sidebar: 'sidebar'
+			sidebar: 'sidebar',
     	})
-  	}
-})
+  	},
+});
 
 FlowRouter.route('/notifications', {
   name: 'notifications',
@@ -77,10 +78,10 @@ FlowRouter.route('/notifications', {
       BlazeLayout.render('mainLayout', {
       header: 'header',
       main: 'notifications',
-      sidebar: 'sidebar'
+      sidebar: 'sidebar',
       })
-    }
-})
+    },
+});
 
 
 FlowRouter.route('/requestpayment', {

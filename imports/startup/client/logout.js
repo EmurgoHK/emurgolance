@@ -10,7 +10,7 @@ Accounts.onLogout(() => {
 	}
 
 	notify('Successfully logged out!', 'success')
-})
+});
 
 const mustBeLoggedIn = (context, redirect, stop) => {
   	if (!Meteor.userId()) {
