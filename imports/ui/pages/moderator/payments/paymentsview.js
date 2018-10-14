@@ -7,6 +7,7 @@ import './paymentsview.html'
 import { markAsPaid } from '/imports/api/payments/methods'
 import { notify } from '/imports/modules/notifier'
 import { Payments } from '/imports/api/payments/payments'
+import { ManualPayments } from '/imports/api/manual-payments/manual-payments'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
 
 const formatDuration = (duration) => {
@@ -29,6 +30,7 @@ Template.paymentsview.onCreated(function() {
     this.approvedEarnings = new ReactiveVar()
     this.autorun(() => {
         this.subscribe('timesheet.paymentId', FlowRouter.getParam("paymentId"))
+        this.subscribe('manualPayments.mod')
         this.subscribe('payments')
         this.subscribe('users')
     })
@@ -36,6 +38,14 @@ Template.paymentsview.onCreated(function() {
 
 Template.paymentsview.helpers({
     payment: () => Payments.findOne({ _id: FlowRouter.getParam("paymentId") }),
+    manualPayments () {
+        return ManualPayments.find({ 
+            paymentId : FlowRouter.getParam("paymentId") 
+        })
+    },
+    sumManualPayments (manualPayments) {
+        return manualPayments.fetch().reduce((acc, curr) => acc + curr.amount, 0)
+    },
     removeHostname: (url) => {
        return url.replace(/http(s|):\/\/github.com\/(blockrazor|emurgohk)\//i, '')
     },
@@ -72,9 +82,15 @@ Template.paymentsview.helpers({
             paymentId: FlowRouter.getParam('paymentId')
         }).fetch()
 
-        return sum.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce(
+        let timesheet = sum.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce(
             (acc, curr) => acc + curr, 0
         )
+
+        let manual = ManualPayments.find({ 
+            paymentId : FlowRouter.getParam("paymentId") 
+        }).fetch().reduce((acc, curr) => acc + curr.amount, 0)
+
+        return timesheet + manual
     },
     totalTime: (id) => {
         let total = Timesheet.find({

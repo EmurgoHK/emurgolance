@@ -130,5 +130,9 @@ Template.requestpayment.events({
                 })      
             }
         })
+    },
+    'click .js-manual-payment' (event, _tpl) {
+        event.preventDefault()
+        $('#manualPaymentModal').modal('show')
     }
 })

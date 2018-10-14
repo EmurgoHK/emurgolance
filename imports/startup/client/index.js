@@ -10,7 +10,8 @@ import '/imports/ui/shared/sidebar/sidebar.js'
 import '/imports/ui/shared/empty-result/empty-result.js'
 import '/imports/ui/shared/loader/loader.js'
 import '/imports/ui/pages/auth/auth.js'
-
+import '/imports/ui/pages/requestpayment/manualpayment.js'
+import '/imports/ui/pages/moderator/payments/mod-manualpayments.js'
 import '/imports/ui/helpers/global'
 
 import "bootstrap"

@@ -81,6 +81,13 @@
                       </tr>
                     </thead>
                     <tbody>
+                      {{#if manualPayments.count}}
+                        <tr class="table-warning">
+                          <td scope="row"><a href="" data-toggle="modal" data-target="#manualPaymentsList"><strong>Manual payment requests</strong></a></td>
+                          <td scope="row">$ {{sumManualPayments manualPayments}}</td>
+                          <td scope="row">-</td>
+                        </tr>
+                      {{/if}}
                       {{#each costBreakdown}}
                         <tr class="documents-index-item">
                           <td scope="row">{{project}}</td>
