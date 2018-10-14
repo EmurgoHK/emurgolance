@@ -55,6 +55,7 @@
                                 <tr>
                                     <th>Requested on</th>
                                     <th>Amount</th>
+                                    <th></th>
                                     <th>Status</th>
                                     <th></th>
                                 </tr>
@@ -64,6 +65,11 @@
                                     <tr>
                                         <td>{{formatDate createAt}}</td>
                                         <td>$ {{fixed amount}}</td>
+                                        <td>
+                                            {{#if notPaid status}}
+                                                <a href="" data-request-id="{{_id}}" data-toggle="modal" data-target="#manualPaymentModal">add manual payments</a>
+                                            {{/if}}
+                                        </td>
                                         <td>
                                             <span class="badge badge-{{status}}">{{statusName status}}</span> 
                                         </td>

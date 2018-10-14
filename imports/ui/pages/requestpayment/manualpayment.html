@@ -1,0 +1,45 @@
+<template name="manualpayment">
+    <div class="modal fade" id="manualPaymentModal" tabindex="-1" role="dialog"  aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" >Manual Payment Request</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form id="manualPaymentForm" class="needs-validation" novalidate>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Summary</label>
+                            <input type="text" id="summary" name="summary" class="form-control" required />
+                            <div class="summary-feedback invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount $</label>
+                            <input type="number" id="amount" name="amount" class="form-control" required />
+                            <div class="amount-feedback invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Details (optional)</label>
+                            <textarea name="details" id="details" cols="20" rows="5" class="form-control"></textarea>
+                            <div class="details-feedback invalid-feedback"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>PR Link (optional)</label>
+                            <input type="text" id="pr_link" name="pr_link" class="form-control" />
+                            <div class="pr_link-feedback invalid-feedback"></div>
+                        </div>
+                    </div>
+                
+
+                    <div class="card-footer">
+                        <button class="js-submit-request btn btn-success" data-add-more=true>Save and Add More</button>  
+                        <button class="js-submit-request btn btn-primary">Save</button>
+                        <button class="btn btn-secondary">Cancel</button>  
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
