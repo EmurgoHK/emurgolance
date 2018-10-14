@@ -12,6 +12,7 @@ import '/imports/ui/shared/loader/loader.js'
 import '/imports/ui/pages/auth/auth.js'
 import '/imports/ui/pages/requestpayment/manualpayment.js'
 import '/imports/ui/pages/moderator/payments/mod-manualpayments.js'
+import '/imports/ui/pages/requestpayment/manualpayments-list.js'
 import '/imports/ui/helpers/global'
 
 import "bootstrap"
