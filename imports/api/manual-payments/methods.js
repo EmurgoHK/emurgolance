@@ -55,3 +55,35 @@ export const requestManualPayment = new ValidatedMethod({
         }
     }
 })
+
+export const removeManualPayment = new ValidatedMethod({
+    name: 'removeManualPayment',
+    validate: new SimpleSchema({
+        id: {
+            type: String,
+            optional: false
+        }
+    }).validator({
+        clean: true
+    }),
+    run({ id }) {
+        if (Meteor.isServer) { 
+            if (!Meteor.userId()) {
+                throw new Meteor.Error('Error.', 'You have to be logged in.')
+            }
+
+            const manualPayment = ManualPayments.findOne({ _id : id })
+            const paymentId = manualPayment.paymentId
+            const amount = manualPayment.amount
+
+            // remove manual payment and 
+            // decrease payment amount
+            ManualPayments.remove({ _id : id })
+            Payments.update({ _id : paymentId }, {
+                $inc : { amount : -amount }
+            })
+
+            return paymentId
+        }
+    }
+})

@@ -1,11 +1,11 @@
-import '/imports/ui/pages/requestpayment/manualpayments'
+import './mod-manualpayments.html'
 
 import { FlowRouter } from 'meteor/kadira:flow-router'
 
 import { ManualPayments } from '/imports/api/manual-payments/manual-payments'
 import { notify } from '/imports/modules/notifier'
 
-Template.manualpayments.onCreated(function () {
+Template.modManualpayments.onCreated(function () {
     this.paymentId = new ReactiveVar(undefined)
 
     this.autorun(() => {
@@ -13,7 +13,7 @@ Template.manualpayments.onCreated(function () {
     })
 })
 
-Template.manualpayments.helpers({
+Template.modManualpayments.helpers({
     manualPayments () {
         return ManualPayments.find({ 
             paymentId : FlowRouter.getParam("paymentId") 
@@ -21,7 +21,7 @@ Template.manualpayments.helpers({
     }
 })
 
-Template.manualpayments.events({
+Template.modManualpayments.events({
     'show.bs.modal #manualPaymentModal' (event, tpl) {
         const paymentId = event.relatedTarget.dataset.requestId
         tpl.paymentId.set(paymentId)

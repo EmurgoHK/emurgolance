@@ -67,7 +67,11 @@
                                         <td>$ {{fixed amount}}</td>
                                         <td>
                                             {{#if notPaid status}}
-                                                <a href="" data-request-id="{{_id}}" data-toggle="modal" data-target="#manualPaymentModal">add manual payments</a>
+                                                <a href="" data-payment-id="{{_id}}" data-toggle="modal" data-target="#manualPaymentsListModal"><strong>Manual Payments</strong></a>
+                                                &nbsp;
+                                                <button data-request-id="{{_id}}" data-toggle="modal" data-target="#manualPaymentModal" class="btn btn-sm btn-ghost-success">
+                                                    <strong><i class="fas fa-plus"></i> add </strong> 
+                                                </button>
                                             {{/if}}
                                         </td>
                                         <td>
