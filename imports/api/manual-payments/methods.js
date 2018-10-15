@@ -41,6 +41,9 @@ export const requestManualPayment = new ValidatedMethod({
             // add userId and createdAt to manual payment data
             data.userId =  Meteor.userId()
             data.createdAt = new Date().getTime()
+
+            // set the state to inprogress as this attached to an active payment request
+            data.status = "payment-inprogress";
             
             // insert manual payment
             ManualPayments.insert(data)

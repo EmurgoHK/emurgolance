@@ -3,6 +3,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router'
 import moment from 'moment';
 
 import './paymentsview.html'
+import './paymentsview.scss'
 
 import { markAsPaid } from '/imports/api/payments/methods'
 import { notify } from '/imports/modules/notifier'
@@ -189,7 +190,19 @@ Template.paymentsview.helpers({
             earnings: `$${projects[i].toFixed(2)}`,
             percentage: `${((projects[i] / total) * 100).toFixed(2)}%`
         }))
-    }
+    },
+    statusName: (status) => {
+        switch (status) {
+            case 'payment-rejected':
+                return 'Rejected';
+            case 'payment-paid':
+                return 'Paid';
+            case 'payment-inprogress':
+                return 'In progress';
+            default:
+                return 'Unkown';
+        }
+    },
 })
 
 Template.paymentsview.events({
@@ -206,30 +219,38 @@ Template.paymentsview.events({
         let notApprovedTimesheets = [];
         let approvedEarnings = Template.instance().approvedEarnings.get();
 
-        $("input[type=checkbox]:checked").each(function() {
+        $(".timesheets input[type=checkbox]:checked").each(function() {
             approvedTimesheets.push(this.id)
         });
 
-        $("input:checkbox:not(:checked)").each(function() {
+        $(".timesheets input:checkbox:not(:checked)").each(function() {
            notApprovedTimesheets.push({_id: this.id, rejectReason: $('#reject_'+this.id).val()})
-
         });
 
+        let approvedManualPayments = [];
+        let notApprovedManualPayments = [];
+        
+        $(".manualPayments input[type=checkbox]:checked").each(function() {
+            approvedManualPayments.push(this.id);
+        });
 
-            markAsPaid.call({
-                paymentId : FlowRouter.getParam("paymentId"),
-                approvedTimesheets: approvedTimesheets,
-                notApprovedTimesheets: notApprovedTimesheets,
-            }, (err, data) => {
-                if (err) {
-                    notify(err.reason || err.message, 'error')
-                } else {
-                    FlowRouter.go('/')
-                    notify('Marked as Paid', 'success')
-                }
-            })
+        $(".manualPayments input:checkbox:not(:checked)").each(function() {
+           notApprovedManualPayments.push({_id: this.id, rejectReason: $('#reject_'+this.id).val()});
+        });
 
-
-
+        markAsPaid.call({
+            paymentId : FlowRouter.getParam("paymentId"),
+            approvedTimesheets: approvedTimesheets,
+            notApprovedTimesheets: notApprovedTimesheets,
+            approvedManualPayments: approvedManualPayments,
+            notApprovedManualPayments: notApprovedManualPayments,
+        }, (err, data) => {
+            if (err) {
+                notify(err.reason || err.message, 'error')
+            } else {
+                FlowRouter.go('/')
+                notify('Marked as Paid', 'success')
+            }
+        })
     }
 })
