@@ -148,6 +148,57 @@
                     {{> emptyResult text="No timesheet entries" description="Start working to add some..." icon=""}}
                   </div>
                 {{/if}}
+                <br />
+                {{#if manualPayments.count}}
+                  <table class="table table-responsive-sm table-hover table-outline mb-0 manualPayments">
+                    <thead class="thead-light">
+                      <tr>
+                        <th></th>
+                        <th>Summary</th>
+                        <th>PR link</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each manualPayments}}
+                        <tr class="documents-index-item">
+                          <td scope="row">
+                            {{#unless paid}}
+                            <div class="form-check">
+                                <input class="form-check-input earningsCheckbox" type="checkbox" id="{{_id}}" rel="{{totalEarnings}}" checked>
+                            </div>
+                            {{/unless}}
+                          </td>
+                          <td scope="row">{{summary}}</td>
+                          <td>
+                            {{#if pr_link}}
+                              <a href="{{pr_link}}" target="_blank">{{removeHostname pr_link}}</a> 
+                            {{else}} 
+                              <span> No associated PR </span>
+                            {{/if}}
+                            <br /> 
+                            <div class="form-group">
+                              <input type="text" id="reject_{{_id}}" class="form-control" style="display:none" placeholder="Why are you rejecting this manual payment?">
+                            </div>
+                          </td>
+                          {{#if details}}
+                            <td>{{details}}</td>
+                          {{else}}
+                            <td> - </td>
+                          {{/if}}
+                          <td>${{fixed amount}}</td>
+                          <td>{{statusName status}}</td>
+                      </tr>
+                      {{/each}}
+                    </tbody>
+                  </table>
+                {{else}}
+                  <div class="mt-3">
+                    {{> emptyResult text="No manual payment request" description="There were no manual payments requested" icon=""}}
+                  </div>
+              {{/if}}
               {{else}}
                 {{> loader}}
               {{/if}}

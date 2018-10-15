@@ -5,6 +5,7 @@ import SimpleSchema from 'simpl-schema'
 import { Payments } from './payments'
 import { Timesheet } from '/imports/api/timesheet/timesheet'
 import { sendNotification } from '/imports/api/notifications/both/notificationsMethods'
+import { ManualPayments } from '../manual-payments/manual-payments';
 
 export const requestPayment = new ValidatedMethod({
     name: 'requestPayment',
@@ -168,11 +169,24 @@ export const markAsPaid = new ValidatedMethod({
         },
        'notApprovedTimesheets.$.rejectReason': {
             type: String
-        }
+        },
+        approvedManualPayments: [String],
+        'notApprovedManualPayments': {
+            type: Array
+        },
+        'notApprovedManualPayments.$': {
+            type: Object
+        },
+        'notApprovedManualPayments.$._id': {
+            type: String
+        },
+       'notApprovedManualPayments.$.rejectReason': {
+            type: String
+        },
     }).validator({
         clean: true
     }),
-    run({ paymentId, approvedTimesheets, notApprovedTimesheets }) {
+    run({ paymentId, approvedTimesheets, notApprovedTimesheets, approvedManualPayments, notApprovedManualPayments }) {
         if (!Meteor.userId()) {
             throw new Meteor.Error('Error.', 'You have to be logged in.')
         }
@@ -189,6 +203,27 @@ export const markAsPaid = new ValidatedMethod({
 
         notApprovedTimesheets.forEach(function(doc) {
             Timesheet.update({
+                _id: doc._id
+            }, {
+                $set: {
+                    status: 'payment-rejected',
+                    rejectReason: doc.rejectReason,
+                }
+            })
+        })
+
+        approvedManualPayments.forEach(function(doc) {
+            ManualPayments.update({
+                _id: doc
+            }, {
+                $set: {
+                    status: 'payment-paid'
+                }
+            })
+        })
+
+        notApprovedManualPayments.forEach(function(doc) {
+            ManualPayments.update({
                 _id: doc._id
             }, {
                 $set: {
