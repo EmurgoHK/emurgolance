@@ -9,7 +9,11 @@ Template.statistics.onCreated(function() {
 
 Template.statistics.helpers({
     projectsAmount () {
-        return Timesheet.find({}).fetch().map(obj => {
+        return Timesheet.find({
+            status: {
+                $ne: 'payment-rejected'
+            }
+        }).fetch().map(obj => {
             var result = {}
 
             if (obj.totalEarnings === undefined) obj.totalEarnings = 0.00
@@ -58,7 +62,9 @@ Template.statistics.helpers({
         return freelancers
     },
     userAmounts (owner, project) {
-        return Timesheet.find({ owner: owner }).fetch().map(obj => {
+        return Timesheet.find({ owner: owner, status: {
+            $ne: 'payment-rejected'
+        }}).fetch().map(obj => {
             if (obj.project.toLowerCase() === project) return obj.totalEarnings
         }).reduce((acc, curr) => {
             if (curr === undefined) return acc + 0
