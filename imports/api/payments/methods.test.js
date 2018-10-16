@@ -22,8 +22,8 @@ describe('Timesheet methods', () => {
             start: startTime,
             startTime: startTime,
             project: 'EmurgoHK',
-            active: true,
             issue: 'https://github.com/EmurgoHK/Emurgolance/issues/44',
+            finished: true,
             rate: Meteor.user().profile.hourlyRate // user's current hourly rate
         });
 
@@ -32,7 +32,7 @@ describe('Timesheet methods', () => {
             start: startTime,
             startTime: startTime,
             project: 'EmurgoHK',
-            active: true,
+            finished: true,
             issue: 'https://github.com/EmurgoHK/Emurgolance/issues/44',
             rate: Meteor.user().profile.hourlyRate // user's current hourly rate
         });
