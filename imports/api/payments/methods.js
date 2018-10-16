@@ -31,7 +31,7 @@ export const requestPayment = new ValidatedMethod({
         }
 
         //return all timesheets which have not had payments requested
-        let notPaidTimesheets = Timesheet.find({ owner: Meteor.userId(), status: { $exists: false } }).fetch()
+        let notPaidTimesheets = Timesheet.find({ owner: Meteor.userId(), status: { $exists: false }, finished: true }).fetch()
 
         //what is the grand total owed to the user
         let totalEarnings = notPaidTimesheets.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce(
