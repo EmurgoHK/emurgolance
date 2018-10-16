@@ -1,9 +1,16 @@
 import './auth.html'
 import { notify } from '/imports/modules/notifier.js'
 
+
+
 Template.authModal.onCreated(function () {
-    this.isLogin = new ReactiveVar(true)
+    this.isLogin = new ReactiveVar(true);
 })
+
+Template.authModal.onRendered(function () {
+  $( "#signInModal" ).on('show.bs.modal',()=>{ this.isLogin.set(true) });
+})
+
 
 Template.authModal.helpers({
     isLogin () {
@@ -12,16 +19,16 @@ Template.authModal.helpers({
     authText () {
         var isLogin = Template.instance().isLogin.get()
 
-        if (!isLogin) 
-            return "Already have an account?" 
+        if (!isLogin)
+            return "Already have an account?"
 
         return "Create account"
     },
     authSubmitText () {
         var isLogin = Template.instance().isLogin.get()
 
-        if (!isLogin) 
-            return "Sign Up" 
+        if (!isLogin)
+            return "Sign Up"
 
         return "Sign In"
     }
@@ -60,7 +67,7 @@ Template.authModal.events({
                 notify("Paswords don't match", "error")
                 return
             }
-            
+
             Meteor.loginWithPassword(email, password, (err, _resp) => {
                 if (err) notify(err.message, "error")
                 $('#signInModal').modal('toggle')
