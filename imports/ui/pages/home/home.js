@@ -44,9 +44,9 @@ Template.home.onCreated(function() {
 })
 
 Template.home.helpers({
-    removeHostname: (url) => {
-       return url.replace(/http(s|):\/\/github.com\/(blockrazor|emurgohk)\//i, '')
-    },
+	removeHostname: (url) => {
+			return url.replace(/http(s|):\/\/github.com\/(blockrazor|emurgohk)\//i, '')
+	},
 	dashboardCounts: () =>{
 		return Template.instance().calcDashboard.get();
 	},
@@ -121,7 +121,15 @@ Template.home.helpers({
 	},
 	canEdit: function() {
 		return ~['payment-paid', 'payment-rejected', 'payment-inprogress'].indexOf(this.status)
-	}
+	},
+	isAnyActive: () => {
+		const activeSheet = Timesheet.find({
+			owner: Meteor.userId(),
+			active: true,
+		}).fetch();
+
+		return activeSheet ? activeSheet.length > 0 : false;
+	},
 })
 
 Template.home.events({

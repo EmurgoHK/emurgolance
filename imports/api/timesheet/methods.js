@@ -197,7 +197,16 @@ export const continueWork = new ValidatedMethod({
 
   		if (!work.paused) {
   			throw new Meteor.Error('Error.', 'You can\'t continue work that\'s hasn\'t been paused.')
-  		}
+		}
+
+		let prevWork = Timesheet.findOne({
+			owner: Meteor.userId(),
+			active: true
+		})
+
+		if (prevWork) {
+			throw new Meteor.Error('Error.', 'You can only start one task at a time.')
+		}
 
 		return Timesheet.update({
 			_id: workId

@@ -131,6 +131,30 @@ describe('Timesheet methods', () => {
         })
     })
 
+    it('user can\'t continue working on an issue if there is another issue active', () => {
+        const startTime = new Date().getTime();
+        let work = Timesheet.insert({
+            owner: Meteor.userId(),
+            start: startTime, // original start time
+            startTime: startTime, // changes each time the time is paused
+            project: 'Test project', // project related to the issue
+            active: false,
+            paused: true,
+            issue: 'https://github.com/EmurgoHK/Emurgolance/issues/44',
+            rate: Meteor.user().profile.hourlyRate // user's current hourly rate
+        })
+
+        assert.ok(work)
+
+        return callWithPromise('continueWork', {
+            workId: work
+        }).then(() => {
+            assert.fail('', '', 'User could start on multiple tasks'); // actual, expected, message
+        }, err => {
+            assert.include(err.message, 'You can only start one task at a time')
+        });
+    })
+
     it('user can edit time spent working on an issue', () => {
         let work = Timesheet.findOne({
             owner: Meteor.userId()
