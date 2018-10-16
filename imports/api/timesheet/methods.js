@@ -26,7 +26,7 @@ const validateGithubIssue = (issue, provider) => {
 
 	if (provider === 'emurgis' ) {
 		providerUrl = `http://emurgis.org/api/problems/${issue}`
-	} 
+	}
 
 	return new Promise((resolve, reject) => {
 		HTTP.get(providerUrl, { headers: {
@@ -43,7 +43,7 @@ const validateGithubIssue = (issue, provider) => {
 					}
 				}
 			}
-			
+
 			resolve(isValidIssue)
 		})
 	})
@@ -54,7 +54,7 @@ const validateGithubPR = (pr) => {
 	var urlPR = pr.replace('pull', 'pulls');
 
 	var providerUrl = `https://api.github.com/repos/${urlPR}?client_id=59b6ea8f244deea72301&client_secret=d70815c427d0a3b4a9bd4c634b2285a419caaeef`
-	
+
 	return new Promise((resolve, reject) => {
 		HTTP.get(providerUrl, { headers: {
 			  'User-Agent': 'EmurgoBot'
@@ -115,7 +115,7 @@ export const startWork = new ValidatedMethod({
 					finished: {$exists: false},
 					issue: issue
 				}).count();
-				
+
 				if (existingIssue) {
 					throw new Meteor.Error('Error.', 'You are already working on this issue.')
 				}
@@ -128,7 +128,7 @@ export const startWork = new ValidatedMethod({
 					active: true,
 					issue: issue,
 					rate: Meteor.user().profile.hourlyRate // user's current hourly rate
-						
+
 				})
 			} else {
 				throw new Meteor.Error('Error.', 'Invalid issue.')
@@ -160,7 +160,7 @@ export const pauseWork = new ValidatedMethod({
   		if (!work.active) {
   			throw new Meteor.Error('Error.', 'You can\'t pause work that\'s has been completed.')
 		  }
-		  
+
 		let totalTime = new Date().getTime() - work.startTime + (work.totalTime || 0)
 
 		return Timesheet.update({
@@ -239,28 +239,28 @@ export const finishWork = new ValidatedMethod({
 			throw new Meteor.Error('Error.', 'Invalid id.')
 		}
 
-  		if (!work.active) {
-  			throw new Meteor.Error('Error.', 'You can\'t finish work that\'s not active.')
-  		}
-		
+  		// if (!work.active) {
+  		// 	throw new Meteor.Error('Error.', 'You can\'t finish work that\'s not active.')
+  		// }
+
 		let prTitle = pr.replace(/((http|https):\/\/)?(github.com)\//, '').replace(/\/+$/, '')
-		
+
 		// check if the URL for PR is valid here
 		let isValidPr = false;
-		
+
 		if (pr === '-') {
 			isValidPr = true;
 		} else {
 			isValidPr = await validateGithubPR(prTitle);
 		}
-		
+
 		if (!isValidPr) {
 			throw new Meteor.Error('Error.', 'Please enter a valid link to the PR')
 		}
 
 		let endTime = new Date().getTime()
 		let totalTime = endTime - work.startTime + (work.totalTime || 0)  // have to take care of pauses in between
-		
+
 		return Timesheet.update({
 			_id: workId
 		}, {
@@ -270,6 +270,7 @@ export const finishWork = new ValidatedMethod({
 			    paused: false,
 			    active: false,
 			    endTime: endTime,
+          status : "payment-inprogress",
 				totalTime: totalTime,
 				totalEarnings: (totalTime/(1000*60*60)) * Meteor.user().profile.hourlyRate
 			}
@@ -289,7 +290,7 @@ Timesheet.editWorkSchema = new SimpleSchema({
 	   		if (this.value === 0) {
 	   			return 'New total time can\'t be zero.'
 	   		}
-	    		
+
 	   		let work = Timesheet.findOne({
 	  			_id: this.field('workId').value
 	  		}) || {}
@@ -407,7 +408,7 @@ export const calcDashboard = new ValidatedMethod({
 		)
 		totalPayments = Math.round(totalPayments * 100) / 100; //round to 2 decimal places.
 
-        
+
 		let pendingPaymentsSum = Timesheet.find({ status: 'payment-inprogress'}).fetch()
 	    let pendingPayments = pendingPaymentsSum.map(v => v.totalEarnings ? v.totalEarnings : 0 ).reduce(
 			(acc, curr) => acc + curr, 0
@@ -443,7 +444,7 @@ if (Meteor.isDevelopment) {
 				rate: Meteor.user().profile.hourlyRate, // user's current hourly rate,
 				endTime: endTime,
 				totalTime: totalTime,
-				totalEarnings: (totalTime/(1000*60*60)) * Meteor.user().profile.hourlyRate			  
+				totalEarnings: (totalTime/(1000*60*60)) * Meteor.user().profile.hourlyRate
   			})
         },
         addPayableTimesheet: () => {
@@ -464,7 +465,7 @@ if (Meteor.isDevelopment) {
 				rate: Meteor.user().profile.hourlyRate, // user's current hourly rate,
 				endTime: endTime,
 				totalTime: totalTime,
-				totalEarnings: (totalTime/(1000*60*60)) * Meteor.user().profile.hourlyRate			  
+				totalEarnings: (totalTime/(1000*60*60)) * Meteor.user().profile.hourlyRate
   			})
         }
     })
