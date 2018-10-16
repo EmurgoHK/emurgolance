@@ -112,9 +112,9 @@
                       </a>
                       {{else}}
                       {{#if paused}}
-                      <a class="btn btn-sm btn-success" id="js-continue" href="#" role="button" title="Continue">
-                          <i class="icon-control-play"></i>
-                        </a>
+                      <a class="btn btn-sm btn-success {{#if isAnyActive}}disabled{{/if}}" id="js-continue" href="#" role="button" title="Continue">
+                        <i class="icon-control-play"></i>
+                      </a>
                       {{/if}}
                     {{/if}}
                   {{#if active}}
