@@ -31,9 +31,11 @@
                                             {{/if}}
                                         </td>
                                         <td>
+                                            {{#if notPaid}}
                                             <button class="js-remove-payment btn btn-sm btn-ghost-danger">
                                                 <strong><i class="fas fa-trash"></i></strong> 
                                             </button>
+                                            {{/if}}
                                         </td>
                                     </tr>
                                 {{/each}}

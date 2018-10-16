@@ -19,6 +19,9 @@ Template.manualpaymentsList.helpers({
         return ManualPayments.find({ 
             paymentId : Template.instance().paymentId.get()
         }).fetch()
+    },
+    notPaid: function() {
+        return this.status === 'payment-inprogress'
     }
 })
 
