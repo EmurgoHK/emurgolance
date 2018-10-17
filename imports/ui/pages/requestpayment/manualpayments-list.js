@@ -22,6 +22,12 @@ Template.manualpaymentsList.helpers({
     },
     notPaid: function() {
         return this.status === 'payment-inprogress'
+    },
+    status: function() {
+        if (this.status === 'payment-paid') return '<span style="color: green">Paid</span>'
+        if (this.status === 'payment-rejected') return '<span style="color: red">Rejected</span>'
+
+        return '<span style="color: orange">In progress</span>'
     }
 })
 

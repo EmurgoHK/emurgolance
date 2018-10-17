@@ -35,6 +35,8 @@
                                             <button class="js-remove-payment btn btn-sm btn-ghost-danger">
                                                 <strong><i class="fas fa-trash"></i></strong> 
                                             </button>
+                                            {{else}}
+                                            {{{status}}} {{#if rejectReason}}({{rejectReason}}){{/if}}
                                             {{/if}}
                                         </td>
                                     </tr>
