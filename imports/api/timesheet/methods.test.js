@@ -202,10 +202,10 @@ describe('Timesheet methods', () => {
         })
     })
 
-    it('user cannot finish working on an issue that\'s not currently active', () => {
+    it('user cannot finish working on an issue that\'s already finished', () => {
         let work = Timesheet.findOne({
             owner: Meteor.userId(),
-            active: false
+            finished: true,
         })
 
         assert.ok(work)
@@ -216,18 +216,18 @@ describe('Timesheet methods', () => {
         }).then(tId => {
             assert.isNull(tId)
         }).catch(err => {
-            assert.include(err.message, 'You can\'t finish work that\'s not active')
+            assert.include(err.message, 'That timesheet is already finished')
         })
     })
 
     it('user can finish working on an issue with a pr link -', () => {
         Timesheet.update({ owner: Meteor.userId() }, {
-            $set : { active : true }
+            $set : { finished : false },
         })
 
         let work = Timesheet.findOne({
             owner: Meteor.userId(),
-            active: true
+            finished: false,
         })
 
         assert.ok(work)
@@ -250,12 +250,12 @@ describe('Timesheet methods', () => {
 
     it('user cannot finish working on an issue with an invalid pr link', () => {
         Timesheet.update({ owner: Meteor.userId() }, {
-            $set : { active : true }
+            $set : { finished : false },
         })
 
         let work = Timesheet.findOne({
             owner: Meteor.userId(),
-            active: true
+            finished: false,
         })
 
         assert.ok(work)

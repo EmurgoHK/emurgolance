@@ -247,9 +247,9 @@ export const finishWork = new ValidatedMethod({
 		if (!work) {
 			throw new Meteor.Error('Error.', 'Invalid id.')
 		}
-
-  		if (!work.active) {
-  			throw new Meteor.Error('Error.', 'You can\'t finish work that\'s not active.')
+		
+  		if (work.finished) {
+  			throw new Meteor.Error('Error.', 'That timesheet is already finished');
   		}
 
 		let prTitle = pr.replace(/((http|https):\/\/)?(github.com)\//, '').replace(/\/+$/, '')
