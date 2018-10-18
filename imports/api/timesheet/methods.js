@@ -269,7 +269,6 @@ export const finishWork = new ValidatedMethod({
 			    finished: true,
 			    paused: false,
 			    active: false,
-          status:"payment-inprogress",
 			    endTime: endTime,
 				totalTime: totalTime,
 				totalEarnings: (totalTime/(1000*60*60)) * Meteor.user().profile.hourlyRate

@@ -49,7 +49,7 @@
           {{#if noPaymentDetail currentUser}}
           <div class="alert alert-warning" role="alert">
             You have not yet added payment details. Please go to your settings and add the details
-          </div> 
+          </div>
           {{/if}}
           <div class="card">
             <div class="card-header">
@@ -120,7 +120,7 @@
                   {{#if active}}
                   <a class="btn btn-sm btn-secondary" href="#" id="js-finish" role="button" title="Finish"><i class="icon-control-end"></i></a>
                   {{/if}}
-                  <a class="btn btn-sm btn-danger {{#if canEdit}}disabled{{/if}}" href="/entry/{{_id}}" id="js-edit" role="button" title="Edit"><i class="icon-pencil"></i></a>
+                  <a class="btn btn-sm btn-danger {{#if canEdit}}disabled{{/if}}" href="{{#if canEdit}}#{{else}}/entry/{{_id}}{{/if}}" id="js-edit" role="button" title="Edit"><i class="icon-pencil"></i></a>
                   <a class="btn btn-sm btn-danger {{#if canEdit}}disabled{{/if}}" href="#" id="js-remove" role="button" title="Remove"><i class="icon-ban"></i></a>
                   </td>
                 </tr>
