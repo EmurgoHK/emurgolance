@@ -30,11 +30,9 @@ Template.requestpayment.helpers({
         )
     },
     inprogressEarnings: () => {
-        let sum = Timesheet.find({ owner: Meteor.userId(), status: 'payment-inprogress', finished: true }).fetch()
+        let outstandingPayment = Payments.findOne({ owner: Meteor.userId(), status: 'not-paid'});
 
-        return sum.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce(
-            (acc, curr) => acc + curr, 0
-        )
+        return outstandingPayment ? outstandingPayment.amount : 0;
     },
     paidEarnings: () => {
         let sum = Timesheet.find({ owner: Meteor.userId(), status: 'payment-paid', finished: true }).fetch()
