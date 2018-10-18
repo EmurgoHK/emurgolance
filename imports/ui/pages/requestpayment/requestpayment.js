@@ -35,11 +35,9 @@ Template.requestpayment.helpers({
         return outstandingPayment ? outstandingPayment.amount : 0;
     },
     paidEarnings: () => {
-        let sum = Timesheet.find({ owner: Meteor.userId(), status: 'payment-paid', finished: true }).fetch()
-
-        return sum.map(v => v.totalEarnings ? v.totalEarnings : 0).reduce(
-            (acc, curr) => acc + curr, 0
-        )
+        let paidPayments = Payments.find({ owner: Meteor.userId(), status: 'payment-paid'}).fetch();
+        // Sum up the amounts of paid payments
+        return paidPayments.reduce((acc, curr) => acc + (curr.amount || 0), 0);
     },
     fixed: val => val ? val.toFixed(2) : '0.00',
     endOfWeek: () => {
