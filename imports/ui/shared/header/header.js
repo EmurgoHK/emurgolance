@@ -43,7 +43,7 @@ Template.header.events({
         }
         var redirectTo = window.last || '/'
         FlowRouter.go(redirectTo)
-        windows.location.reload(true)
+        window.location.reload(true)
       })
     }
   },

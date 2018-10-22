@@ -10,7 +10,7 @@ Template.landingPage.events({
         return
       }
       FlowRouter.go('/')
-      windows.location.reload(true)
+      window.location.reload(true)
     })
   }
 })
