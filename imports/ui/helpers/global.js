@@ -55,6 +55,6 @@ Template.registerHelper("noPaymentDetail", user => {
   	if (user) {
     	return ((user.profile.paypalEmail === undefined || user.profile.paypalEmail === '') && 
             	(user.profile.walletAddress === undefined || user.profile.walletAddress === '')) &&
-    			(!user.profile.bankDetails)
+    			(!user.profile.bankDetails) && (!user.profile.banktransferDetails)
   } 
 })
