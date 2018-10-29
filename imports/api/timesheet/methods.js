@@ -267,8 +267,14 @@ export const finishWork = new ValidatedMethod({
 			throw new Meteor.Error('Error.', 'Please enter a valid link to the PR')
 		}
 
-		let endTime = new Date().getTime()
-		let totalTime = endTime - work.startTime + (work.totalTime || 0)  // have to take care of pauses in between
+    let endTime = new Date().getTime()
+    let totalTime
+    // if issue is paused don't add end time to totalTime
+    if(work.paused) {
+      totalTime = work.totalTime
+    } else {
+      totalTime = endTime - work.startTime + (work.totalTime || 0)
+    }
 
 		return Timesheet.update({
 			_id: workId
