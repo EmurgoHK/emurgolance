@@ -64,7 +64,7 @@ describe('Manual payment methods', () => {
         });
     });
 
-    it.skip('user can not request a manual payment for paid payments', () => {
+    it('user can not request a manual payment for paid payments', () => {
         return callWithPromise('requestManualPayment', {
             paymentId: paymentIdPaid,
             summary: 'TestSummary',
@@ -75,7 +75,7 @@ describe('Manual payment methods', () => {
         });
     });
 
-    it.skip('user can not request a manual payment for payments of other users', () => {
+    it('user can not request a manual payment for payments of other users', () => {
         return callWithPromise('requestManualPayment', {
             paymentId: paymentIdOtherUser,
             summary: 'TestSummary',
@@ -94,9 +94,8 @@ describe('Manual payment methods', () => {
             paymentId: paymentIdNotPaid,
             summary: testSummary,
             amount: testAmount,
-        }).then((paymentId) => {
-            assert.ok(paymentId);
-            const manualPayment = ManualPayments.findOne({paymentId: paymentId});
+        }).then((manualPaymentId) => {
+            const manualPayment = ManualPayments.findOne({_id: manualPaymentId});
             assert.ok(manualPayment);
 
             assert.equal(manualPayment.paymentId, paymentIdNotPaid);
@@ -118,7 +117,7 @@ describe('Manual payment methods', () => {
     });
 
     
-    it.skip('users can not remove a manual payment request for other users', () => {
+    it('users can not remove a manual payment request for other users', () => {
         return callWithPromise('removeManualPayment', {id: manualPaymentIdOtherUser}).then(
             () => assert.fail('', '', 'Did not throw'), 
             (err) => {
@@ -126,7 +125,7 @@ describe('Manual payment methods', () => {
             });
     });
     
-    it.skip('users can not remove a manual payment request that was already paid', () => {
+    it('users can not remove a manual payment request that was already paid', () => {
         return callWithPromise('removeManualPayment', {id: manualPaymentIdPaid}).then(
             () => assert.fail('', '', 'Did not throw'), 
             (err) => {
