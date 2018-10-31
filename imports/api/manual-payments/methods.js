@@ -38,6 +38,21 @@ export const requestManualPayment = new ValidatedMethod({
                 throw new Meteor.Error('Error.', 'You have to be logged in.')
             }
 
+            const paymentId = data.paymentId
+            const payment = Payments.findOne({ _id : paymentId });
+
+            if (!payment) {
+                throw new Meteor.Error('Error.', 'Invalid payment id.');
+            }
+
+            if (payment.owner !== Meteor.userId() && !isModerator(Meteor.userId())) {
+                throw new Meteor.Error('Error.', 'You can\'t add manual payment to that payment.')
+            }
+
+            if (payment.status !== "not-paid") {
+                throw new Meteor.Error('Error.', 'You can\'t add manual payment to paid payments.')
+            }
+
             // add userId and createdAt to manual payment data
             data.userId =  Meteor.userId()
             data.createdAt = new Date().getTime()
@@ -46,15 +61,14 @@ export const requestManualPayment = new ValidatedMethod({
             data.status = "payment-inprogress";
             
             // insert manual payment
-            ManualPayments.insert(data)
+            const manualPaymentId = ManualPayments.insert(data)
 
             // update payment with manual payment amount
-            const paymentId = data.paymentId
             Payments.update({ _id : paymentId }, {
                 $inc : { amount : data.amount }
             })
 
-            return paymentId
+            return manualPaymentId;
         }
     }
 })
@@ -76,6 +90,19 @@ export const removeManualPayment = new ValidatedMethod({
             }
 
             const manualPayment = ManualPayments.findOne({ _id : id })
+
+            if (!manualPayment) {
+                throw new Meteor.Error('Error.', 'Invalid id.');
+            }
+
+            if (manualPayment.userId !== Meteor.userId() && !isModerator(Meteor.userId())) {
+                throw new Meteor.Error('Error.', 'You can\'t remove this manual payment.')
+            }
+
+            if (manualPayment.status !== 'payment-inprogress') {
+                throw new Meteor.Error('Error.', 'You can\'t remove paid manual payments.')
+            }
+
             const paymentId = manualPayment.paymentId
             const amount = manualPayment.amount
 
