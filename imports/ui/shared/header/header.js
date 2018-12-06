@@ -5,7 +5,6 @@ import { Notifications } from '/imports/api/notifications/both/notificationsColl
 Template.header.onCreated(function() {
 
     this.autorun(() => {
-
         if (Meteor.userId()) {
             this.subscribe('notifications')
         }
@@ -16,13 +15,6 @@ Template.header.helpers({
     notificationsCount: () => Notifications.find({
         userId: Meteor.userId(),
         read: false,
-        $or: [{
-            type: 'notification'
-        }, {
-            type: {
-                $exists: false
-            }
-        }]
     }).count()
 })
 

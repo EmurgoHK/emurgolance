@@ -1,0 +1,8 @@
+<template name="userNameDisplay">
+  <span class="userNameDisplay">
+    <a href="{{profileUrl}}">
+      {{#if moderator}} <i class="fas fa-user-cog" title="Moderator"></i> {{/if}}
+      {{userName}}
+    </a> 
+  </span>
+</template>

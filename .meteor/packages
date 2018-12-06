@@ -33,3 +33,4 @@ http@1.4.0
 accounts-password@1.5.0
 service-configuration@1.0.11
 littledata:synced-cron
+reywood:publish-composite

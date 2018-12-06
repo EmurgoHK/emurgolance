@@ -94,6 +94,28 @@ FlowRouter.route('/requestpayment', {
     }
 })
 
+FlowRouter.route('/messages', {
+  name: 'messages',
+    action: () => {
+      BlazeLayout.render('mainLayout', {
+      header: 'header',
+      main: 'messages',
+      sidebar: 'sidebar'
+      })
+    }
+})
+
+FlowRouter.route('/messages/:roomId', {
+  name: 'messageRoom',
+    action: () => {
+      BlazeLayout.render('mainLayout', {
+      header: 'header',
+      main: 'messageRoom',
+      sidebar: 'sidebar'
+      })
+    }
+})
+
 modRoutes.route('/users', {
     action: () => {
         BlazeLayout.render('mainLayout', {
@@ -148,6 +170,17 @@ modRoutes.route('/statistics', {
     },
     name: 'statistics'
 })
+
+modRoutes.route('/messageRooms', {
+  name: 'messageRooms',
+  action: () => {
+    BlazeLayout.render('mainLayout', {
+    header: 'header',
+    main: 'messageRooms',
+    sidebar: 'sidebar'
+    })
+  }
+});
 
 FlowRouter.route('/repos', {
     action: () => {

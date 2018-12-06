@@ -65,13 +65,6 @@ export const markAllAsRead = new ValidatedMethod({
         return Notifications.update({
         	userId: userId,
           	read: false,
-          	$or: [{
-          		type: type || 'notification'
-          	}, {
-          		type: {
-          			$exists: false
-          		}
-          	}]
         }, {
         	$set: {
         		read: true,
