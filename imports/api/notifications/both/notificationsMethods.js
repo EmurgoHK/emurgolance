@@ -95,6 +95,13 @@ if (Meteor.isDevelopment) {
             Notifications.remove({
                 message: 'Test notification'
             })
+        },
+        cleanTestUserNotifications: (id) => {
+            const userId = Meteor.users.findOne({
+                username: id
+            })._id;
+
+            Notifications.remove({userId});
         }
     })
 }

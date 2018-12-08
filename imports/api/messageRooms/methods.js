@@ -6,6 +6,7 @@ import { sendNotification } from '../notifications/both/notificationsMethods';
 import { isModerator } from "../users/methods";
 
 import { MessageRooms } from "./messageRooms";
+import { Messages } from "../messages/messages";
 
 /**
  * Adds a message room with the name as passed and the current user as the owner and only member
@@ -75,4 +76,21 @@ export function notifyRoom(roomId, sender, type, notificationText) {
       );
     }
   }
+}
+
+if (Meteor.isDevelopment) {
+  new ValidatedMethod({
+    name: "cleanTestMessageRooms",
+    validate: null,
+    run() {
+      if (!Meteor.userId()) {
+        throw new Meteor.Error("Error.", "You have to be logged in.");
+      }
+      const rooms = MessageRooms.find({owner: Meteor.userId});
+      for (const room of rooms) {
+        Messages.remove({roomId: room._id});
+        MessageRooms.remove(room._id);
+      }
+    }
+  });
 }

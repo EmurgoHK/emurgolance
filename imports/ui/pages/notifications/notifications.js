@@ -5,6 +5,7 @@ import { Notifications } from '/imports/api/notifications/both/notificationsColl
 import { markNotificationAsRead, markAllAsRead } from '/imports/api/notifications/both/notificationsMethods.js'
 
 import './notifications.html'
+import "./notifications.scss";
 
 Template.notifications.onCreated(function() {
     this.unread = new ReactiveVar([])
@@ -32,6 +33,7 @@ Template.notifications.events({
         // remove clicked notification from unread notifications list
         let unread = templateInstance.unread.get()
         templateInstance.unread.set(unread.filter(i => i !== this._id))
+        FlowRouter.go(event.currentTarget.dataset.href);
     },
     'click #markAllAsRead': function (event, templateInstance) {
       markAllAsRead.call({
