@@ -46,13 +46,33 @@ Template.notifications.events({
 })
 
 Template.notifications.helpers({
-    notifications: () => Notifications.find({
-        userId: Meteor.userId(),
-    }, {
-        sort: {
-            createdAt: -1
-        }
-    }),
+    notifications: () => {
+        const notifications = Notifications.find({
+            userId: Meteor.userId(),
+        }, {
+            sort: {
+                createdAt: -1
+            }
+        });
+        
+        const ret = [];
+        for (const notification of notifications) {
+            const group = ret.find(curr =>
+                curr.type === "new-message" && 
+                curr.href === notification.href && 
+                curr.type === notification.type &&
+                curr.message === notification.message && 
+                curr.from === notification.from &&
+                curr.read === notification.read
+            );
+            if (group) group.children.push(notification);
+            else ret.push({
+                ...notification,
+                children: [notification],
+            });
+        };
+        return ret;
+    },
     read: function() {
         return !~Template.instance().unread.get().indexOf(this._id)
     },
