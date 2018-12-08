@@ -13,6 +13,13 @@ import '/imports/ui/pages/auth/auth.js'
 import '/imports/ui/pages/requestpayment/manualpayment.js'
 import '/imports/ui/pages/moderator/payments/mod-manualpayments.js'
 import '/imports/ui/pages/requestpayment/manualpayments-list.js'
+
+import '/imports/ui/pages/messages/messages.js';
+import '/imports/ui/pages/messages/messageRoom.js';
+import '/imports/ui/pages/moderator/messageRooms/messageRooms.js';
+
+import '/imports/ui/shared/userNameDisplay/userNameDisplay.js';
+
 import '/imports/ui/helpers/global'
 
 import "bootstrap"

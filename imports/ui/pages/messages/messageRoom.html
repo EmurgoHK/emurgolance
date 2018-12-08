@@ -1,0 +1,25 @@
+<template name="messageRoom">
+  <main class="messageRoom">
+    <div class="roomTitle">
+      <h2>{{room.name}}</h2>
+    </div>
+    <div class="messageList">
+      {{#each msgGrp in messageGroups}}   
+        <div class="{{msgClasses msgGrp}}">{{> userNameDisplay userId=msgGrp.senderId}} - {{ showPrettyTimestamp msgGrp.timestamp }}</div>
+        {{#each msg in msgGrp.msgs}}
+          <div class="label label-default chip {{msgClasses msg}}">
+            {{msg.message}}
+          </div>
+        {{/each}}
+      {{/each}}
+    </div>
+    <form class="messageForm">
+      <div class="input-group">
+        <input class="messageText form-control" type="text" placeholder="Type something!" aria-label="Your message">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary sendMessage" type="button" aria-label="Send"><i class="fas fa-share"></i></button>
+        </div>
+      </div>
+    </form>
+  </main>
+</template>

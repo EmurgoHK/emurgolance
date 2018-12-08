@@ -16,3 +16,9 @@ import '/imports/api/manual-payments/server/publications'
 import '/imports/api/repos/methods'
 import '/imports/api/repos/server/publications'
 import '/imports/api/repos/server/startup'
+
+import '/imports/api/messageRooms/server/publications';
+import '/imports/api/messageRooms/methods.js';
+
+import '/imports/api/messages/server/publications';
+import '/imports/api/messages/methods.js';
