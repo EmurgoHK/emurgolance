@@ -195,6 +195,35 @@ if (Meteor.isDevelopment) {
                 })
             }
         },
+        generateTestMod: () => {
+            let user = Meteor.users.findOne({
+                username: 'testingmod'
+            })
+
+            if (!user) {
+                let uId = Accounts.createUser({
+                    username: 'testingmod',
+                    password: 'testingmod',
+                    email: 'testingmod@testing.test',
+                    profile: {
+                        name: 'TesterMod',
+                        paymentMethod: 'swift',
+                        hourlyRate: 100000,
+                        hourlyRateApproved: true,
+                        minpayout: '200',
+                        maxpayout: '2000'
+                    }
+                })
+
+                Meteor.users.update({
+                    _id: uId
+                }, {
+                    $set: {
+                        moderator: true
+                    }
+                })
+            }
+        },
         toggleModStatus: (toggle) => {
             Meteor.users.update({
                 _id: Meteor.userId()

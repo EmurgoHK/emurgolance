@@ -40,3 +40,16 @@ export const sendMessage = new ValidatedMethod({
     return messageId;
   }
 });
+
+if (Meteor.isDevelopment) {
+  new ValidatedMethod({
+    name: "cleanTestMessages",
+    validate: null,
+    run() {
+      if (!Meteor.userId()) {
+        throw new Meteor.Error("Error.", "You have to be logged in.");
+      }
+      return Messages.remove({senderId: Meteor.userId()});
+    }
+  });
+}
