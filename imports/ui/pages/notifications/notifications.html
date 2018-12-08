@@ -28,28 +28,26 @@
               <table class="table table-hover mt-3">
                 <tbody>
                   {{#each notifications}}
-                    <tr style="{{#unless read}}background-color: #e4e5e6{{/unless}}" class="notification-item">
-                      <a style="text-decoration: none;" href="{{href}}">
-                        <td scope="row">
+                    <tr style="{{#unless read}}background-color: #e4e5e6{{/unless}}" class="notification-item" data-href="{{href}}">
+                      <td scope="row">
+                        {{#if read}}
+                        <i class="fas fa-envelope-open" style="color:black"></i>
+                        {{else}}
+                        <i class="fas fa-envelope" style="color:black"></i>
+                        {{/if}}
+                      </td>
+                      <td style="width: 85%">
+                        {{message}}
+                        {{#if children.length}}
                           {{#if read}}
-                          <i class="fas fa-envelope-open" style="color:black"></i>
+                            <span class="badge badge-pill badge-secondary">{{children.length}}</span>
                           {{else}}
-                          <i class="fas fa-envelope" style="color:black"></i>
+                            <span class="badge badge-pill badge-danger">{{children.length}}</span>
                           {{/if}}
-                        </td>
-                        <td scope="row" style="width: 85%">
-                          {{message}}
-                          {{#if children.length}}
-                            {{#if read}}
-                              <span class="badge badge-pill badge-secondary">{{children.length}}</span>
-                            {{else}}
-                              <span class="badge badge-pill badge-danger">{{children.length}}</span>
-                            {{/if}}
-                          {{/if}}
-                        </td>
-                        <td>{{from}}</td>
-                        <td style="width: 20%">{{showTimeAgoTimestamp createdAt}}</td>
-                      </a>
+                        {{/if}}
+                      </td>
+                      <td>{{from}}</td>
+                      <td style="width: 20%">{{showTimeAgoTimestamp createdAt}}</td>
                     </tr>
                   {{/each}}
                 </tbody>
