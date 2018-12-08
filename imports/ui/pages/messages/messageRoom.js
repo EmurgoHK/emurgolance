@@ -39,7 +39,10 @@ Template.messageRoom.helpers({
 
   msgClasses: msg => {
     return msg.senderId === Meteor.userId() ? "own" : "other";
-  }
+  },
+
+  showLoader: () => !Template.instance().subscriptionsReady(),
+  showEmptyState: (groups) => groups.length === 0,
 });
 
 Template.messageRoom.events({

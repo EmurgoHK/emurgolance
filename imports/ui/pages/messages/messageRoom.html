@@ -4,14 +4,25 @@
       <h2>{{room.name}}</h2>
     </div>
     <div class="messageList">
-      {{#each msgGrp in messageGroups}}   
-        <div class="{{msgClasses msgGrp}}">{{> userNameDisplay userId=msgGrp.senderId}} - {{ showPrettyTimestamp msgGrp.timestamp }}</div>
-        {{#each msg in msgGrp.msgs}}
-          <div class="label label-default chip {{msgClasses msg}}">
-            {{msg.message}}
-          </div>
+      {{#if showLoader }}
+        <div class="loader">
+          <i class="fas fa-spinner"></i>
+        </div>
+      {{else if showEmptyState messageGroups}}
+        <div class="emptyState">
+          <h3>There don't seem to be any messages in this room.</h3>
+          <h4>Be the first to say something and add your message below!</h4>
+        </div>
+      {{else}}
+        {{#each msgGrp in messageGroups}}   
+          <div class="{{msgClasses msgGrp}}">{{> userNameDisplay userId=msgGrp.senderId}} - {{ showPrettyTimestamp msgGrp.timestamp }}</div>
+          {{#each msg in msgGrp.msgs}}
+            <div class="label label-default chip {{msgClasses msg}}">
+              {{msg.message}}
+            </div>
+          {{/each}}
         {{/each}}
-      {{/each}}
+      {{/if}}
     </div>
     <form class="messageForm">
       <div class="input-group">
