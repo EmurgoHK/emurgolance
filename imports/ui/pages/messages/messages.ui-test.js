@@ -35,8 +35,7 @@ describe("Messages", function() {
     browser.waitForVisible("button.createRoom");
     browser.click("button.createRoom");
 
-    browser.waitUntil(() => browser.getUrl() !== "/messages");
-    roomUrl = browser.getUrl().replace(baseUrl, "");
+    browser.waitUntil(() => (roomUrl = browser.getUrl().replace(baseUrl, "")) !== "/messages");
   });
 
   it("should redirect to the room if the user has one", () => {
