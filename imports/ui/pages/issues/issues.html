@@ -11,17 +11,19 @@
             <th>Project</th>
             <th>Comments</th>
             <th>Opened since</th>
+            <th>Updated</th>
             <th>Created By</th>
           </tr>
         </thead>
         <tbody>
-        {{#each issues}}
+        {{#each issue in issues}}
           <tr> 
-            <td scope="row"><a href="{{html_url}}" target="_blank">{{title}}</a></td>
-            <td>{{projectName html_url}}</td>
-            <td>{{comments}}</td>
-            <td>{{showTimeAgoTimestamp created_at}}</td>
-            <td><a href="{{user.html_url}}" target="_blank">{{user.login}}</a></td>
+            <td scope="row"><a href="{{issue.url}}" target="_blank">{{issue.title}}</a></td>
+            <td>{{projectName issue.url}}</td>
+            <td>{{issue.commentCount}}</td>
+            <td>{{showTimeAgoTimestamp issue.createdAt}}</td>
+            <td>{{showTimeAgoTimestamp issue.updatedAt}}</td>
+            <td><a href="{{issue.creatorUrl}}" target="_blank">{{issue.creator}}</a></td>
           </tr>
         {{/each}}
         </tbody>

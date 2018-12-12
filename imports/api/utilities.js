@@ -18,3 +18,9 @@ export const camelize = function (str) {
   return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 }
+
+export function buildApiUrl(url, token, nr, params) {
+    const urlParams = token ? params.concat([['access_token', token]]) : params;
+    return url.replace('{/number}', nr ? `/${nr}` : '') +
+        '?' + urlParams.map(([name, val]) => `${encodeURIComponent(name)}=${encodeURIComponent(val)}`).join('&')
+}
