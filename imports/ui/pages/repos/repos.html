@@ -14,9 +14,9 @@
                         <tbody>
                             {{#each githubRepos}}
                             <tr class="repo-index-item">
-                                <td scope="row"><a href="https://github.com/EmurgoHK/{{repo}}" target="_blank">{{repo}}</a></td>
-                                <td scope="row"><a href="https://github.com/EmurgoHK/{{repo}}/issues" target="_blank">{{issueCount}}</a></td>
-                                <td scope="row"><a href="https://github.com/EmurgoHK/{{repo}}/pulls" target="_blank">{{pullCount}}</a></td>
+                                <td scope="row"><a href="{{url}}" target="_blank">{{name}}</a></td>
+                                <td scope="row"><a href="{{url}}/issues" target="_blank">{{issueCount _id}}</a></td>
+                                <td scope="row"><a href="{{url}}/pulls" target="_blank">{{prCount _id}}</a></td>
                             </tr>
                             {{/each}}
                         </tbody>
