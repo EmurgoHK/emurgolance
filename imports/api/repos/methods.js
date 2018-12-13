@@ -5,6 +5,7 @@ import { ValidatedMethod } from "meteor/mdg:validated-method";
 
 import { Tokens } from "../tokens/tokens";
 import { Repos } from "./repos";
+import { shouldUpdate, logUpdate } from "../updates/methods";
 
 const token =
   (
@@ -20,8 +21,7 @@ export const updateGithubRepos = new ValidatedMethod({
     let providerUrl = `https://api.github.com/orgs/EmurgoHK/repos${
       token ? `?access_token=${token}` : ""
     }`;
-
-    Repos.remove({});
+    if (!shouldUpdate("GitHub", "repos")) return;
 
     return new Promise(function(resolve, reject) {
       HTTP.get(
@@ -33,17 +33,28 @@ export const updateGithubRepos = new ValidatedMethod({
         },
         (err, resp) => {
           if (resp && resp.statusCode === 200) {
+            // Insert each repo into the repos collection
             for (const repo of resp.data) {
-              Repos.upsert({
-                _id: repo.id,
-              }, {
-                _id: repo.id,
-                name: repo.name,
-                url: repo.html_url,
-                issuesUrl: repo.issues_url,
-                pullsUrl: repo.pulls_url,
-              });
+              Repos.upsert(
+                {
+                  _id: repo.id
+                },
+                {
+                  _id: repo.id,
+                  name: repo.name,
+                  url: repo.html_url,
+                  issuesUrl: repo.issues_url,
+                  pullsUrl: repo.pulls_url
+                }
+              );
             }
+            // Remove all repos that were not in the result.
+            // We do not just remove all repos because other updates may be going on at the same time that rely on the Repos collection
+            const repoIds = resp.data.map(a => a.id);
+            Repos.remove({
+              _id: { $nin: repoIds }
+            });
+            logUpdate("GitHub", "repos");
             resolve();
           } else {
             reject(err);
