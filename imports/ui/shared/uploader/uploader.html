@@ -1,0 +1,38 @@
+<template name="uploader">	
+	{{#if showFileList }}
+		<div class="row">
+			<ul class="fileList">
+				{{#each file in files}}
+					<li>
+						<a href="{{file.url}}" target="_blank">
+							{{#if file.isImage}}
+								<img src="{{file.url uploading='/images/uploading.gif' storing='/images/storing.gif'}}" alt="{{file.name}}" />
+							{{else if isPDF file}}
+								<i class="far fa-file-pdf"></i> {{file.name}}
+							{{/if}}
+						</a>
+						<span class="uploadState">
+							{{#unless file.isUploaded}}
+								{{> loader }}
+							{{/unless}}
+						</span>
+						{{#if showDelete file}}
+							<span class="deleteFile btn btn-lnk">
+								<i class="far fa-trash-alt" data-id="{{file._id}}"></i>
+							</span>
+						{{/if}}
+					</li>
+				{{/each}}
+			</ul>
+		</div>
+	{{/if}}
+	
+	<div class="row">
+		<div class="col-sm-12 ml-2">
+			<label class="btn btn-primary" for="fileInput-{{id}}" id="fileInputLabel-{{id}}">
+				<input id="fileInput-{{id}}" class="fileInput" data-id="{{id}}" type="file" style="display:none">
+				<span id="fileUploadValue-{{id}}"> Upload </span>
+			</label>
+		</div>
+	</div>
+</template>

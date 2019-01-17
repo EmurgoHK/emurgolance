@@ -19,6 +19,7 @@ import '/imports/ui/pages/messages/messageRoom.js';
 import '/imports/ui/pages/moderator/messageRooms/messageRooms.js';
 
 import '/imports/ui/shared/userNameDisplay/userNameDisplay.js';
+import '/imports/ui/shared/uploader/uploader.js';
 
 import '/imports/ui/helpers/global'
 

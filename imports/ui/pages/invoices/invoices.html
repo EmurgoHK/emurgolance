@@ -1,0 +1,32 @@
+<template name="invoices">
+  <div class="invoicesPage">
+    <h1>Invoices of {{ userName }}</h1>
+    
+    {{> uploader id="invoice" type="pdf" collection=Invoices showFileList=false }}
+    <table class="invoiceTable">
+      <thead>
+        <tr>
+          <th>
+            File
+          </th>
+          <th>
+            Uploaded
+          </th>
+        </tr>
+      </thead>
+      {{#each invoice in fileList}}
+        <tr>
+          <td>
+            <a href="{{invoice.url}}" target="_blank">
+              {{invoice.name}}
+            </a>
+          </td>
+          <td>
+            {{showPrettyTimestamp invoice.uploadedAt}}
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+    
+  </div>
+</template>
