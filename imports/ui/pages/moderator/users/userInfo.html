@@ -15,6 +15,12 @@
                   <b>Minimal payout:</b> ${{fixed profile.minpayout}}<br />
                   <b>Maximal payout:</b> ${{fixed profile.maxpayout}}  
                 </div>
+                
+                <div class="col-md-2 col-sm-4">
+                  <h4>Invoices</h4>
+                  <a href="/invoices/{{_id}}">Go to invoices page</a>
+                </div>
+
                 {{#if timesheets.count}}
                   <div class="col-md-2 col-sm-4">
                     <div class="callout callout-info b-t-1 b-r-1 b-b-1">

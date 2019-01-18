@@ -16,6 +16,7 @@ import '../../ui/pages/timesheet/entry'
 import '../../ui/pages/notifications/notifications'
 import '../../ui/pages/repos/repos'
 import '../../ui/pages/issues/issues'
+import '../../ui/pages/invoices/invoices';
 
 const modRoutes = FlowRouter.group({
 	prefix: '/moderator',
@@ -89,6 +90,17 @@ FlowRouter.route('/requestpayment', {
       BlazeLayout.render('mainLayout', {
       header: 'header',
       main: 'requestpayment',
+      sidebar: 'sidebar'
+      })
+    }
+})
+
+FlowRouter.route('/invoices/:userId?', {
+  name: 'invoices',
+    action: () => {
+      BlazeLayout.render('mainLayout', {
+      header: 'header',
+      main: 'invoices',
       sidebar: 'sidebar'
       })
     }

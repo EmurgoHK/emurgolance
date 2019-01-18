@@ -33,3 +33,5 @@ import "/imports/api/messages/methods.js";
 
 import "/imports/api/updates/methods";
 import "/imports/api/updates/server/publications";
+
+import "/imports/api/invoices/server/publications";
