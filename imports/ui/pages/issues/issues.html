@@ -1,12 +1,15 @@
 <template name="issues">
   <div class="container-fluid">
+    <div class="d-inline-block">
+      <h3>Issues for Emurgo projects</h3>
+    </div>
+    <div class="float-right">
+      <span class="last-updated">Updated {{showTimeAgoTimestamp lastUpdated}}</span>
+      <button class="btn btn-sm btn-link refreshButton"><i class="fas fa-sync-alt"></i></button>
+    </div>
     <div class="card">
       <div class="card-header">
-          <h3>Open issues for Emurgo projects</h3>
-          <div class="card-subtitle float-right">
-            <span class="last-updated">Updated {{showTimeAgoTimestamp lastUpdated}}</span>
-            <button class="btn btn-sm btn-link refreshButton"><i class="fas fa-sync-alt"></i></button>
-          </div>
+        <h4>Open</h4>
       </div>
       <table class="table table-responsive-sm table-hover table-outline mb-0">
         <thead class="thead-light">
@@ -28,6 +31,36 @@
             <td>{{showTimeAgoTimestamp issue.createdAt}}</td>
             <td>{{showTimeAgoTimestamp issue.updatedAt}}</td>
             <td><a href="{{issue.creatorUrl}}" target="_blank">{{issue.creator}}</a></td>
+          </tr>
+        {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h4>In progress</h4>
+      </div>
+      <table class="table table-responsive-sm table-hover table-outline mb-0">
+        <thead class="thead-light">
+          <tr class="documents-index-item">
+            <th>Issue</th>
+            <th>Project</th>
+            <th>Comments</th>
+            <th>Opened since</th>
+            <th>Updated</th>
+            <th>Assignee</th>
+          </tr>
+        </thead>
+        <tbody>
+        {{#each issue in issuesInProgress}}
+          <tr> 
+            <td scope="row"><a href="{{issue.url}}" target="_blank">{{issue.title}}</a></td>
+            <td>{{projectName issue.url}}</td>
+            <td>{{issue.commentCount}}</td>
+            <td>{{showTimeAgoTimestamp issue.createdAt}}</td>
+            <td>{{showTimeAgoTimestamp issue.updatedAt}}</td>
+            <td><a href="{{issue.assigneeUrl}}" target="_blank">{{issue.assignee}}</a></td>
           </tr>
         {{/each}}
         </tbody>
