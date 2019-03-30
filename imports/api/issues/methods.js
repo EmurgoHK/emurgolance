@@ -22,10 +22,7 @@ export const updateGithubIssues = new ValidatedMethod({
       if (!shouldUpdate("GitHub", "issues")) return;
 
       for (const repo of Repos.find({})) {
-        const url = buildApiUrl(repo.issuesUrl, token, undefined, [
-          ["sort", "created"],
-          ["per_page", "100"]
-        ]);
+        const url = buildApiUrl(repo.issuesUrl, token, undefined, [["sort", "created"], ["per_page", "100"]]);
         HTTP.get(
           url,
           {
@@ -35,7 +32,7 @@ export const updateGithubIssues = new ValidatedMethod({
           },
           (err, resp) => {
             if (err) throw err;
-            for (const issue of resp.data) {
+            for (const issue of resp.data.filter(a => !a.pull_request)) {
               Issues.upsert(
                 { _id: issue.id },
                 {
@@ -49,6 +46,7 @@ export const updateGithubIssues = new ValidatedMethod({
                   creator: issue.user.login,
                   creatorUrl: issue.user.html_url,
                   assignee: issue.assignee && issue.assignee.login,
+                  assigneeUrl: issue.assignee && issue.assignee.html_url,
 
                   body: issue.body,
 
